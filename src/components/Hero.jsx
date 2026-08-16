@@ -160,31 +160,33 @@ export default function Hero() {
         busyRef.current = false;
       } else {
         const tl = gsap.timeline({
-          delay: first ? 0.3 : 0.1,
+          delay: first ? 0.15 : 0,
           onComplete: () => (busyRef.current = false),
         });
-        // Camada secundária: o painel de vidro chega antes do conteúdo
-        tl.from(panel, { y: 26, opacity: 0, duration: 0.6, ease: "power3.out" })
+        // Camada secundária: o painel de vidro chega antes do conteúdo.
+        // Stagger por "amount" (não "each"): tempo total fixo não importa
+        // o tamanho do texto, então uma etiqueta longa não atrasa tudo.
+        tl.from(panel, { y: 18, opacity: 0, duration: 0.4, ease: "power3.out" })
           // Etiqueta: letra a letra, girando de -90° por trás da máscara (sentido reverso)
           .from(
             chars,
             {
               xPercent: -110,
               rotation: -90,
-              duration: 0.7,
+              duration: 0.4,
               ease: "power3.out",
-              stagger: { each: 0.04, from: "end" },
+              stagger: { amount: 0.22, from: "end" },
             },
-            "-=0.25"
+            "-=0.2"
           )
           // Título: linhas deslizam da esquerda sob máscara
           .from(
             lines,
-            { xPercent: -115, duration: 0.9, ease: "power3.out", stagger: 0.12 },
-            "-=0.55"
+            { xPercent: -115, duration: 0.5, ease: "power3.out", stagger: 0.07 },
+            "-=0.25"
           )
           // CTA sobe suave por último
-          .from(cta, { y: 34, opacity: 0, duration: 0.55, ease: "power3.out" }, "-=0.5");
+          .from(cta, { y: 20, opacity: 0, duration: 0.32, ease: "power3.out", stagger: 0.05 }, "-=0.22");
       }
 
       // Ambiente: Ken Burns lento durante a vida do slide

@@ -24,32 +24,32 @@ export const NAV_LINKS = [
 /* Meta de cada página (título da aba + description) */
 export const PAGE_META = {
   home: {
-    title: "Braz Vidros — Vidraçaria e Esquadrias de Alumínio em Novo Hamburgo",
+    title: "Braz Vidros | Vidraçaria e Esquadrias de Alumínio em Novo Hamburgo",
     description:
       "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida. Orçamento pelo WhatsApp.",
   },
   vidracaria: {
-    title: "Vidraçaria em Novo Hamburgo — Braz Vidros",
+    title: "Vidraçaria em Novo Hamburgo | Braz Vidros",
     description:
       "Box de banheiro, espelhos sob medida, sacadas de vidro, guarda-corpo, coberturas de policarbonato e quiosques em Novo Hamburgo e região.",
   },
   esquadrias: {
-    title: "Esquadrias de Alumínio em Novo Hamburgo — Braz Vidros",
+    title: "Esquadrias de Alumínio em Novo Hamburgo | Braz Vidros",
     description:
       "Janelas, portas, portões e fechamentos de alumínio fabricados sob medida para sua obra em Novo Hamburgo e região.",
   },
   projetos: {
-    title: "Projetos — Braz Vidros",
+    title: "Projetos | Braz Vidros",
     description:
       "Trabalhos instalados de vidraçaria e esquadrias de alumínio em Novo Hamburgo e região: box, espelhos, sacadas, guarda-corpo e mais.",
   },
   sobre: {
-    title: "Sobre a Braz Vidros — Vidraçaria em Novo Hamburgo",
+    title: "Sobre a Braz Vidros | Vidraçaria em Novo Hamburgo",
     description:
       "Conheça a Braz Vidros: vidraçaria e esquadrias de alumínio com medição, fabricação e instalação próprias em Novo Hamburgo/RS.",
   },
   contato: {
-    title: "Contato — Braz Vidros",
+    title: "Contato | Braz Vidros",
     description:
       "Peça seu orçamento pelo WhatsApp: vidraçaria e esquadrias de alumínio em Novo Hamburgo e região.",
   },
@@ -82,7 +82,7 @@ export const PROCESS = [
 export const DIFFERENTIALS = [
   {
     title: "Quem mede é quem instala",
-    text: "Sem intermediário: a mesma equipe faz o orçamento, a medição e a instalação — sem surpresa no dia da entrega.",
+    text: "Sem intermediário: a mesma equipe faz o orçamento, a medição e a instalação, sem surpresa no dia da entrega.",
   },
   {
     title: "Material de procedência",
@@ -98,21 +98,23 @@ export const DIFFERENTIALS = [
   },
 ];
 
+/* Fotos do hero: Unsplash License (uso comercial liberado, sem atribuição).
+   Substituir por fotos reais de projetos quando o cliente enviar. */
 export const HERO_SLIDES = [
   {
-    image: "https://picsum.photos/seed/brazhero1/1920/1200",
+    image: "/hero/hero-vidracaria.jpg",
     label: "Vidraçaria em Novo Hamburgo",
     title: ["Vidro sob medida,", "do box à fachada"],
     cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento com a Braz Vidros.") },
   },
   {
-    image: "https://picsum.photos/seed/brazhero2/1920/1200",
+    image: "/hero/hero-esquadrias.jpg",
     label: "Esquadrias de Alumínio",
     title: ["Alumínio com", "precisão de milímetro"],
     cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento de esquadrias de alumínio.") },
   },
   {
-    image: "https://picsum.photos/seed/brazhero3/1920/1200",
+    image: "/hero/hero-sacadas.jpg",
     label: "Sacadas & Coberturas",
     title: ["Sua vista,", "sem nada no caminho"],
     cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento de sacada de vidro.") },
@@ -143,7 +145,7 @@ export const SERVICES_GLASS = [
   { title: "Espelhos sob medida", text: "Lapidados, bisotados ou com iluminação, cortados na medida." },
   { title: "Sacadas de vidro", text: "Fechamento e cortina de vidro para aproveitar a sacada o ano todo." },
   { title: "Guarda-corpo", text: "Segurança com vidro laminado e fixação estrutural certificada." },
-  { title: "Coberturas de policarbonato", text: "Luz natural com proteção — pergolados, garagens e áreas de serviço." },
+  { title: "Coberturas de policarbonato", text: "Luz natural com proteção para pergolados, garagens e áreas de serviço." },
   { title: "Quiosques e cabanas", text: "Estruturas envidraçadas para área de lazer e comércio." },
 ];
 
@@ -155,13 +157,13 @@ export const SERVICES_ALUMINUM = [
 ];
 
 export const PORTFOLIO = [
-  { image: "https://picsum.photos/seed/brazport1/800/600", title: "Box incolor — apartamento", category: "Box" },
-  { image: "https://picsum.photos/seed/brazport2/800/600", title: "Espelho bisotado — sala", category: "Espelhos" },
-  { image: "https://picsum.photos/seed/brazport3/800/600", title: "Cortina de vidro — sacada", category: "Sacadas" },
-  { image: "https://picsum.photos/seed/brazport4/800/600", title: "Guarda-corpo — escada", category: "Guarda-corpo" },
-  { image: "https://picsum.photos/seed/brazport5/800/600", title: "Pergolado — área externa", category: "Policarbonato" },
-  { image: "https://picsum.photos/seed/brazport6/800/600", title: "Janelas de correr — casa nova", category: "Esquadrias" },
-  { image: "https://picsum.photos/seed/brazport7/800/600", title: "Porta pivotante — entrada", category: "Esquadrias" },
+  { image: "https://picsum.photos/seed/brazport1/800/600", title: "Box incolor em apartamento", category: "Box" },
+  { image: "https://picsum.photos/seed/brazport2/800/600", title: "Espelho bisotado na sala", category: "Espelhos" },
+  { image: "https://picsum.photos/seed/brazport3/800/600", title: "Cortina de vidro na sacada", category: "Sacadas" },
+  { image: "https://picsum.photos/seed/brazport4/800/600", title: "Guarda-corpo de escada", category: "Guarda-corpo" },
+  { image: "https://picsum.photos/seed/brazport5/800/600", title: "Pergolado em área externa", category: "Policarbonato" },
+  { image: "https://picsum.photos/seed/brazport6/800/600", title: "Janelas de correr em casa nova", category: "Esquadrias" },
+  { image: "https://picsum.photos/seed/brazport7/800/600", title: "Porta pivotante na entrada", category: "Esquadrias" },
   { image: "https://picsum.photos/seed/brazport8/800/600", title: "Quiosque envidraçado", category: "Sacadas" },
 ];
 
@@ -179,7 +181,7 @@ export const ABOUT = {
   eyebrow: "Sobre a Braz Vidros",
   title: "Feito aqui, instalado direito",
   text: [
-    "A Braz Vidros atende Novo Hamburgo e região com serviços de vidraçaria e esquadrias de alumínio. Do orçamento à instalação, quem mede é quem instala — sem intermediário e sem surpresa no dia da entrega.",
+    "A Braz Vidros atende Novo Hamburgo e região com serviços de vidraçaria e esquadrias de alumínio. Do orçamento à instalação, quem mede é quem instala, sem intermediário e sem surpresa no dia da entrega.",
     "Trabalhamos com vidro temperado e laminado de procedência e perfis de alumínio de qualidade, com acabamento pensado para durar no clima do Sul.",
   ],
   image: "https://picsum.photos/seed/brazabout/1000/800",

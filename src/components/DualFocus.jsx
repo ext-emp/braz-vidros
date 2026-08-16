@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FOCUS } from "../data/content.js";
 
-/* Os dois focos do negócio, com o mesmo peso visual — nenhum engole o outro */
+/* Os dois focos do negócio, com o mesmo peso visual: nenhum engole o outro */
 export default function DualFocus() {
   return (
     <section className="container-site py-20 md:py-28">
@@ -15,7 +15,7 @@ export default function DualFocus() {
         </div>
         <p data-reveal className="max-w-md text-steel md:justify-self-end">
           Vidro e alumínio andam juntos em quase toda obra. Aqui você resolve os
-          dois com a mesma equipe — medição, fabricação e instalação.
+          dois com a mesma equipe: medição, fabricação e instalação.
         </p>
       </div>
 

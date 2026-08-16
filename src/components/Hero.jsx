@@ -145,7 +145,7 @@ export default function Hero() {
   });
   goToRef.current = goTo;
 
-  // Entrada do texto + autoplay — roda a cada troca de slide
+  // Entrada do texto + autoplay, roda a cada troca de slide
   useGSAP(
     () => {
       const panel = panelRef.current;
@@ -228,7 +228,7 @@ export default function Hero() {
           role="img"
           aria-label={slide.label}
         />
-        {/* Scrim para legibilidade — acima do mosaico, abaixo do texto */}
+        {/* Scrim para legibilidade: acima do mosaico, abaixo do texto */}
         <div
           className="pointer-events-none absolute inset-0 z-[3]"
           style={{

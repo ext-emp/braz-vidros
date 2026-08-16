@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 /*
-  Design tokens — Braz Vidros
+  Design tokens da Braz Vidros
   Conceito: "clean BloomFi + material vidro".
   Base fria (gelo/aço, viés azulado de vidro e alumínio).
-  Acento vindo do logo: marinho #323560 (fundo) e azul claro #8cceee (letras) —
-  marinho sobre superfícies claras, azul claro sobre escuras.
+  Acento vindo do logo: marinho #323560 (fundo) e azul claro #8cceee (letras).
+  Marinho sobre superfícies claras, azul claro sobre escuras.
 */
 @theme {
   --color-ice: #f2f5f9;

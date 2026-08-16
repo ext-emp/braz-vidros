@@ -26,7 +26,7 @@ export default function App() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  // Motion pass: reveals de scroll — assinatura única (subida curta + fade, power3.out).
+  // Motion pass: reveals de scroll, assinatura única (subida curta + fade, power3.out).
   // Depende de pathname: re-registra os triggers a cada página.
   useGSAP(
     () => {

@@ -29,7 +29,7 @@ export default function Footer() {
               Braz<span className="text-accent-soft">Vidros</span>
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-              Vidraçaria e esquadrias de alumínio sob medida — medição,
+              Vidraçaria e esquadrias de alumínio sob medida: medição,
               fabricação e instalação com a mesma equipe, em Novo Hamburgo e
               região.
             </p>
@@ -110,7 +110,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="pt-2 leading-relaxed text-white/60">{ABOUT.region}</li>
-              <li className="text-white/60">Seg. a sáb. — orçamento sem compromisso</li>
+              <li className="text-white/60">Seg. a sáb., orçamento sem compromisso</li>
             </ul>
           </div>
         </div>

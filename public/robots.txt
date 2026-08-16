@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://brazvidros.com.br/sitemap.xml

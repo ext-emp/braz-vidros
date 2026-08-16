@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { HERO_SLIDES } from "../data/content.js";
@@ -281,13 +282,13 @@ export default function Hero() {
                 </a>
                 {/* hover sem transform: transição CSS de transform brigaria
                     com a animação de entrada do GSAP neste mesmo elemento */}
-                <a
+                <Link
                   data-cta
-                  href="#projetos"
+                  to="/projetos"
                   className="glass-dark inline-block rounded-full px-8 py-4 text-sm font-semibold text-white transition-[filter] duration-300 hover:brightness-150"
                 >
                   Ver projetos
-                </a>
+                </Link>
               </div>
             </div>
           </div>

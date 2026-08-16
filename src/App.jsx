@@ -1,28 +1,37 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 import Navbar from "./components/Navbar.jsx";
-import Hero from "./components/Hero.jsx";
-import DualFocus from "./components/DualFocus.jsx";
-import Services from "./components/Services.jsx";
-import Portfolio from "./components/Portfolio.jsx";
-import About from "./components/About.jsx";
-import Contact from "./components/Contact.jsx";
+import Footer from "./components/Footer.jsx";
 import WhatsAppFloat from "./components/WhatsAppFloat.jsx";
+
+import Home from "./pages/Home.jsx";
+import Vidracaria from "./pages/Vidracaria.jsx";
+import Esquadrias from "./pages/Esquadrias.jsx";
+import Projetos from "./pages/Projetos.jsx";
+import Sobre from "./pages/Sobre.jsx";
+import Contato from "./pages/Contato.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const rootRef = useRef(null);
+  const { pathname } = useLocation();
 
-  // Motion pass: reveals de scroll — assinatura única (subida curta + fade, power3.out)
+  // Cada troca de rota volta ao topo
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  // Motion pass: reveals de scroll — assinatura única (subida curta + fade, power3.out).
+  // Depende de pathname: re-registra os triggers a cada página.
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // Grupos: filhos [data-reveal] entram em cascata (orçamento de stagger < 400ms)
       // clearProps ao final: libera o transform inline do GSAP para os
       // hovers CSS (translate/scale) dos cards voltarem a funcionar
       gsap.utils.toArray("[data-reveal-group]").forEach((group) => {
@@ -59,20 +68,24 @@ export default function App() {
         );
       });
     },
-    { scope: rootRef }
+    { scope: rootRef, dependencies: [pathname] }
   );
 
   return (
     <div ref={rootRef}>
       <Navbar />
       <main>
-        <Hero />
-        <DualFocus />
-        <Services />
-        <Portfolio />
-        <About />
-        <Contact />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/vidracaria" element={<Vidracaria />} />
+          <Route path="/esquadrias" element={<Esquadrias />} />
+          <Route path="/projetos" element={<Projetos />} />
+          <Route path="/sobre" element={<Sobre />} />
+          <Route path="/contato" element={<Contato />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
       </main>
+      <Footer />
       <WhatsAppFloat />
     </div>
   );

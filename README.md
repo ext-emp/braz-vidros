@@ -1,8 +1,15 @@
 # Braz Vidros — Site institucional
 
-Site one-page da Braz Vidros (vidraçaria e esquadrias de alumínio, Novo Hamburgo/RS).
+Site institucional multi-página da Braz Vidros (vidraçaria e esquadrias de alumínio,
+Novo Hamburgo/RS).
 
-**Stack**: React + Vite · Tailwind CSS v4 · GSAP (hero mosaico + scroll reveals)
+**Stack**: React + Vite · React Router · Tailwind CSS v4 · GSAP (hero mosaico + scroll reveals)
+
+**Páginas**: `/` (home com hero slider) · `/vidracaria` · `/esquadrias` · `/projetos`
+· `/sobre` · `/contato`
+
+> **Deploy**: por ser SPA com rotas, o servidor precisa de fallback para `index.html`
+> (Vercel/Netlify/Cloudflare Pages fazem isso automático para projetos Vite).
 
 ## Rodar
 

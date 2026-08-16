@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FOCUS } from "../data/content.js";
 
 /* Os dois focos do negócio, com o mesmo peso visual — nenhum engole o outro */
@@ -20,10 +21,9 @@ export default function DualFocus() {
 
       <div data-reveal-group className="grid gap-6 md:grid-cols-2">
         {FOCUS.map((f) => (
-          <a
+          <Link
             key={f.id}
-            id={f.id}
-            href={f.anchor}
+            to={f.link}
             data-reveal
             className="group relative block overflow-hidden rounded-[1.75rem]"
           >
@@ -53,7 +53,7 @@ export default function DualFocus() {
                 </span>
               </span>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </section>

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { NAV_LINKS, waLink } from "../data/content.js";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -11,6 +13,8 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => setOpen(false), [pathname]);
 
   return (
     <header
@@ -24,28 +28,34 @@ export default function Navbar() {
         }`}
         aria-label="Navegação principal"
       >
-        <a
-          href="#inicio"
+        <Link
+          to="/"
           className={`font-display text-xl font-bold tracking-tight transition-colors duration-500 ${
             scrolled ? "text-ink" : "text-white"
           }`}
         >
           Braz<span className={scrolled ? "text-accent" : "text-accent-soft"}>Vidros</span>
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-7 lg:flex">
           {NAV_LINKS.map((l) => (
             <li key={l.href}>
-              <a
-                href={l.href}
-                className={`text-sm font-semibold transition-colors duration-300 ${
-                  scrolled
-                    ? "text-steel hover:text-accent"
-                    : "text-white/85 hover:text-accent-soft"
-                }`}
+              <NavLink
+                to={l.href}
+                className={({ isActive }) =>
+                  `text-sm font-semibold transition-colors duration-300 ${
+                    scrolled
+                      ? isActive
+                        ? "text-accent"
+                        : "text-steel hover:text-accent"
+                      : isActive
+                        ? "text-accent-soft"
+                        : "text-white/85 hover:text-accent-soft"
+                  }`
+                }
               >
                 {l.label}
-              </a>
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -87,13 +97,18 @@ export default function Navbar() {
           <ul className="glass flex flex-col gap-1 rounded-3xl p-4">
             {NAV_LINKS.map((l) => (
               <li key={l.href}>
-                <a
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="block rounded-2xl px-4 py-3 text-sm font-semibold text-ink transition-colors hover:bg-white/60 hover:text-accent"
+                <NavLink
+                  to={l.href}
+                  className={({ isActive }) =>
+                    `block rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
+                      isActive
+                        ? "text-accent"
+                        : "text-ink hover:bg-white/60 hover:text-accent"
+                    }`
+                  }
                 >
                   {l.label}
-                </a>
+                </NavLink>
               </li>
             ))}
           </ul>

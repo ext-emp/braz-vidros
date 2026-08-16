@@ -25,12 +25,7 @@ export default function Contato() {
           >
             <p className="text-xs font-bold tracking-widest text-ink/70 uppercase">WhatsApp</p>
             <p className="font-display mt-2 text-2xl font-semibold text-ink">{phonePretty}</p>
-            <p className="mt-4 text-sm font-bold text-ink">
-              Chamar agora{" "}
-              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
-            </p>
+            <p className="mt-4 text-sm font-bold text-ink">Chamar agora</p>
           </a>
 
           <a
@@ -42,12 +37,7 @@ export default function Contato() {
           >
             <p className="text-xs font-bold tracking-widest text-steel uppercase">Instagram</p>
             <p className="font-display mt-2 text-2xl font-semibold text-ink">@braz_vidross</p>
-            <p className="mt-4 text-sm font-bold text-accent">
-              Ver projetos recentes{" "}
-              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
-            </p>
+            <p className="mt-4 text-sm font-bold text-accent">Ver projetos recentes</p>
           </a>
 
           <div data-reveal>

@@ -46,12 +46,7 @@ export default function DualFocus() {
                 {f.title}
               </h3>
               <p className="mb-4 text-sm leading-relaxed text-white/80">{f.text}</p>
-              <span className="text-sm font-bold text-accent-soft">
-                Ver serviços{" "}
-                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
-              </span>
+              <span className="text-sm font-bold text-accent-soft">Ver serviços</span>
             </div>
           </Link>
         ))}

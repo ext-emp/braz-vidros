@@ -10,7 +10,7 @@ const SLIDE_SECONDS = 9;
   Efeito do hero decodificado do tema Archipark (Slider Revolution 6.4.6):
   - Transição em mosaico: a foto fatiada numa grade de peças que se montam
     das bordas para o centro, cada uma com rotação/escala/offset próprios.
-  - Texto em 3 camadas mascaradas: etiqueta letra-a-letra → título deslizante → CTA.
+  - Texto em 3 camadas mascaradas: etiqueta letra a letra, título deslizante e CTA.
   - ~9s por slide, zoom lento ambiente (Ken Burns) na foto de fundo.
   Recriado com GSAP puro (stagger grid + from:"edges").
 */
@@ -220,12 +220,14 @@ export default function Hero() {
           role="img"
           aria-label={slide.label}
         />
-        {/* Scrim para legibilidade: acima do mosaico, abaixo do texto */}
+        {/* Opacidade suave e uniforme sobre toda a foto */}
+        <div className="pointer-events-none absolute inset-0 z-[2] bg-ink/25" />
+        {/* Scrim extra para legibilidade atrás do texto: acima do mosaico, abaixo do texto */}
         <div
           className="pointer-events-none absolute inset-0 z-[3]"
           style={{
             background:
-              "linear-gradient(75deg, rgb(12 22 34 / 0.62) 0%, rgb(12 22 34 / 0.24) 45%, transparent 70%)",
+              "linear-gradient(75deg, rgb(12 22 34 / 0.5) 0%, rgb(12 22 34 / 0.15) 45%, transparent 70%)",
           }}
         />
 

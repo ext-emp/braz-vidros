@@ -49,7 +49,7 @@ export default function Home() {
             to="/projetos"
             className="text-sm font-bold text-accent hover:underline md:justify-self-end"
           >
-            Ver todos os projetos →
+            Ver todos os projetos
           </Link>
         </div>
         <ProjectGrid items={PORTFOLIO.slice(0, 4)} />

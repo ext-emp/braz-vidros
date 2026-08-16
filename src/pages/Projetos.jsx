@@ -43,7 +43,7 @@ export default function Projetos() {
             rel="noopener noreferrer"
             className="text-sm font-bold text-accent hover:underline"
           >
-            Mais no Instagram →
+            Mais no Instagram
           </a>
         </div>
         <ProjectGrid items={items} />

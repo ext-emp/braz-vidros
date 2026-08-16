@@ -185,5 +185,5 @@ export const ABOUT = {
     "Trabalhamos com vidro temperado e laminado de procedência e perfis de alumínio de qualidade, com acabamento pensado para durar no clima do Sul.",
   ],
   image: "https://picsum.photos/seed/brazabout/1000/800",
-  region: "Novo Hamburgo · Campo Bom · Estância Velha · São Leopoldo · Dois Irmãos e região",
+  region: "Novo Hamburgo, Campo Bom, Estância Velha, São Leopoldo, Dois Irmãos e região",
 };

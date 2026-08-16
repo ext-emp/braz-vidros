@@ -23,9 +23,7 @@ export default function Navbar() {
       }`}
     >
       <nav
-        className={`container-site flex items-center justify-between rounded-full px-5 py-3 transition-all duration-500 md:px-4 ${
-          scrolled ? "glass" : "border-none bg-[#8cceee26] shadow-none"
-        }`}
+        className="container-site flex items-center justify-between rounded-full border-none bg-[#8cceee26] px-5 py-3 shadow-none backdrop-blur-lg transition-all duration-500 md:px-4"
         aria-label="Navegação principal"
       >
         <Link

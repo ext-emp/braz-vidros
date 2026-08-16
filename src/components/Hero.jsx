@@ -64,7 +64,6 @@ export default function Hero() {
   const stageRef = useRef(null);
   const bgRef = useRef(null);
   const panelRef = useRef(null);
-  const progressRef = useRef(null);
   const busyRef = useRef(false);
   const firstRunRef = useRef(true);
   const goToRef = useRef(() => {});
@@ -197,19 +196,12 @@ export default function Hero() {
         );
       }
 
-      // Autoplay via barra de progresso (a própria barra é o timer)
-      const progress = gsap.fromTo(
-        progressRef.current,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          duration: SLIDE_SECONDS,
-          ease: "none",
-          delay: reduced ? 0 : 1.2,
-          onComplete: () => goToRef.current((active + 1) % HERO_SLIDES.length),
-        }
+      // Autoplay: avança sozinho, mas sem indicador visual — o clique
+      // manual nos dots sempre pode interromper e pular pra qualquer slide
+      const timer = gsap.delayedCall(SLIDE_SECONDS + (reduced ? 0 : 1.2), () =>
+        goToRef.current((active + 1) % HERO_SLIDES.length)
       );
-      return () => progress.kill();
+      return () => timer.kill();
     },
     { dependencies: [active], scope: rootRef }
   );
@@ -306,15 +298,6 @@ export default function Hero() {
               }`}
             />
           ))}
-        </div>
-
-        {/* Barra de progresso do slide */}
-        <div className="absolute bottom-0 left-0 z-[5] h-[3px] w-full bg-white/10">
-          <div
-            ref={progressRef}
-            className="h-full w-full origin-left bg-accent-soft"
-            style={{ transform: "scaleX(0)" }}
-          />
         </div>
       </div>
     </section>

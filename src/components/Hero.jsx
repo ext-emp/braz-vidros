@@ -24,7 +24,9 @@ function buildMosaic(container, imageUrl, cols, rows) {
   // de subpixel não deixam a foto anterior vazar em linhas finas
   const bleed = 1;
   const overlay = document.createElement("div");
-  overlay.style.cssText = "position:absolute;inset:0;z-index:2;overflow:hidden;";
+  // z-index 1: mesmo nível do fundo e abaixo do escurecimento (z-2), pra
+  // foto não clarear durante a transição
+  overlay.style.cssText = "position:absolute;inset:0;z-index:1;overflow:hidden;";
   const tiles = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -94,7 +96,7 @@ export default function Hero() {
       // Sem mosaico: crossfade simples
       const fader = document.createElement("div");
       fader.style.cssText =
-        `position:absolute;inset:0;z-index:2;opacity:0;` +
+        `position:absolute;inset:0;z-index:1;opacity:0;` +
         `background-image:url(${target.image});background-size:cover;background-position:center;`;
       stageRef.current.appendChild(fader);
       gsap.to(fader, {
@@ -212,7 +214,7 @@ export default function Hero() {
     <section id="inicio" ref={rootRef}>
       <div
         ref={stageRef}
-        className="relative h-[92svh] min-h-[540px] overflow-hidden bg-ink"
+        className="relative h-[100svh] min-h-[540px] overflow-hidden bg-ink"
       >
         {/* Fundo (camada base) */}
         <div
@@ -223,13 +225,13 @@ export default function Hero() {
           aria-label={slide.label}
         />
         {/* Opacidade suave e uniforme sobre toda a foto */}
-        <div className="pointer-events-none absolute inset-0 z-[2] bg-ink/25" />
+        <div className="pointer-events-none absolute inset-0 z-[2] bg-ink/50" />
         {/* Scrim extra para legibilidade atrás do texto: acima do mosaico, abaixo do texto */}
         <div
           className="pointer-events-none absolute inset-0 z-[3]"
           style={{
             background:
-              "linear-gradient(75deg, rgb(12 22 34 / 0.5) 0%, rgb(12 22 34 / 0.15) 45%, transparent 70%)",
+              "linear-gradient(75deg, rgb(12 22 34 / 0.65) 0%, rgb(12 22 34 / 0.3) 45%, rgb(12 22 34 / 0.1) 70%)",
           }}
         />
 
@@ -239,7 +241,7 @@ export default function Hero() {
             <div
               key={active}
               ref={panelRef}
-              className="glass-dark max-w-2xl rounded-3xl p-7 md:p-10"
+              className="glass-dark max-w-2xl rounded-3xl p-6 sm:p-8 md:p-10"
             >
               <p data-exit className="eyebrow mb-4 text-accent-soft" aria-label={slide.label}>
                 {slide.label.split("").map((ch, i) => (
@@ -256,7 +258,9 @@ export default function Hero() {
               </p>
               <h1
                 data-exit
-                className="font-display text-4xl leading-[1.05] font-semibold text-white sm:text-5xl md:text-6xl lg:text-7xl"
+                /* No celular o corpo acompanha a largura da tela (clamp), então
+                   cada linha do título cabe inteira e não quebra em três */
+                className="font-display text-[clamp(1.65rem,7vw,2.25rem)] leading-[1.08] font-semibold text-white sm:text-5xl md:text-6xl lg:text-7xl"
               >
                 {slide.title.map((line, i) => (
                   <span key={i} className="block overflow-hidden pb-1">
@@ -266,13 +270,18 @@ export default function Hero() {
                   </span>
                 ))}
               </h1>
-              <div data-exit className="mt-8 flex flex-wrap items-center gap-4">
+              {/* Grade de duas colunas no celular: os botões saem exatamente do
+                  mesmo tamanho. A partir de sm voltam à largura natural */}
+              <div
+                data-exit
+                className="mt-7 grid grid-cols-2 gap-3 sm:mt-8 sm:flex sm:flex-nowrap sm:items-center sm:gap-4"
+              >
                 <a
                   data-cta
                   href={slide.cta.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="sheen inline-block rounded-full bg-accent-soft px-8 py-4 text-sm font-bold tracking-wide text-ink transition-colors duration-300 hover:bg-white"
+                  className="sheen block w-full rounded-full bg-accent-soft px-3 py-3.5 text-center text-xs font-bold tracking-wide whitespace-nowrap text-ink transition-colors duration-300 hover:bg-white sm:w-auto sm:px-8 sm:py-4 sm:text-sm"
                 >
                   {slide.cta.text}
                 </a>
@@ -281,7 +290,7 @@ export default function Hero() {
                 <Link
                   data-cta
                   to="/projetos"
-                  className="glass-dark inline-block rounded-full px-8 py-4 text-sm font-semibold text-white transition-[filter] duration-300 hover:brightness-150"
+                  className="glass-dark block w-full rounded-full px-3 py-3.5 text-center text-xs font-semibold whitespace-nowrap text-white transition-[filter] duration-300 hover:brightness-150 sm:w-auto sm:px-8 sm:py-4 sm:text-sm"
                 >
                   Ver projetos
                 </Link>

@@ -1,5 +1,14 @@
 import PageHeader from "../components/PageHeader.jsx";
-import { waLink, INSTAGRAM, WHATSAPP, ABOUT, PAGE_META } from "../data/content.js";
+import {
+  waLink,
+  INSTAGRAM,
+  WHATSAPP,
+  ABOUT,
+  PAGE_META,
+  addressLine,
+  mapEmbed,
+  mapLink,
+} from "../data/content.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 
 const phonePretty = `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, 9)}-${WHATSAPP.slice(9)}`;
@@ -56,6 +65,32 @@ export default function Contato() {
         <div data-reveal className="glass mt-10 rounded-3xl p-7">
           <p className="text-xs font-bold tracking-wide text-ink uppercase">Região de atendimento</p>
           <p className="mt-2 text-sm leading-relaxed text-steel">{ABOUT.region}</p>
+        </div>
+
+        {/* Mapa: carrega só quando chega perto, para não pesar a página */}
+        <div data-reveal className="mt-10">
+          <p className="eyebrow mb-3 text-center">Onde estamos</p>
+          <div className="glass overflow-hidden rounded-3xl p-2">
+            <iframe
+              title={`Mapa: ${addressLine}`}
+              src={mapEmbed()}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+              className="h-85 w-full rounded-[1.25rem] border-0 md:h-110"
+            />
+          </div>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <address className="text-sm text-steel not-italic">{addressLine}</address>
+            <a
+              href={mapLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-bold text-accent hover:underline"
+            >
+              Abrir no Google Maps
+            </a>
+          </div>
         </div>
       </section>
     </>

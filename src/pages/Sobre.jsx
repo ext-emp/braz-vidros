@@ -45,7 +45,7 @@ export default function Sobre() {
 
       <section className="bg-mist/60 py-16 md:py-24">
         <div className="container-site">
-          <div data-reveal className="mb-10">
+          <div data-reveal className="mb-10 text-center">
             <p className="eyebrow mb-3">Nosso jeito de trabalhar</p>
             <h2 className="font-display text-3xl font-semibold md:text-4xl">
               O que você pode esperar da gente

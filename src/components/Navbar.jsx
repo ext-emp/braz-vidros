@@ -16,9 +16,24 @@ export default function Navbar() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  // Enquanto o painel está aberto: Esc fecha e o fundo não rola
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = overflow;
+    };
+  }, [open]);
+
   return (
+    // Com o painel aberto o header sobe de camada para cobrir o botão
+    // flutuante do WhatsApp, que também vive em z-50
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 transition-all duration-500 ${open ? "z-70" : "z-50"} ${
         scrolled ? "px-3 pt-3 md:px-5 md:pt-4" : "px-3 pt-5 md:px-5 md:pt-8"
       }`}
     >
@@ -32,7 +47,10 @@ export default function Navbar() {
             scrolled ? "text-ink" : "text-white"
           }`}
         >
-          Braz<span className={scrolled ? "text-accent" : "text-accent-soft"}>Vidros</span>
+          Braz
+          <span className={scrolled ? "text-accent" : "text-accent-soft"}>
+            Vidros
+          </span>
         </Link>
 
         <ul className="hidden items-center gap-7 lg:flex">
@@ -67,51 +85,99 @@ export default function Navbar() {
           >
             Orçamento
           </a>
+          {/* Três traços: o do meio some e os de fora viram X ao abrir */}
           <button
             onClick={() => setOpen(!open)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
-            className={`flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-full lg:hidden ${
+            className={`flex h-10 w-10 flex-col items-center justify-center gap-1 rounded-full lg:hidden ${
               scrolled ? "glass" : "glass-dark"
             }`}
           >
             <span
               className={`h-0.5 w-5 rounded transition-all duration-300 ${
                 scrolled ? "bg-ink" : "bg-white"
-              } ${open ? "translate-y-1 rotate-45" : ""}`}
+              } ${open ? "translate-y-1.5 rotate-45" : ""}`}
             />
             <span
               className={`h-0.5 w-5 rounded transition-all duration-300 ${
                 scrolled ? "bg-ink" : "bg-white"
-              } ${open ? "-translate-y-1 -rotate-45" : ""}`}
+              } ${open ? "scale-x-0 opacity-0" : ""}`}
+            />
+            <span
+              className={`h-0.5 w-5 rounded transition-all duration-300 ${
+                scrolled ? "bg-ink" : "bg-white"
+              } ${open ? "-translate-y-1.5 -rotate-45" : ""}`}
             />
           </button>
         </div>
       </nav>
 
-      {/* Menu mobile */}
-      {open && (
-        <div className="container-site mt-2 lg:hidden">
-          <ul className="glass flex flex-col gap-1 rounded-3xl p-4">
-            {NAV_LINKS.map((l) => (
-              <li key={l.href}>
-                <NavLink
-                  to={l.href}
-                  className={({ isActive }) =>
-                    `block rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
-                      isActive
-                        ? "text-accent"
-                        : "text-ink hover:bg-white/60 hover:text-accent"
-                    }`
-                  }
-                >
-                  {l.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+      {/* Painel lateral: entra deslizando da direita, não é dropdown.
+          Fica sempre montado para a saída também ser animada */}
+      <div
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+        className={`fixed inset-0 bg-ink/70 backdrop-blur-sm transition-opacity duration-500 lg:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+      <aside
+        aria-label="Menu"
+        aria-hidden={!open}
+        className={`fixed top-0 right-0 flex h-dvh w-[min(20rem,85vw)] flex-col bg-ink px-6 py-6 shadow-2xl transition-transform duration-500 ease-out lg:hidden ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <Link
+            to="/"
+            tabIndex={open ? 0 : -1}
+            className="font-display text-xl font-bold tracking-tight text-white"
+          >
+            Braz<span className="text-accent-soft">Vidros</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            tabIndex={open ? 0 : -1}
+            aria-label="Fechar menu"
+            className="glass-dark flex h-10 w-10 items-center justify-center rounded-full text-xl leading-none text-white transition-transform duration-300 hover:scale-110"
+          >
+            &times;
+          </button>
         </div>
-      )}
+
+        <ul className="mt-8 flex-1 overflow-y-auto">
+          {NAV_LINKS.map((l) => (
+            <li key={l.href} className="border-b border-white/10">
+              <NavLink
+                to={l.href}
+                tabIndex={open ? 0 : -1}
+                className={({ isActive }) =>
+                  `font-display block py-4 text-2xl font-semibold transition-colors duration-300 ${
+                    isActive
+                      ? "text-accent-soft"
+                      : "text-white hover:text-accent-soft"
+                  }`
+                }
+              >
+                {l.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={waLink("Olá! Vim pelo site da Braz Vidros.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={open ? 0 : -1}
+          className="sheen mt-6 block rounded-full bg-accent-soft px-8 py-4 text-center text-sm font-bold text-ink transition-colors duration-300 hover:bg-white"
+        >
+          Solicitar orçamento
+        </a>
+      </aside>
     </header>
   );
 }

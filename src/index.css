@@ -110,6 +110,15 @@ h3 {
   color: var(--color-accent);
 }
 
+/* Trilho que rola para o lado sem a barra de rolagem à mostra */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .container-site {
   width: 100%;
   max-width: 76rem;

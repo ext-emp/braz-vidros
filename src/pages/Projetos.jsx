@@ -20,21 +20,29 @@ export default function Projetos() {
 
       <section className="container-site py-16 md:py-24">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <div data-reveal className="flex flex-wrap gap-2">
-            {PORTFOLIO_CATEGORIES.map((c) => (
-              <button
-                key={c}
-                onClick={() => setCat(c)}
-                aria-pressed={cat === c}
-                className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
-                  cat === c
-                    ? "bg-ink text-white"
-                    : "glass text-steel hover:-translate-y-0.5 hover:text-ink"
-                }`}
-              >
-                {c}
-              </button>
-            ))}
+          {/* Trilho horizontal: os filtros correm para o lado em vez de
+              quebrar em três linhas. A sangria negativa deixa o primeiro e o
+              último encostarem na borda da tela ao rolar */}
+          <div
+            data-reveal
+            className="no-scrollbar -mx-5 w-[calc(100%+2.5rem)] snap-x snap-mandatory overflow-x-auto px-5 md:mx-0 md:w-auto md:px-0"
+          >
+            <div className="flex w-max gap-2">
+              {PORTFOLIO_CATEGORIES.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCat(c)}
+                  aria-pressed={cat === c}
+                  className={`shrink-0 snap-start rounded-full px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
+                    cat === c
+                      ? "bg-ink text-white"
+                      : "glass text-steel hover:-translate-y-0.5 hover:text-ink"
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
           </div>
           <a
             data-reveal

@@ -110,6 +110,40 @@ h3 {
   color: var(--color-accent);
 }
 
+/* Scrim do hero: substitui o card atrás do texto. Escurece a margem
+   esquerda em degradê e deixa a foto limpa do centro para a direita.
+   No celular vira vertical, porque lá o texto ocupa a largura toda */
+.hero-scrim {
+  background:
+    /* Faixa do header: a barra do topo é transparente e nossas fotos têm
+       céu claro, então sem isto os links perdem contraste */
+    linear-gradient(180deg, rgb(12 22 34 / 0.78) 0%, rgb(12 22 34 / 0) 30%),
+    /* Canto superior direito: é onde ficam os links, e é justamente a parte
+       mais clara das fotos de fachada */
+      radial-gradient(
+        120% 90% at 100% 0%,
+        rgb(12 22 34 / 0.6) 0%,
+        rgb(12 22 34 / 0) 55%
+      ),
+    linear-gradient(
+      100deg,
+      rgb(12 22 34 / 0.92) 0%,
+      rgb(12 22 34 / 0.78) 34%,
+      rgb(12 22 34 / 0.35) 62%,
+      rgb(12 22 34 / 0.6) 100%
+    );
+}
+@media (max-width: 1023px) {
+  .hero-scrim {
+    background: linear-gradient(
+      180deg,
+      rgb(12 22 34 / 0.75) 0%,
+      rgb(12 22 34 / 0.35) 40%,
+      rgb(12 22 34 / 0.92) 100%
+    );
+  }
+}
+
 /* Trilho que rola para o lado sem a barra de rolagem à mostra */
 .no-scrollbar {
   scrollbar-width: none;
@@ -128,6 +162,26 @@ h3 {
 @media (min-width: 768px) {
   .container-site {
     padding-inline: 2rem;
+  }
+}
+
+/*
+  Coluna do hero. Mesma caixa do .container-site, com duas diferenças:
+  recuo de 6rem e `margin: 0` em vez de `auto`. Sem o `auto` a coluna
+  encosta à esquerda, então o título nasce a 6rem da borda da tela e os
+  números terminam no fim da coluna, não no fim do monitor.
+  Vive separada porque no .container-site isto desalinharia todas as
+  demais seções do site em telas largas.
+*/
+.container-hero {
+  width: 100%;
+  max-width: 76rem;
+  margin: 0;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .container-hero {
+    padding-inline: 6rem;
   }
 }
 }

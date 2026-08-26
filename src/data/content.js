@@ -10,6 +10,11 @@
 export const WHATSAPP = "5551995475761";
 export const INSTAGRAM = "https://www.instagram.com/braz_vidross";
 
+/* Mesmo número do WhatsApp, nos dois formatos que a interface precisa:
+   um para ler e outro para discar */
+export const PHONE = "(51) 99547-5761";
+export const PHONE_HREF = "tel:+5551995475761";
+
 export const waLink = (text) =>
   `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
 
@@ -55,6 +60,18 @@ export const PAGE_META = {
       "Peça seu orçamento pelo WhatsApp: vidraçaria e esquadrias de alumínio em Novo Hamburgo e região.",
   },
 };
+
+/*
+  Faixa de números no rodapé do hero.
+  TODO (aguardando cliente): confirmar `anos` e `projetos`. Os valores abaixo
+  são chute e viram promessa pública assim que o site entra no ar, então
+  precisam do número real antes de publicar.
+*/
+export const HERO_STATS = [
+  { value: "12", label: "Anos de estrada" },
+  { value: "800+", label: "Projetos entregues" },
+  { value: "100%", label: "Medição própria" },
+];
 
 /* Como funciona o serviço, do primeiro contato à entrega */
 export const PROCESS = [
@@ -103,21 +120,24 @@ export const DIFFERENTIALS = [
    Substituir por fotos reais de projetos quando o cliente enviar. */
 export const HERO_SLIDES = [
   {
-    image: "/hero/hero-vidracaria.jpg",
+    image: "/hero/vidracaria.png",
     label: "Vidraçaria em Novo Hamburgo",
     title: ["Vidro sob medida,", "do box à fachada"],
+    lede: "Medição, fabricação e instalação com prazo fechado, sem intermediário no meio do caminho.",
     cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento com a Braz Vidros.") },
   },
   {
     image: "/hero/hero-esquadrias.jpg",
     label: "Esquadrias de Alumínio",
     title: ["Alumínio com", "precisão de milímetro"],
+    lede: "Janelas, portas e fechamentos fabricados na medida exata da obra, com vedação correta.",
     cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento de esquadrias de alumínio.") },
   },
   {
     image: "/hero/hero-sacadas.jpg",
     label: "Sacadas & Coberturas",
     title: ["Sua vista,", "sem nada no caminho"],
+    lede: "Sacadas de vidro e coberturas que abrem o ambiente sem abrir mão da segurança.",
     cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento de sacada de vidro.") },
   },
 ];

@@ -2,9 +2,12 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { HERO_SLIDES } from "../data/content.js";
+import { HERO_SLIDES, HERO_STATS } from "../data/content.js";
 
 const SLIDE_SECONDS = 9;
+
+// Em que ponto do mosaico (que dura ~1,9s) o texto do novo slide entra
+const TEXT_LEAD = 1;
 
 /*
   Efeito do hero decodificado do tema Archipark (Slider Revolution 6.4.6):
@@ -24,8 +27,8 @@ function buildMosaic(container, imageUrl, cols, rows) {
   // de subpixel não deixam a foto anterior vazar em linhas finas
   const bleed = 1;
   const overlay = document.createElement("div");
-  // z-index 1: mesmo nível do fundo e abaixo do escurecimento (z-2), pra
-  // foto não clarear durante a transição
+  // z-index 1: mesmo nível do fundo e abaixo do scrim (z-3), pra foto não
+  // clarear durante a transição
   overlay.style.cssText = "position:absolute;inset:0;z-index:1;overflow:hidden;";
   const tiles = [];
   for (let r = 0; r < rows; r++) {
@@ -66,17 +69,45 @@ export default function Hero() {
   const stageRef = useRef(null);
   const bgRef = useRef(null);
   const panelRef = useRef(null);
+  const pagerRef = useRef(null);
   const busyRef = useRef(false);
   const firstRunRef = useRef(true);
   const goToRef = useRef(() => {});
+  const timerRef = useRef(null);
 
   const slide = HERO_SLIDES[active];
+
+  /*
+    Zera os três trilhos e mata o que estiver animando neles.
+    O kill é obrigatório: useGSAP com `dependencies` só reverte no unmount,
+    não a cada troca, então sem ele o tween do slide que saiu continua
+    escrevendo scaleX e a barra antiga enche junto com a nova.
+  */
+  const resetFills = () => {
+    const fills = pagerRef.current?.querySelectorAll("[data-fill]");
+    if (!fills?.length) return null;
+    gsap.killTweensOf(fills);
+    gsap.set(fills, { scaleX: 0, transformOrigin: "0% 50%" });
+    return fills;
+  };
+
+  /* Mesma história do autoplay: o timer do slide anterior sobreviveria à
+     troca e dispararia depois, pulando o banner sozinho */
+  const stopAutoplay = () => {
+    timerRef.current?.kill();
+    timerRef.current = null;
+  };
 
   const { contextSafe } = useGSAP({ scope: rootRef });
 
   const goTo = contextSafe(async (next) => {
     if (busyRef.current || next === active) return;
     busyRef.current = true;
+
+    // Já no clique, não ao fim da transição: ela leva ~2s, e nesse meio
+    // tempo a barra do slide que está saindo continuaria enchendo
+    stopAutoplay();
+    resetFills();
 
     const target = HERO_SLIDES[next];
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -120,21 +151,12 @@ export default function Hero() {
     const rows = small ? 8 : 17;
     const { overlay, tiles } = buildMosaic(stageRef.current, target.image, cols, rows);
 
-    gsap.from(tiles, {
-      opacity: 0,
-      x: () => gsap.utils.random(-140, 140),
-      y: () => gsap.utils.random(-140, 140),
-      rotation: () => gsap.utils.random(-24, 24),
-      scale: () => gsap.utils.random(1.5, 2.4),
-      duration: 1.05,
-      ease: "power3.out",
-      stagger: { amount: 0.85, grid: [rows, cols], from: "edges" },
+    const tl = gsap.timeline({
       onComplete: () => {
         // O overlay pronto é idêntico ao novo fundo: troca por baixo e
         // dissolve o overlay em vez de remover num frame só (sem travada)
         bgRef.current.style.backgroundImage = `url(${target.image})`;
         gsap.set(bgRef.current, { scale: 1 });
-        setActive(next);
         gsap.to(overlay, {
           opacity: 0,
           duration: 0.35,
@@ -143,6 +165,23 @@ export default function Hero() {
         });
       },
     });
+
+    tl.from(tiles, {
+      opacity: 0,
+      x: () => gsap.utils.random(-140, 140),
+      y: () => gsap.utils.random(-140, 140),
+      rotation: () => gsap.utils.random(-24, 24),
+      scale: () => gsap.utils.random(1.5, 2.4),
+      duration: 1.05,
+      ease: "power3.out",
+      stagger: { amount: 0.85, grid: [rows, cols], from: "edges" },
+    });
+
+    // O texto novo entra com o mosaico ainda assentando. Esperar o fim dele
+    // (1,9s) mais a entrada deixava o título quase 2,5s fora da tela depois
+    // da troca. As peças que faltam são as do centro, atrás da foto, então
+    // o texto já tem fundo estável quando aparece
+    tl.call(() => setActive(next), null, TEXT_LEAD);
   });
   goToRef.current = goTo;
 
@@ -165,30 +204,35 @@ export default function Hero() {
           delay: first ? 0.15 : 0,
           onComplete: () => (busyRef.current = false),
         });
-        // Camada secundária: o painel de vidro chega antes do conteúdo.
-        // Stagger por "amount" (não "each"): tempo total fixo não importa
-        // o tamanho do texto, então uma etiqueta longa não atrasa tudo.
-        tl.from(panel, { y: 18, opacity: 0, duration: 0.4, ease: "power3.out" })
+        /*
+          Posições absolutas em vez de encadeadas: antes cada camada começava
+          onde a anterior acabava, e o título era o terceiro da fila, saindo
+          só aos 0,57s. Agora as três se sobrepõem e ele parte quase junto
+          com a etiqueta, sem perder a ordem de leitura.
+          Stagger por "amount" (não "each"): tempo total fixo não importa o
+          tamanho do texto, então uma etiqueta longa não atrasa tudo.
+        */
+        tl.from(panel, { y: 18, opacity: 0, duration: 0.35, ease: "power3.out" }, 0)
           // Etiqueta: letra a letra, girando de -90° por trás da máscara (sentido reverso)
           .from(
             chars,
             {
               xPercent: -110,
               rotation: -90,
-              duration: 0.4,
+              duration: 0.35,
               ease: "power3.out",
-              stagger: { amount: 0.22, from: "end" },
+              stagger: { amount: 0.18, from: "end" },
             },
-            "-=0.2"
+            0.04
           )
           // Título: linhas deslizam da esquerda sob máscara
           .from(
             lines,
-            { xPercent: -115, duration: 0.5, ease: "power3.out", stagger: 0.07 },
-            "-=0.25"
+            { xPercent: -115, duration: 0.45, ease: "power3.out", stagger: 0.06 },
+            0.1
           )
           // CTA sobe suave por último
-          .from(cta, { y: 20, opacity: 0, duration: 0.32, ease: "power3.out", stagger: 0.05 }, "-=0.22");
+          .from(cta, { y: 20, opacity: 0, duration: 0.3, ease: "power3.out", stagger: 0.05 }, 0.34);
       }
 
       // Ambiente: Ken Burns lento durante a vida do slide
@@ -200,12 +244,22 @@ export default function Hero() {
         );
       }
 
-      // Autoplay: avança sozinho, mas sem indicador visual — o clique
-      // manual nos dots sempre pode interromper e pular pra qualquer slide
-      const timer = gsap.delayedCall(SLIDE_SECONDS + (reduced ? 0 : 1.2), () =>
+      const total = SLIDE_SECONDS + (reduced ? 0 : 1.2);
+
+      // Trilho do slide corrente: enche no mesmo tempo do autoplay, então a
+      // barra é o próprio relógio da troca. scaleX em vez de width para a
+      // animação ficar no compositor
+      const fills = resetFills();
+      if (fills) {
+        if (reduced) gsap.set(fills[active], { scaleX: 1 });
+        else gsap.to(fills[active], { scaleX: 1, duration: total, ease: "none" });
+      }
+
+      stopAutoplay();
+      timerRef.current = gsap.delayedCall(total, () =>
         goToRef.current((active + 1) % HERO_SLIDES.length)
       );
-      return () => timer.kill();
+      return stopAutoplay;
     },
     { dependencies: [active], scope: rootRef }
   );
@@ -224,26 +278,23 @@ export default function Hero() {
           role="img"
           aria-label={slide.label}
         />
-        {/* Opacidade suave e uniforme sobre toda a foto */}
-        <div className="pointer-events-none absolute inset-0 z-[2] bg-ink/50" />
-        {/* Scrim extra para legibilidade atrás do texto: acima do mosaico, abaixo do texto */}
-        <div
-          className="pointer-events-none absolute inset-0 z-[3]"
-          style={{
-            background:
-              "linear-gradient(75deg, rgb(12 22 34 / 0.65) 0%, rgb(12 22 34 / 0.3) 45%, rgb(12 22 34 / 0.1) 70%)",
-          }}
-        />
+        {/* Sem card e sem escurecimento uniforme: todo o contraste do texto
+            vem deste degradê, que pesa na margem esquerda e deixa a foto
+            limpa do centro para a direita. Como fica acima do mosaico (z-1),
+            também segura a legibilidade durante a transição */}
+        <div className="hero-scrim pointer-events-none absolute inset-0 z-[3]" />
 
-        {/* Painel de vidro com o texto */}
-        <div className="absolute inset-0 z-[4] flex items-end">
-          <div className="container-site pb-14 md:pb-20">
-            <div
-              key={active}
-              ref={panelRef}
-              className="glass-dark max-w-2xl rounded-3xl p-6 sm:p-8 md:p-10"
-            >
-              <p data-exit className="eyebrow mb-4 text-accent-soft" aria-label={slide.label}>
+        {/* Texto sem caixa por baixo: ancorado à esquerda e centrado na
+            vertical. Os números ficam numa camada própria, no rodapé */}
+        <div className="absolute inset-0 z-[4] flex items-center">
+          <div className="container-hero">
+            <div key={active} ref={panelRef} className="max-w-[40rem]">
+              <p data-exit className="eyebrow mb-5 text-accent-soft" aria-label={slide.label}>
+                {/* Risquinho que abre a etiqueta */}
+                <span
+                  aria-hidden="true"
+                  className="mr-3 inline-block h-px w-[26px] bg-accent-soft align-middle"
+                />
                 {slide.label.split("").map((ch, i) => (
                   <span key={i} className="inline-block overflow-hidden align-bottom" aria-hidden="true">
                     <span
@@ -258,9 +309,10 @@ export default function Hero() {
               </p>
               <h1
                 data-exit
-                /* No celular o corpo acompanha a largura da tela (clamp), então
-                   cada linha do título cabe inteira e não quebra em três */
-                className="font-display text-[clamp(1.65rem,7vw,2.25rem)] leading-[1.08] font-semibold text-white sm:text-5xl md:text-6xl lg:text-7xl"
+                /* Serifada em peso médio: o título é a voz do hero, agora sem
+                   caixa nem sombra para apoiá-lo. O clamp cresce por vw, então
+                   cada linha cabe inteira e não quebra em três no celular */
+                className="font-display text-[clamp(2.15rem,6.2vw,4.6rem)] leading-[1.03] font-medium tracking-[-0.015em] text-white"
               >
                 {slide.title.map((line, i) => (
                   <span key={i} className="block overflow-hidden pb-1">
@@ -270,11 +322,18 @@ export default function Hero() {
                   </span>
                 ))}
               </h1>
+              <p
+                data-exit
+                data-cta
+                className="mt-5 max-w-[29rem] text-[1.0625rem] leading-[1.55] text-white/70"
+              >
+                {slide.lede}
+              </p>
               {/* Grade de duas colunas no celular: os botões saem exatamente do
                   mesmo tamanho. A partir de sm voltam à largura natural */}
               <div
                 data-exit
-                className="mt-7 grid grid-cols-2 gap-3 sm:mt-8 sm:flex sm:flex-nowrap sm:items-center sm:gap-4"
+                className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-nowrap sm:items-center sm:gap-3.5"
               >
                 <a
                   data-cta
@@ -290,7 +349,7 @@ export default function Hero() {
                 <Link
                   data-cta
                   to="/projetos"
-                  className="glass-dark block w-full rounded-full px-3 py-3.5 text-center text-xs font-semibold whitespace-nowrap text-white transition-[filter] duration-300 hover:brightness-150 sm:w-auto sm:px-8 sm:py-4 sm:text-sm"
+                  className="block w-full rounded-full border border-white/45 px-3 py-3.5 text-center text-xs font-semibold whitespace-nowrap text-white transition-colors duration-300 hover:border-white sm:w-auto sm:px-7 sm:py-4 sm:text-[0.9375rem]"
                 >
                   Ver projetos
                 </Link>
@@ -299,17 +358,53 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Controles */}
-        <div className="absolute right-5 bottom-5 z-[5] flex items-center gap-3 md:right-8 md:bottom-8">
+        {/* Números da casa: camada própria colada no rodapé, fora do painel
+            animado porque não mudam de slide. À direita no desktop, alinhados
+            com o texto no celular */}
+        <div className="absolute inset-x-0 bottom-28 z-[4] lg:bottom-22">
+          <div className="container-hero flex lg:justify-end">
+            <ul className="flex items-end gap-8 sm:gap-12 lg:gap-14">
+              {HERO_STATS.map((s) => (
+                <li key={s.label}>
+                  <p className="font-display text-3xl leading-none font-semibold text-white lg:text-4xl">
+                    {s.value}
+                  </p>
+                  <p className="mt-2 text-xs text-white/60">{s.label}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Paginação: coluna à direita no desktop, linha à esquerda no
+            celular. Nos dois casos fica fora do canto inferior direito, que
+            é onde mora o botão flutuante do WhatsApp */}
+        <div
+          ref={pagerRef}
+          role="tablist"
+          aria-label="Banners"
+          className="absolute bottom-10 left-5 z-[5] flex flex-row items-center gap-3.5 lg:right-8 lg:bottom-52 lg:left-auto lg:flex-col lg:items-end"
+        >
           {HERO_SLIDES.map((s, i) => (
             <button
               key={i}
+              type="button"
+              role="tab"
+              aria-selected={i === active}
               onClick={() => goTo(i)}
               aria-label={`Ir para o slide ${i + 1}: ${s.label}`}
-              className={`h-2.5 rounded-full transition-all duration-500 ${
-                i === active ? "w-8 bg-accent-soft" : "glass-dark w-2.5 hover:bg-white/40"
+              className={`flex items-center gap-3 py-1 text-[0.8125rem] font-semibold tracking-[0.04em] transition-colors duration-200 ${
+                i === active ? "text-white" : "text-white/45 hover:text-white"
               }`}
-            />
+            >
+              {/* O número só cabe no desktop, onde a lista é vertical */}
+              <span aria-hidden="true" className="hidden lg:block">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="block h-[3px] w-10 overflow-hidden bg-white/25 lg:h-0.5 lg:w-11.5">
+                <span data-fill className="block h-full w-full origin-left bg-accent-soft" />
+              </span>
+            </button>
           ))}
         </div>
       </div>

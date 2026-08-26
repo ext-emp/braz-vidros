@@ -30,8 +30,8 @@ Tudo centralizado em `src/data/content.js`:
 3. **`og-cover.jpg`**: criar imagem de capa 1200×630 em `public/` para o preview de
    link no WhatsApp (referenciada no `index.html`)
 4. **Telefone no `index.html`**: atualizar o `telephone` do JSON-LD
-5. **Logo**: hoje o logotipo é tipográfico ("BrazVidros" em Fraunces). Se houver
-   logo em arquivo, substituir no `Navbar.jsx` e `Contact.jsx`
+5. **Favicon**: o `favicon.svg` ainda é o desenho antigo. A logo é um lettering
+   deitado (4,6:1), que não funciona em 32×32; falta uma versão em monograma
 
 ## SEO
 

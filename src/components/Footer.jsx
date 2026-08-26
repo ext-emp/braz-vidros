@@ -84,9 +84,15 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 text-center lg:grid-cols-[1.5fr_1fr_1fr_1.4fr] lg:gap-x-10 lg:text-left">
           {/* Marca */}
           <div className="order-1 col-span-2 lg:col-span-1">
-            <p className="font-display text-2xl font-bold text-white">
-              Braz<span className="text-accent-soft">Vidros</span>
-            </p>
+            {/* Centralizada no celular, à esquerda no desktop */}
+            <img
+              src="/logo-braz-vidros-2.png"
+              alt="Braz Vidros"
+              width={647}
+              height={141}
+              loading="lazy"
+              className="mx-auto h-7 w-auto brightness-0 invert lg:mx-0 lg:h-8"
+            />
             <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-white/60 lg:mx-0 lg:max-w-xs">
               Ambientes mais claros e mais seguros, com vidro e alumínio de
               procedência.

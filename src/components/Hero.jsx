@@ -6,7 +6,10 @@ import { HERO_SLIDES, HERO_STATS } from "../data/content.js";
 
 const SLIDE_SECONDS = 9;
 
-// Em que ponto do mosaico (que dura ~1,9s) o texto do novo slide entra
+// Duração do mosaico: stagger (0,85) + a peça mais lenta (1,05)
+const MOSAIC_SECONDS = 1.9;
+
+// Em que ponto do mosaico o texto do novo slide entra
 const TEXT_LEAD = 1;
 
 /*
@@ -70,8 +73,11 @@ export default function Hero() {
   const bgRef = useRef(null);
   const panelRef = useRef(null);
   const pagerRef = useRef(null);
+  const statsRef = useRef(null);
   const busyRef = useRef(false);
-  const firstRunRef = useRef(true);
+  // Estado do mosaico de entrada. Em ref, não em state: o React 19 em
+  // StrictMode monta duas vezes no dev, e a ref sobrevive à segunda passada
+  const introRef = useRef({ started: false, done: false });
   const goToRef = useRef(() => {});
   const timerRef = useRef(null);
 
@@ -99,6 +105,46 @@ export default function Hero() {
   };
 
   const { contextSafe } = useGSAP({ scope: rootRef });
+
+  /*
+    Monta `imageUrl` em mosaico por cima do palco e devolve a timeline.
+    `onAssembled` roda com as peças já no lugar, antes do overlay dissolver:
+    é a hora de trocar o fundo por baixo, porque nesse instante os dois são
+    a mesma imagem e a troca não aparece.
+  */
+  const playMosaic = (imageUrl, onAssembled) => {
+    // 17×17 no desktop, 8×8 no mobile (performance)
+    const small = window.innerWidth < 768;
+    const cols = small ? 8 : 17;
+    const rows = small ? 8 : 17;
+    const { overlay, tiles } = buildMosaic(stageRef.current, imageUrl, cols, rows);
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        onAssembled?.();
+        // Dissolve em vez de remover num frame só (sem travada)
+        gsap.to(overlay, {
+          opacity: 0,
+          duration: 0.35,
+          ease: "power1.inOut",
+          onComplete: () => overlay.remove(),
+        });
+      },
+    });
+
+    tl.from(tiles, {
+      opacity: 0,
+      x: () => gsap.utils.random(-140, 140),
+      y: () => gsap.utils.random(-140, 140),
+      rotation: () => gsap.utils.random(-24, 24),
+      scale: () => gsap.utils.random(1.5, 2.4),
+      duration: 1.05,
+      ease: "power3.out",
+      stagger: { amount: 0.85, grid: [rows, cols], from: "edges" },
+    });
+
+    return tl;
+  };
 
   const goTo = contextSafe(async (next) => {
     if (busyRef.current || next === active) return;
@@ -145,45 +191,41 @@ export default function Hero() {
     // Congela o Ken Burns da foto antiga: fundo parado atrás do mosaico
     gsap.killTweensOf(bgRef.current);
 
-    // Mosaico: 17×17 no desktop, 8×8 no mobile (performance)
-    const small = window.innerWidth < 768;
-    const cols = small ? 8 : 17;
-    const rows = small ? 8 : 17;
-    const { overlay, tiles } = buildMosaic(stageRef.current, target.image, cols, rows);
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        // O overlay pronto é idêntico ao novo fundo: troca por baixo e
-        // dissolve o overlay em vez de remover num frame só (sem travada)
-        bgRef.current.style.backgroundImage = `url(${target.image})`;
-        gsap.set(bgRef.current, { scale: 1 });
-        gsap.to(overlay, {
-          opacity: 0,
-          duration: 0.35,
-          ease: "power1.inOut",
-          onComplete: () => overlay.remove(),
-        });
-      },
+    const tl = playMosaic(target.image, () => {
+      bgRef.current.style.backgroundImage = `url(${target.image})`;
+      gsap.set(bgRef.current, { scale: 1 });
     });
 
-    tl.from(tiles, {
-      opacity: 0,
-      x: () => gsap.utils.random(-140, 140),
-      y: () => gsap.utils.random(-140, 140),
-      rotation: () => gsap.utils.random(-24, 24),
-      scale: () => gsap.utils.random(1.5, 2.4),
-      duration: 1.05,
-      ease: "power3.out",
-      stagger: { amount: 0.85, grid: [rows, cols], from: "edges" },
-    });
-
-    // O texto novo entra com o mosaico ainda assentando. Esperar o fim dele
-    // (1,9s) mais a entrada deixava o título quase 2,5s fora da tela depois
-    // da troca. As peças que faltam são as do centro, atrás da foto, então
-    // o texto já tem fundo estável quando aparece
+    // Texto entra com o mosaico ainda assentando: as peças que faltam são as
+    // do centro, atrás da foto, então o fundo já está estável
     tl.call(() => setActive(next), null, TEXT_LEAD);
   });
   goToRef.current = goTo;
+
+  const playIntro = contextSafe(async (imageUrl) => {
+    await preload(imageUrl);
+    if (!stageRef.current) return;
+    playMosaic(imageUrl, () => {
+      bgRef.current.style.backgroundImage = `url(${imageUrl})`;
+      introRef.current.done = true;
+      busyRef.current = false;
+    });
+  });
+
+  /*
+    Entrada do site: a primeira foto se monta pelo mesmo mosaico das trocas,
+    em vez de já aparecer pronta com só o texto animando.
+    O fundo começa vazio (o palco é escuro): se ficasse com a foto, ela
+    apareceria inteira atrás das peças e não sobraria efeito nenhum.
+  */
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (introRef.current.started) return;
+    introRef.current.started = true;
+    busyRef.current = true;
+    bgRef.current.style.backgroundImage = "none";
+    playIntro(HERO_SLIDES[0].image);
+  }, { scope: rootRef });
 
   // Entrada do texto + autoplay, roda a cada troca de slide
   useGSAP(
@@ -193,22 +235,26 @@ export default function Hero() {
       const lines = panel.querySelectorAll("[data-line]");
       const cta = panel.querySelectorAll("[data-cta]");
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const first = firstRunRef.current;
-      firstRunRef.current = false;
+      // Enquanto o mosaico de entrada não terminou, este é o primeiro slide
+      const first = !introRef.current.done;
 
       if (reduced) {
         gsap.set([panel, chars, lines, cta], { clearProps: "all", opacity: 1 });
         busyRef.current = false;
       } else {
         const tl = gsap.timeline({
-          delay: first ? 0.15 : 0,
-          onComplete: () => (busyRef.current = false),
+          // Na primeira visita o texto espera o mesmo tempo que espera numa
+          // troca: entra com o mosaico de entrada ainda assentando
+          delay: first ? TEXT_LEAD : 0,
+          // No primeiro run quem destrava é o mosaico de entrada, que termina
+          // depois do texto
+          onComplete: () => {
+            if (!first) busyRef.current = false;
+          },
         });
         /*
-          Posições absolutas em vez de encadeadas: antes cada camada começava
-          onde a anterior acabava, e o título era o terceiro da fila, saindo
-          só aos 0,57s. Agora as três se sobrepõem e ele parte quase junto
-          com a etiqueta, sem perder a ordem de leitura.
+          Posições absolutas em vez de encadeadas: as camadas se sobrepõem
+          sem perder a ordem de leitura.
           Stagger por "amount" (não "each"): tempo total fixo não importa o
           tamanho do texto, então uma etiqueta longa não atrasa tudo.
         */
@@ -233,18 +279,41 @@ export default function Hero() {
           )
           // CTA sobe suave por último
           .from(cta, { y: 20, opacity: 0, duration: 0.3, ease: "power3.out", stagger: 0.05 }, 0.34);
+
+        /*
+          Os números fecham a entrada, na mesma assinatura do CTA.
+          Só na primeira montagem: eles não mudam de slide, então animar a
+          cada troca faria a faixa piscar de nove em nove segundos.
+        */
+        if (first && statsRef.current) {
+          tl.from(
+            statsRef.current.querySelectorAll("[data-stat]"),
+            { y: 24, opacity: 0, duration: 0.45, ease: "power3.out", stagger: 0.08 },
+            0.46
+          );
+        }
       }
 
-      // Ambiente: Ken Burns lento durante a vida do slide
+      // Ambiente: Ken Burns lento durante a vida do slide. Na primeira visita
+      // só começa depois do mosaico de entrada, senão o fundo já estaria
+      // ampliado quando o overlay dissolve e a troca daria um pulo
       if (!reduced) {
         gsap.fromTo(
           bgRef.current,
           { scale: 1 },
-          { scale: 1.07, duration: SLIDE_SECONDS + 2, ease: "none" }
+          {
+            scale: 1.07,
+            duration: SLIDE_SECONDS + 2,
+            ease: "none",
+            delay: first ? MOSAIC_SECONDS : 0,
+          }
         );
       }
 
-      const total = SLIDE_SECONDS + (reduced ? 0 : 1.2);
+      // O primeiro slide ganha o adiantamento do texto de volta: nas trocas o
+      // relógio só começa quando o texto entra, aqui ele começa na montagem
+      const total =
+        SLIDE_SECONDS + (reduced ? 0 : 1.2) + (first && !reduced ? TEXT_LEAD : 0);
 
       // Trilho do slide corrente: enche no mesmo tempo do autoplay, então a
       // barra é o próprio relógio da troca. scaleX em vez de width para a
@@ -278,23 +347,13 @@ export default function Hero() {
           role="img"
           aria-label={slide.label}
         />
-        {/* Sem card e sem escurecimento uniforme: todo o contraste do texto
-            vem deste degradê, que pesa na margem esquerda e deixa a foto
-            limpa do centro para a direita. Como fica acima do mosaico (z-1),
-            também segura a legibilidade durante a transição */}
+        {/* Acima do mosaico (z-1): segura a legibilidade durante a transição */}
         <div className="hero-scrim pointer-events-none absolute inset-0 z-[3]" />
 
-        {/* Texto sem caixa por baixo: ancorado à esquerda e centrado na
-            vertical. Os números ficam numa camada própria, no rodapé */}
         <div className="absolute inset-0 z-[4] flex items-center">
           <div className="container-hero">
-            <div key={active} ref={panelRef} className="max-w-[40rem]">
+            <div key={active} ref={panelRef} className="max-w-[44rem]">
               <p data-exit className="eyebrow mb-5 text-accent-soft" aria-label={slide.label}>
-                {/* Risquinho que abre a etiqueta */}
-                <span
-                  aria-hidden="true"
-                  className="mr-3 inline-block h-px w-[26px] bg-accent-soft align-middle"
-                />
                 {slide.label.split("").map((ch, i) => (
                   <span key={i} className="inline-block overflow-hidden align-bottom" aria-hidden="true">
                     <span
@@ -309,9 +368,6 @@ export default function Hero() {
               </p>
               <h1
                 data-exit
-                /* Serifada em peso médio: o título é a voz do hero, agora sem
-                   caixa nem sombra para apoiá-lo. O clamp cresce por vw, então
-                   cada linha cabe inteira e não quebra em três no celular */
                 className="font-display text-[clamp(2.15rem,6.2vw,4.6rem)] leading-[1.03] font-medium tracking-[-0.015em] text-white"
               >
                 {slide.title.map((line, i) => (
@@ -329,8 +385,6 @@ export default function Hero() {
               >
                 {slide.lede}
               </p>
-              {/* Grade de duas colunas no celular: os botões saem exatamente do
-                  mesmo tamanho. A partir de sm voltam à largura natural */}
               <div
                 data-exit
                 className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-nowrap sm:items-center sm:gap-3.5"
@@ -358,14 +412,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Números da casa: camada própria colada no rodapé, fora do painel
-            animado porque não mudam de slide. À direita no desktop, alinhados
-            com o texto no celular */}
+        {/* Fora do painel animado: os números não mudam de slide */}
         <div className="absolute inset-x-0 bottom-28 z-[4] lg:bottom-22">
           <div className="container-hero flex lg:justify-end">
-            <ul className="flex items-end gap-8 sm:gap-12 lg:gap-14">
+            <ul ref={statsRef} className="flex items-end gap-8 sm:gap-12 lg:gap-14">
               {HERO_STATS.map((s) => (
-                <li key={s.label}>
+                <li key={s.label} data-stat className="text-center">
                   <p className="font-display text-3xl leading-none font-semibold text-white lg:text-4xl">
                     {s.value}
                   </p>
@@ -376,14 +428,14 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Paginação: coluna à direita no desktop, linha à esquerda no
-            celular. Nos dois casos fica fora do canto inferior direito, que
-            é onde mora o botão flutuante do WhatsApp */}
+        {/* No celular fica centralizado na base; no desktop vira coluna à
+            direita, longe do canto inferior onde mora o botão flutuante do
+            WhatsApp */}
         <div
           ref={pagerRef}
           role="tablist"
           aria-label="Banners"
-          className="absolute bottom-10 left-5 z-[5] flex flex-row items-center gap-3.5 lg:right-8 lg:bottom-52 lg:left-auto lg:flex-col lg:items-end"
+          className="absolute inset-x-0 bottom-10 z-[5] flex flex-row items-center justify-center gap-3.5 lg:inset-x-auto lg:right-8 lg:bottom-52 lg:flex-col lg:items-end"
         >
           {HERO_SLIDES.map((s, i) => (
             <button

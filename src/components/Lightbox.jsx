@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { lockScroll } from "../lib/scrollLock.js";
 
 /*
   Galeria em tela cheia das fotos de projeto.
@@ -35,13 +37,12 @@ export default function Lightbox({ items, index, onClose, onIndexChange }) {
     };
     window.addEventListener("keydown", onKey);
 
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
     rootRef.current?.focus();
 
     return () => {
       window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = overflow;
+      unlock();
     };
   }, [go, onClose]);
 
@@ -93,7 +94,10 @@ export default function Lightbox({ items, index, onClose, onIndexChange }) {
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
   };
 
-  return (
+  /* Portal no body: dentro do #smooth-content o transform do ScrollSmoother
+     viraria o container de referência do position:fixed, e a galeria abriria
+     no topo da página em vez de na tela */
+  return createPortal(
     <div
       ref={rootRef}
       tabIndex={-1}
@@ -190,6 +194,7 @@ export default function Lightbox({ items, index, onClose, onIndexChange }) {
           </button>
         </div>
       )}
-    </div>
+    </div>,
+    document.body
   );
 }

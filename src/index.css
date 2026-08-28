@@ -21,10 +21,8 @@
   --font-sans: "Manrope", system-ui, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+/* Sem `scroll-behavior: smooth`: a rolagem suave é do ScrollSmoother, e a
+   nativa brigaria com ele e com o ScrollTrigger */
 body {
   background: var(--color-ice);
   color: var(--color-ink);
@@ -110,8 +108,7 @@ h3 {
   color: var(--color-accent);
 }
 
-/* Scrim do hero: substitui o card atrás do texto. Escurece a margem
-   esquerda em degradê e deixa a foto limpa do centro para a direita.
+/* Scrim do hero: degradê que dá contraste ao texto.
    No celular vira vertical, porque lá o texto ocupa a largura toda */
 .hero-scrim {
   background:
@@ -133,14 +130,102 @@ h3 {
       rgb(12 22 34 / 0.6) 100%
     );
 }
+/*
+  No celular não existe a coluna escura da esquerda: o texto fica sobre o
+  miolo da foto. O degradê antigo tinha seu ponto mais claro (0.35) justo aos
+  40%, que é onde cai o título, e em foto de fachada clara o branco sumia.
+  Agora a faixa do miolo, dos 16% aos 78%, não desce de 0.52 e fica em 0.62+
+  na altura do título, do texto e dos botões.
+*/
 @media (max-width: 1023px) {
   .hero-scrim {
     background: linear-gradient(
       180deg,
-      rgb(12 22 34 / 0.75) 0%,
-      rgb(12 22 34 / 0.35) 40%,
-      rgb(12 22 34 / 0.92) 100%
+      rgb(12 22 34 / 0.82) 0%,
+      rgb(12 22 34 / 0.52) 16%,
+      rgb(12 22 34 / 0.62) 34%,
+      rgb(12 22 34 / 0.7) 55%,
+      rgb(12 22 34 / 0.86) 78%,
+      rgb(12 22 34 / 0.95) 100%
     );
+  }
+}
+
+/*
+  Faixa de serviços do DualFocus.
+  No celular são dois grupos idênticos lado a lado que o JS do componente
+  desloca em loop: quando o primeiro sai da tela o segundo já ocupou o lugar
+  dele, então não aparece emenda. A partir de md o grupo repetido some, o
+  loop é desligado e a lista quebra em linhas, que é o certo quando há
+  largura sobrando.
+*/
+.focus-track {
+  overflow: hidden;
+  /* Sangra o padding do .container-site para a faixa ir de borda a borda */
+  margin-inline: -1.25rem;
+  /* O padding abre espaço para a sombra das pílulas, que o overflow cortava;
+     a margem negativa em cima devolve a fita para a posição original e a de
+     baixo completa o respiro até o link */
+  padding-block: 0.75rem;
+  margin-block: -0.75rem 0.75rem;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 28px,
+    #000 calc(100% - 28px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 28px,
+    #000 calc(100% - 28px),
+    transparent 100%
+  );
+}
+.focus-tape {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  /* pan-y deixa a página rolar na vertical e entrega o gesto horizontal
+     para o componente; sem isto o navegador engole o arraste */
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.focus-tape:active {
+  cursor: grabbing;
+}
+.focus-group {
+  display: flex;
+  gap: 0.5rem;
+  padding-right: 0.5rem;
+}
+@media (min-width: 768px) {
+  .focus-track {
+    overflow: visible;
+    margin-inline: 0;
+    padding-block: 0;
+    margin-block: 0 1.75rem;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .focus-tape {
+    width: auto;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    touch-action: auto;
+    user-select: auto;
+    -webkit-user-select: auto;
+    cursor: auto;
+  }
+  /* `contents` tira o grupo do caminho para as pílulas quebrarem em linhas */
+  .focus-group {
+    display: contents;
+  }
+  .focus-group-dup {
+    display: none;
   }
 }
 

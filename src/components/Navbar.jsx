@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { NAV_LINKS, PHONE, PHONE_HREF, waLink } from "../data/content.js";
+import { lockScroll } from "../lib/scrollLock.js";
 
 /*
   Header em dois estados:
   - Topo: barra transparente sobre o hero, sem caixa nem fundo.
   - Depois do scroll: a barra do topo some e uma cápsula escura entra
-    deslizando de cima, com telefone e progresso de leitura na base.
+    deslizando de cima, com telefone e botão de orçamento.
 */
 
 // Ponto da troca de estado
@@ -56,7 +57,6 @@ function MenuButton({ open, onClick }) {
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
 
@@ -66,12 +66,7 @@ export default function Navbar() {
     let ticking = false;
     const update = () => {
       const y = window.scrollY || document.documentElement.scrollTop || 0;
-      const max = Math.max(
-        1,
-        document.documentElement.scrollHeight - window.innerHeight
-      );
       setScrolled(y > SCROLL_THRESHOLD);
-      setProgress(Math.min(100, (y / max) * 100));
       ticking = false;
     };
     const onScroll = () => {
@@ -81,11 +76,7 @@ export default function Navbar() {
     };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => setOpen(false), [pathname]);
@@ -95,17 +86,18 @@ export default function Navbar() {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
     return () => {
       window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = overflow;
+      unlock();
     };
   }, [open]);
 
   const linkClass = ({ isActive }) =>
     `transition-colors duration-200 ${
-      isActive ? "font-semibold text-accent-soft" : "text-white/85 hover:text-white"
+      isActive
+        ? "font-semibold text-accent-soft"
+        : "text-white/85 hover:text-white"
     }`;
 
   return (
@@ -120,10 +112,11 @@ export default function Navbar() {
     >
       {/* Estado topo: transparente sobre o hero */}
       <div
-        /* Mesmo recuo lateral do .container-site, para a logo nascer no
-           mesmo eixo do texto do hero */
+        /* Mesmo recuo lateral do .container-site: alinha a logo com o hero */
         className={`px-5 py-[26px] transition-opacity duration-300 md:px-24 ${
-          scrolled ? "pointer-events-none opacity-0" : "pointer-events-auto opacity-100"
+          scrolled
+            ? "pointer-events-none opacity-0"
+            : "pointer-events-auto opacity-100"
         }`}
       >
         <nav className="flex items-center justify-between gap-6">
@@ -133,7 +126,11 @@ export default function Navbar() {
             <ul className="hidden items-center gap-[clamp(1rem,2vw,1.875rem)] text-sm lg:flex">
               {NAV_LINKS.map((l) => (
                 <li key={l.href}>
-                  <NavLink to={l.href} tabIndex={scrolled ? -1 : 0} className={linkClass}>
+                  <NavLink
+                    to={l.href}
+                    tabIndex={scrolled ? -1 : 0}
+                    className={linkClass}
+                  >
                     {l.label}
                   </NavLink>
                 </li>
@@ -164,16 +161,17 @@ export default function Navbar() {
             : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
-        {/* overflow-hidden para a barra de progresso respeitar o arredondado */}
-        {/* Centralizada: ela aparece sobre as seções do site, que centralizam.
-            Quem alinha com o hero é a barra do topo, não esta */}
-        <nav className="relative mx-auto flex max-w-[73.75rem] items-center justify-between gap-6 overflow-hidden rounded-full border border-white/15 bg-[rgb(9_24_31_/_0.82)] py-2 pr-2.5 pl-5 shadow-[0_18px_44px_rgb(3_10_14_/_0.45)] backdrop-blur-lg sm:pl-6.5">
-          <Logo className="h-5" tabIndex={scrolled ? 0 : -1} />
+        <nav className="mx-auto flex max-w-[73.75rem] items-center justify-between gap-6 rounded-full border border-white/15 bg-[rgb(9_24_31_/_0.82)] py-2 pr-2.5 pl-5 shadow-[0_18px_44px_rgb(3_10_14_/_0.45)] backdrop-blur-lg sm:pl-6.5">
+          <Logo className="h-6" tabIndex={scrolled ? 0 : -1} />
 
           <ul className="hidden items-center gap-[26px] text-[13.5px] lg:flex">
             {NAV_LINKS.map((l) => (
               <li key={l.href}>
-                <NavLink to={l.href} tabIndex={scrolled ? 0 : -1} className={linkClass}>
+                <NavLink
+                  to={l.href}
+                  tabIndex={scrolled ? 0 : -1}
+                  className={linkClass}
+                >
                   {l.label}
                 </NavLink>
               </li>
@@ -199,13 +197,6 @@ export default function Navbar() {
             </a>
             <MenuButton open={open} onClick={() => setOpen(!open)} />
           </div>
-
-          {/* Progresso de leitura da página */}
-          <span
-            aria-hidden="true"
-            className="absolute bottom-0 left-0 h-0.5 bg-accent-soft opacity-85"
-            style={{ width: progress + "%" }}
-          />
         </nav>
       </div>
 
@@ -215,7 +206,9 @@ export default function Navbar() {
         onClick={() => setOpen(false)}
         aria-hidden="true"
         className={`fixed inset-0 bg-ink/70 backdrop-blur-sm transition-opacity duration-500 lg:hidden ${
-          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+          open
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         }`}
       />
       <aside

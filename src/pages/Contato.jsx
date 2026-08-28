@@ -3,7 +3,6 @@ import {
   waLink,
   INSTAGRAM,
   WHATSAPP,
-  ABOUT,
   PAGE_META,
   addressLine,
   mapEmbed,
@@ -19,8 +18,8 @@ export default function Contato() {
     <>
       <PageHeader
         eyebrow="Contato"
-        title="Manda a medida, a gente manda o preço"
-        text="Fotos do ambiente e medidas aproximadas já bastam para um primeiro orçamento. O atendimento é direto pelo WhatsApp."
+        title="Peça seu orçamento"
+        text="Manda as medidas pelo WhatsApp e a gente responde com o preço."
       />
 
       <section className="container-site py-16 md:py-24">
@@ -60,11 +59,6 @@ export default function Contato() {
               </p>
             </div>
           </div>
-        </div>
-
-        <div data-reveal className="glass mt-10 rounded-3xl p-7">
-          <p className="text-xs font-bold tracking-wide text-ink uppercase">Região de atendimento</p>
-          <p className="mt-2 text-sm leading-relaxed text-steel">{ABOUT.region}</p>
         </div>
 
         {/* Mapa: carrega só quando chega perto, para não pesar a página */}

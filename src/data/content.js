@@ -63,13 +63,27 @@ export const PAGE_META = {
 
 /*
   Faixa de números no rodapé do hero.
-  TODO (aguardando cliente): confirmar `anos` e `projetos`. Os valores abaixo
-  são chute e viram promessa pública assim que o site entra no ar, então
-  precisam do número real antes de publicar.
+  Anos de experiência e projetos entregues crescem sozinhos na virada do ano:
+  a base é 2026 (9 anos, 4 mil projetos) e cada ano novo soma 1 ano e 500
+  projetos. Assim 2027 mostra 10 anos e 4.500+ sem ninguém tocar no código.
 */
+const STATS_ANO_BASE = 2026;
+const ANOS_NO_ANO_BASE = 9;
+const PROJETOS_NO_ANO_BASE = 4000;
+const PROJETOS_POR_ANO = 500;
+
+const anosDesdeBase = Math.max(0, new Date().getFullYear() - STATS_ANO_BASE);
+
+export const ANOS_DE_ESTRADA = ANOS_NO_ANO_BASE + anosDesdeBase;
+export const PROJETOS_ENTREGUES =
+  PROJETOS_NO_ANO_BASE + anosDesdeBase * PROJETOS_POR_ANO;
+
 export const HERO_STATS = [
-  { value: "12", label: "Anos de estrada" },
-  { value: "800+", label: "Projetos entregues" },
+  { value: `${ANOS_DE_ESTRADA}`, label: "Anos de experiência" },
+  {
+    value: `${PROJETOS_ENTREGUES.toLocaleString("pt-BR")}+`,
+    label: "Projetos entregues",
+  },
   { value: "100%", label: "Medição própria" },
 ];
 
@@ -124,21 +138,30 @@ export const HERO_SLIDES = [
     label: "Vidraçaria em Novo Hamburgo",
     title: ["Vidro sob medida,", "do box à fachada"],
     lede: "Medição, fabricação e instalação com prazo fechado, sem intermediário no meio do caminho.",
-    cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento com a Braz Vidros.") },
+    cta: {
+      text: "Pedir orçamento",
+      href: waLink("Olá! Quero um orçamento com a Braz Vidros."),
+    },
   },
   {
     image: "/hero/hero-esquadrias.jpg",
     label: "Esquadrias de Alumínio",
     title: ["Alumínio com", "precisão de milímetro"],
     lede: "Janelas, portas e fechamentos fabricados na medida exata da obra, com vedação correta.",
-    cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento de esquadrias de alumínio.") },
+    cta: {
+      text: "Pedir orçamento",
+      href: waLink("Olá! Quero um orçamento de esquadrias de alumínio."),
+    },
   },
   {
     image: "/hero/hero-sacadas.jpg",
     label: "Sacadas & Coberturas",
     title: ["Sua vista,", "sem nada no caminho"],
     lede: "Sacadas de vidro e coberturas que abrem o ambiente sem abrir mão da segurança.",
-    cta: { text: "Pedir orçamento", href: waLink("Olá! Quero um orçamento de sacada de vidro.") },
+    cta: {
+      text: "Pedir orçamento",
+      href: waLink("Olá! Quero um orçamento de sacada de vidro."),
+    },
   },
 ];
 
@@ -149,6 +172,7 @@ export const FOCUS = [
     text: "Box de banheiro, espelhos, sacadas e guarda-corpo instalados com vidro temperado e laminado de procedência. Medição no local, corte sob medida e instalação limpa.",
     image: "/focus/focus-vidracaria.jpg",
     link: "/vidracaria",
+    linkText: "Ver tudo em vidraçaria",
   },
   {
     id: "esquadrias",
@@ -156,35 +180,108 @@ export const FOCUS = [
     text: "Janelas, portas e fechamentos de alumínio fabricados na medida exata da sua obra. Perfis de qualidade, vedação correta e acabamento que dura.",
     image: "/focus/focus-esquadrias.jpg",
     link: "/esquadrias",
+    linkText: "Ver tudo em esquadrias",
   },
 ];
 
 /* `icon` casa com as chaves do mapa em ServiceCard.jsx */
 export const SERVICES_GLASS = [
-  { icon: "box", title: "Box de banheiro", text: "Vidro temperado com perfis discretos, no padrão do seu banheiro." },
-  { icon: "espelho", title: "Espelhos sob medida", text: "Lapidados, bisotados ou com iluminação, cortados na medida." },
-  { icon: "sacada", title: "Sacadas de vidro", text: "Fechamento e cortina de vidro para aproveitar a sacada o ano todo." },
-  { icon: "guardaCorpo", title: "Guarda-corpo", text: "Segurança com vidro laminado e fixação estrutural certificada." },
-  { icon: "cobertura", title: "Coberturas de policarbonato", text: "Luz natural com proteção para pergolados, garagens e áreas de serviço." },
-  { icon: "quiosque", title: "Quiosques e cabanas", text: "Estruturas envidraçadas para área de lazer e comércio." },
+  {
+    icon: "box",
+    title: "Box de banheiro",
+    text: "Vidro temperado com perfis discretos, no padrão do seu banheiro.",
+  },
+  {
+    icon: "espelho",
+    title: "Espelhos sob medida",
+    text: "Lapidados, bisotados ou com iluminação, cortados na medida.",
+  },
+  {
+    icon: "sacada",
+    title: "Sacadas de vidro",
+    text: "Fechamento e cortina de vidro para aproveitar a sacada o ano todo.",
+  },
+  {
+    icon: "guardaCorpo",
+    title: "Guarda-corpo",
+    text: "Segurança com vidro laminado e fixação estrutural certificada.",
+  },
+  {
+    icon: "cobertura",
+    title: "Coberturas de policarbonato",
+    text: "Luz natural com proteção para pergolados, garagens e áreas de serviço.",
+  },
+  {
+    icon: "quiosque",
+    title: "Quiosques e cabanas",
+    text: "Estruturas envidraçadas para área de lazer e comércio.",
+  },
 ];
 
 export const SERVICES_ALUMINUM = [
-  { icon: "janela", title: "Janelas de alumínio", text: "De correr, maxim-ar ou integradas, com vidro incluso." },
-  { icon: "porta", title: "Portas e portões", text: "Pivotantes, de correr e de giro, no acabamento da sua fachada." },
-  { icon: "fachada", title: "Fechamentos e fachadas", text: "Pele de vidro e fechamentos comerciais completos." },
-  { icon: "medida", title: "Sob medida para obra", text: "Fabricação conforme o vão da sua construção ou reforma." },
+  {
+    icon: "janela",
+    title: "Janelas de alumínio",
+    text: "De correr, maxim-ar ou integradas, com vidro incluso.",
+  },
+  {
+    icon: "porta",
+    title: "Portas e portões",
+    text: "Pivotantes, de correr e de giro, no acabamento da sua fachada.",
+  },
+  {
+    icon: "fachada",
+    title: "Fechamentos e fachadas",
+    text: "Pele de vidro e fechamentos comerciais completos.",
+  },
+  {
+    icon: "medida",
+    title: "Sob medida para obra",
+    text: "Fabricação conforme o vão da sua construção ou reforma.",
+  },
 ];
 
 export const PORTFOLIO = [
-  { image: "/projetos/box.jpg", title: "Box incolor em apartamento", category: "Box" },
-  { image: "/projetos/espelho.jpg", title: "Espelho bisotado na sala", category: "Espelhos" },
-  { image: "/projetos/sacada.jpg", title: "Cortina de vidro na sacada", category: "Sacadas" },
-  { image: "/projetos/guarda-corpo.jpg", title: "Guarda-corpo de escada", category: "Guarda-corpo" },
-  { image: "/projetos/pergolado.jpg", title: "Pergolado em área externa", category: "Policarbonato" },
-  { image: "/projetos/janelas.jpg", title: "Janelas de correr em casa nova", category: "Esquadrias" },
-  { image: "/projetos/porta.jpg", title: "Porta pivotante na entrada", category: "Esquadrias" },
-  { image: "/projetos/quiosque.jpg", title: "Quiosque envidraçado", category: "Sacadas" },
+  {
+    image: "/projetos/box.jpg",
+    title: "Box incolor em apartamento",
+    category: "Box",
+  },
+  {
+    image: "/projetos/espelho.jpg",
+    title: "Espelho bisotado na sala",
+    category: "Espelhos",
+  },
+  {
+    image: "/projetos/sacada.jpg",
+    title: "Cortina de vidro na sacada",
+    category: "Sacadas",
+  },
+  {
+    image: "/projetos/guarda-corpo.jpg",
+    title: "Guarda-corpo de escada",
+    category: "Guarda-corpo",
+  },
+  {
+    image: "/projetos/pergolado.jpg",
+    title: "Pergolado em área externa",
+    category: "Policarbonato",
+  },
+  {
+    image: "/projetos/janelas.jpg",
+    title: "Janelas de correr em casa nova",
+    category: "Esquadrias",
+  },
+  {
+    image: "/projetos/porta.jpg",
+    title: "Porta pivotante na entrada",
+    category: "Esquadrias",
+  },
+  {
+    image: "/projetos/quiosque.jpg",
+    title: "Quiosque envidraçado",
+    category: "Sacadas",
+  },
 ];
 
 export const PORTFOLIO_CATEGORIES = [
@@ -217,13 +314,14 @@ export const mapEmbed = (zoom = 17) =>
 export const mapLink = () =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLine)}`;
 
+/* Os números do texto saem das mesmas constantes da faixa do hero, então
+   viram 10 anos e 4.500 instalações sozinhos na virada do ano */
 export const ABOUT = {
   eyebrow: "Sobre a Braz Vidros",
   title: "Feito aqui, instalado direito",
   text: [
-    "A Braz Vidros atende Novo Hamburgo e região com serviços de vidraçaria e esquadrias de alumínio. Do orçamento à instalação, quem mede é quem instala, sem intermediário e sem surpresa no dia da entrega.",
-    "Trabalhamos com vidro temperado e laminado de procedência e perfis de alumínio de qualidade, com acabamento pensado para durar no clima do Sul.",
+    `A Braz Vidros atende Novo Hamburgo e região com serviços de vidraçaria e esquadrias de alumínio. São ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações entregues, do box de banheiro à fachada comercial.`,
+    "Do orçamento à instalação, quem mede é quem instala, sem intermediário e sem surpresa no dia da entrega. Trabalhamos com vidro temperado e laminado de procedência e perfis de alumínio de qualidade, com acabamento pensado para durar no clima do Sul.",
   ],
   image: "/sobre/equipe.jpg",
-  region: "Novo Hamburgo, Campo Bom, Estância Velha, São Leopoldo, Dois Irmãos e região",
 };

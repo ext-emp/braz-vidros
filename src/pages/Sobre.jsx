@@ -34,12 +34,6 @@ export default function Sobre() {
               {t}
             </p>
           ))}
-          <div data-reveal className="glass mt-6 rounded-2xl px-5 py-4">
-            <p className="text-xs font-bold tracking-wide text-ink uppercase">
-              Região de atendimento
-            </p>
-            <p className="mt-1 text-sm text-steel">{ABOUT.region}</p>
-          </div>
         </div>
       </section>
 

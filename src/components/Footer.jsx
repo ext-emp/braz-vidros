@@ -20,7 +20,6 @@ const FOOTER_SERVICES = [
   { label: "Portas e fechamentos", to: "/esquadrias" },
 ];
 
-/* Ícones de linha, mesmo traço dos cards de serviço */
 const iconProps = {
   viewBox: "0 0 24 24",
   fill: "none",
@@ -66,7 +65,6 @@ const IG_PATH =
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-ink">
-      {/* Vida ambiente: brilho azul difuso, mesmo padrão das faixas escuras */}
       <div
         className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full opacity-15"
         style={{
@@ -84,7 +82,6 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 text-center lg:grid-cols-[1.5fr_1fr_1fr_1.4fr] lg:gap-x-10 lg:text-left">
           {/* Marca */}
           <div className="order-1 col-span-2 lg:col-span-1">
-            {/* Centralizada no celular, à esquerda no desktop */}
             <img
               src="/logo-braz-vidros-2.png"
               alt="Braz Vidros"
@@ -136,8 +133,6 @@ export default function Footer() {
                   className="flex max-w-sm items-start gap-2.5 text-white/70 transition-colors duration-300 hover:text-accent-soft"
                 >
                   <IconPin />
-                  {/* Celular: 12px e sem CEP. Desktop: tamanho normal e
-                      endereço completo, que lá sobra espaço na coluna */}
                   <address className="text-left text-xs leading-relaxed not-italic lg:text-sm">
                     <span className="lg:hidden">{addressShort}</span>
                     <span className="hidden lg:inline">{addressLine}</span>

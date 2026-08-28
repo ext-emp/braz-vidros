@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { useGSAP } from "@gsap/react";
 
 import Navbar from "./components/Navbar.jsx";
@@ -15,15 +16,39 @@ import Projetos from "./pages/Projetos.jsx";
 import Sobre from "./pages/Sobre.jsx";
 import Contato from "./pages/Contato.jsx";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function App() {
   const rootRef = useRef(null);
   const { pathname } = useLocation();
 
-  // Cada troca de rota volta ao topo
+  /*
+    Scroll suave do GSAP: a rolagem nativa continua sendo a fonte da posição,
+    o ScrollSmoother só interpola o transform do #smooth-content atrás dela.
+    Criado uma vez, fora do ciclo de rotas.
+    Só no desktop: aparelho de toque já tem inércia própria, e lá o scroll
+    nativo também é quem esconde a barra de endereço do navegador.
+  */
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (ScrollTrigger.isTouch === 1) return;
+    // Guarda contra a montagem dupla do StrictMode no dev
+    if (ScrollSmoother.get()) return;
+    ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth: 1.1,
+      effects: true,
+    });
+  }, []);
+
+  // Cada troca de rota volta ao topo. Com o smoother ativo quem manda na
+  // posição é ele; e o refresh remede a página nova antes dos reveals
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const smoother = ScrollSmoother.get();
+    if (smoother) smoother.scrollTo(0, false);
+    else window.scrollTo(0, 0);
+    ScrollTrigger.refresh();
   }, [pathname]);
 
   // Motion pass: reveals de scroll, assinatura única (subida curta + fade, power3.out).
@@ -72,20 +97,27 @@ export default function App() {
   );
 
   return (
+    // Navbar e botão do WhatsApp ficam fora do #smooth-wrapper: o smoother
+    // aplica transform no conteúdo, e position:fixed lá dentro passaria a
+    // se posicionar pelo conteúdo, não pela tela
     <div ref={rootRef}>
       <Navbar />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/vidracaria" element={<Vidracaria />} />
-          <Route path="/esquadrias" element={<Esquadrias />} />
-          <Route path="/projetos" element={<Projetos />} />
-          <Route path="/sobre" element={<Sobre />} />
-          <Route path="/contato" element={<Contato />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </main>
-      <Footer />
+      <div id="smooth-wrapper">
+        <div id="smooth-content">
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/vidracaria" element={<Vidracaria />} />
+              <Route path="/esquadrias" element={<Esquadrias />} />
+              <Route path="/projetos" element={<Projetos />} />
+              <Route path="/sobre" element={<Sobre />} />
+              <Route path="/contato" element={<Contato />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </div>
       <WhatsAppFloat />
     </div>
   );

@@ -14,8 +14,8 @@ export default function Projetos() {
     <>
       <PageHeader
         eyebrow="Projetos"
-        title="Trabalho instalado, não render de catálogo"
-        text="Uma amostra do que saiu da nossa bancada e foi parar em casas, apartamentos e comércios de Novo Hamburgo e região."
+        title="Projetos entregues"
+        text="Uma amostra do que já saiu da nossa bancada e está instalado por aí."
       />
 
       <section className="container-site py-16 md:py-24">

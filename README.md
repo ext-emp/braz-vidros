@@ -5,7 +5,7 @@ Novo Hamburgo/RS).
 
 **Stack**: React + Vite, React Router, Tailwind CSS v4, GSAP (hero mosaico + scroll reveals)
 
-**Páginas**: `/` (home com hero slider), `/vidracaria`, `/esquadrias`, `/projetos`,
+**Páginas**: `/` (home com hero slider), `/vidracaria`, `/esquadrias`,
 `/sobre`, `/contato`
 
 > **Deploy**: por ser SPA com rotas, o servidor precisa de fallback para `index.html`

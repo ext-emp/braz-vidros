@@ -46,7 +46,7 @@ function MenuButton({ open, onClick }) {
       onClick={onClick}
       aria-label={open ? "Fechar menu" : "Abrir menu"}
       aria-expanded={open}
-      className="glass-dark flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1 rounded-full lg:hidden"
+      className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1 rounded-full bg-white/12 lg:hidden"
     >
       <span className={`${bar} ${open ? "translate-y-1.5 rotate-45" : ""}`} />
       <span className={`${bar} ${open ? "scale-x-0 opacity-0" : ""}`} />
@@ -161,7 +161,9 @@ export default function Navbar() {
             : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
-        <nav className="mx-auto flex max-w-[73.75rem] items-center justify-between gap-6 rounded-full border border-white/15 bg-[rgb(9_24_31_/_0.82)] py-2 pr-2.5 pl-5 shadow-[0_18px_44px_rgb(3_10_14_/_0.45)] backdrop-blur-lg sm:pl-6.5">
+        {/* Azul do logo em bloco, sem backdrop-filter: a cápsula é opaca, então
+            não há o que desfocar por trás dela */}
+        <nav className="mx-auto flex max-w-[73.75rem] items-center justify-between gap-6 rounded-full border border-white/15 bg-accent py-2 pr-2.5 pl-5 shadow-[0_18px_44px_rgb(3_10_14_/_0.45)] sm:pl-6.5">
           <Logo className="h-6" tabIndex={scrolled ? 0 : -1} />
 
           <ul className="hidden items-center gap-[26px] text-[13.5px] lg:flex">

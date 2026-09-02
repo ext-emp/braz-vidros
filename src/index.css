@@ -168,18 +168,21 @@ h3 {
      baixo completa o respiro até o link */
   padding-block: 0.75rem;
   margin-block: -0.75rem 0.75rem;
+  /* Esmaecida nas bordas só o suficiente para a fita não terminar num corte
+     seco. Com as pílulas em azul o degradê antigo, de 28px, virava uma
+     sombra pesada nos dois cantos */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
-    #000 28px,
-    #000 calc(100% - 28px),
+    #000 12px,
+    #000 calc(100% - 12px),
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0,
-    #000 28px,
-    #000 calc(100% - 28px),
+    #000 12px,
+    #000 calc(100% - 12px),
     transparent 100%
   );
 }

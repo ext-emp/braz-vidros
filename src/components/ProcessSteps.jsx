@@ -13,10 +13,9 @@ export default function ProcessSteps() {
         </div>
         <div data-reveal-group className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {PROCESS.map((p) => (
-            <div key={p.step} data-reveal>
+            <div key={p.title} data-reveal>
               <div className="glass h-full rounded-3xl p-6">
-                <p className="font-display text-3xl font-bold text-accent-soft">{p.step}</p>
-                <h3 className="font-display mt-3 mb-2 text-lg font-semibold">{p.title}</h3>
+                <h3 className="font-display mb-2 text-lg font-semibold">{p.title}</h3>
                 <p className="text-sm leading-relaxed text-steel">{p.text}</p>
               </div>
             </div>

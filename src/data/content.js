@@ -22,7 +22,6 @@ export const NAV_LINKS = [
   { label: "Início", href: "/" },
   { label: "Vidraçaria", href: "/vidracaria" },
   { label: "Esquadrias", href: "/esquadrias" },
-  { label: "Projetos", href: "/projetos" },
   { label: "Sobre", href: "/sobre" },
   { label: "Contato", href: "/contato" },
 ];
@@ -32,7 +31,7 @@ export const PAGE_META = {
   home: {
     title: "Braz Vidros | Vidraçaria e Esquadrias de Alumínio em Novo Hamburgo",
     description:
-      "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida. Orçamento pelo WhatsApp.",
+      "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida, com garantia de no mínimo 1 ano. Orçamento pelo WhatsApp.",
   },
   vidracaria: {
     title: "Vidraçaria em Novo Hamburgo | Braz Vidros",
@@ -44,15 +43,10 @@ export const PAGE_META = {
     description:
       "Janelas, portas, portões e fechamentos de alumínio fabricados sob medida para sua obra em Novo Hamburgo e região.",
   },
-  projetos: {
-    title: "Projetos | Braz Vidros",
-    description:
-      "Trabalhos instalados de vidraçaria e esquadrias de alumínio em Novo Hamburgo e região: box, espelhos, sacadas, guarda-corpo e mais.",
-  },
   sobre: {
     title: "Sobre a Braz Vidros | Vidraçaria em Novo Hamburgo",
     description:
-      "Conheça a Braz Vidros: vidraçaria e esquadrias de alumínio com medição, fabricação e instalação próprias em Novo Hamburgo/RS.",
+      "A história da Braz Vidros: vidraçaria e esquadrias de alumínio em Novo Hamburgo/RS, com medição e instalação próprias, garantia de no mínimo 1 ano e pós-venda de verdade.",
   },
   contato: {
     title: "Contato | Braz Vidros",
@@ -84,7 +78,7 @@ export const HERO_STATS = [
     value: `${PROJETOS_ENTREGUES.toLocaleString("pt-BR")}+`,
     label: "Projetos entregues",
   },
-  { value: "100%", label: "Medição própria" },
+  { value: "1 ano", label: "Garantia mínima" },
 ];
 
 /* Como funciona o serviço, do primeiro contato à entrega */
@@ -107,7 +101,7 @@ export const PROCESS = [
   {
     step: "04",
     title: "Instalação limpa",
-    text: "Instalação agendada, rápida e sem sujeira na sua casa ou obra.",
+    text: "Agendada, rápida e sem sujeira, com garantia de no mínimo 1 ano.",
   },
 ];
 
@@ -125,8 +119,8 @@ export const DIFFERENTIALS = [
     text: "As duas especialidades na mesma empresa: você fecha a obra inteira com um fornecedor só.",
   },
   {
-    title: "Atendimento direto",
-    text: "Orçamento sem compromisso pelo WhatsApp, de segunda a sábado, em Novo Hamburgo e região.",
+    title: "Garantia de no mínimo 1 ano",
+    text: "Todo serviço sai com garantia mínima de 1 ano. Se precisar depois da entrega, a gente volta e resolve.",
   },
 ];
 
@@ -284,16 +278,6 @@ export const PORTFOLIO = [
   },
 ];
 
-export const PORTFOLIO_CATEGORIES = [
-  "Todos",
-  "Box",
-  "Espelhos",
-  "Sacadas",
-  "Guarda-corpo",
-  "Policarbonato",
-  "Esquadrias",
-];
-
 /* Endereço da empresa: alimenta o mapa do Contato, o rodapé e o schema.org */
 export const ADDRESS = {
   street: "R. Oswaldo Artur Hartz, 776",
@@ -320,8 +304,49 @@ export const ABOUT = {
   eyebrow: "Sobre a Braz Vidros",
   title: "Feito aqui, instalado direito",
   text: [
-    `A Braz Vidros atende Novo Hamburgo e região com serviços de vidraçaria e esquadrias de alumínio. São ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações entregues, do box de banheiro à fachada comercial.`,
-    "Do orçamento à instalação, quem mede é quem instala, sem intermediário e sem surpresa no dia da entrega. Trabalhamos com vidro temperado e laminado de procedência e perfis de alumínio de qualidade, com acabamento pensado para durar no clima do Sul.",
+    "A Braz Vidros nasceu de um sonho: construir uma empresa reconhecida pela qualidade, pela responsabilidade e pela confiança em cada projeto realizado.",
+    `Começamos com uma estrutura pequena, atendendo os primeiros clientes, e crescemos obra por obra. Hoje são ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações em Novo Hamburgo e região, do box de banheiro à fachada comercial.`,
+    "Do orçamento à instalação, quem mede é quem instala, com vidro temperado e laminado de procedência e perfis de alumínio de qualidade. E o serviço não acaba na entrega: todo trabalho tem garantia de no mínimo 1 ano e seguimos à disposição depois que a obra fica pronta.",
   ],
   image: "/sobre/equipe.jpg",
+};
+
+/* Nossa história, do jeito que o cliente conta */
+export const ABOUT_STORY = {
+  eyebrow: "Nossa história",
+  title: "De uma estrutura pequena a uma empresa de confiança",
+  lede: "Crescemos, ampliamos os serviços e melhoramos os processos, mas os princípios que nos trouxeram até aqui continuam os mesmos.",
+  closing:
+    "Braz Vidros: qualidade na instalação, confiança no atendimento e compromisso também no pós-venda.",
+  blocks: [
+    {
+      title: "Onde tudo começou",
+      text: [
+        "Começamos com uma estrutura menor, atendendo nossos primeiros clientes e construindo, pouco a pouco, aquilo que hoje se tornou a nossa empresa. Desde o início entendemos que trabalhar com vidro vai muito além de instalar um produto: é fazer parte da transformação de casas, comércios e ambientes, entregando segurança, beleza e funcionalidade.",
+        "Com o passar dos anos fomos adquirindo experiência, aprimorando nossos processos e ampliando nossos serviços. Cada obra e cada cliente contribuíram para o nosso crescimento e para a reputação que buscamos manter até hoje.",
+      ],
+    },
+    {
+      title: "Atendimento e garantia",
+      text: [
+        "Uma das nossas principais qualidades sempre foi o compromisso com o pós-venda e a garantia dos serviços. Todo trabalho sai com garantia de no mínimo 1 ano, e desde o começo da nossa história fazemos questão de acompanhar o cliente mesmo depois da entrega da obra.",
+        "Assumir a responsabilidade pelo serviço realizado é fundamental para nós. Quando o cliente precisa, estamos à disposição para resolver e prestar o suporte necessário. Queremos que ele fique satisfeito com o resultado e tenha a tranquilidade de saber que pode contar com a gente também depois da instalação.",
+      ],
+      highlight: "Nunca deixamos um cliente na mão.",
+    },
+    {
+      title: "Mais do que vidro",
+      text: [
+        "Buscamos entender exatamente o que cada cliente precisa para oferecer uma solução adequada, segura e com excelente acabamento. São projetos residenciais e comerciais, sempre unindo qualidade, segurança, estética e durabilidade.",
+        "Seja um box de banheiro, um fechamento de sacada, portas, janelas, esquadrias ou um projeto personalizado, cada trabalho recebe a mesma atenção e a mesma responsabilidade.",
+      ],
+    },
+    {
+      title: "Nossa essência",
+      text: [
+        "Crescemos, mas mantemos os mesmos princípios que nos trouxeram até aqui: qualidade no serviço, atendimento próximo, responsabilidade e compromisso com o cliente. Mais do que vender e instalar vidros, queremos construir relacionamentos duradouros e ser uma empresa em que o cliente possa confiar.",
+        "É por isso que, para nós, uma obra bem feita não é apenas aquela que fica bonita no dia da instalação. É aquela em que o cliente continua tendo a certeza de que fez a escolha certa mesmo depois que o serviço foi concluído.",
+      ],
+    },
+  ],
 };

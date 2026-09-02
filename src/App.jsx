@@ -12,7 +12,6 @@ import WhatsAppFloat from "./components/WhatsAppFloat.jsx";
 import Home from "./pages/Home.jsx";
 import Vidracaria from "./pages/Vidracaria.jsx";
 import Esquadrias from "./pages/Esquadrias.jsx";
-import Projetos from "./pages/Projetos.jsx";
 import Sobre from "./pages/Sobre.jsx";
 import Contato from "./pages/Contato.jsx";
 
@@ -109,7 +108,6 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/vidracaria" element={<Vidracaria />} />
               <Route path="/esquadrias" element={<Esquadrias />} />
-              <Route path="/projetos" element={<Projetos />} />
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/contato" element={<Contato />} />
               <Route path="*" element={<Home />} />

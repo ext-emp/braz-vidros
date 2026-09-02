@@ -1,8 +1,19 @@
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import gsap from "gsap";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { useGSAP } from "@gsap/react";
 import { HERO_SLIDES, HERO_STATS } from "../data/content.js";
+
+/* Leva à faixa de projetos da própria home. Quando o ScrollSmoother está
+   ativo quem manda na posição é ele, e não o scroll nativo */
+function verProjetos() {
+  const alvo = document.getElementById("projetos");
+  if (!alvo) return;
+  const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const smoother = ScrollSmoother.get();
+  if (smoother) smoother.scrollTo(alvo, suave);
+  else alvo.scrollIntoView({ behavior: suave ? "smooth" : "auto" });
+}
 
 const SLIDE_SECONDS = 9;
 
@@ -400,13 +411,14 @@ export default function Hero() {
                 </a>
                 {/* hover sem transform: transição CSS de transform brigaria
                     com a animação de entrada do GSAP neste mesmo elemento */}
-                <Link
+                <button
                   data-cta
-                  to="/projetos"
+                  type="button"
+                  onClick={verProjetos}
                   className="block w-full rounded-full border border-white/45 px-3 py-3.5 text-center text-xs font-semibold whitespace-nowrap text-white transition-colors duration-300 hover:border-white sm:w-auto sm:px-7 sm:py-4 sm:text-[0.9375rem]"
                 >
                   Ver projetos
-                </Link>
+                </button>
               </div>
             </div>
           </div>

@@ -8,8 +8,10 @@ const SERVICES_BY_FOCUS = {
   esquadrias: SERVICES_ALUMINUM,
 };
 
+/* Azul do logo em bloco: a fita de serviços é o que puxa o olho para os
+   trabalhos, então ela não desaparece no branco da seção */
 const chipClass =
-  "shrink-0 whitespace-nowrap rounded-full border border-white/90 bg-white/70 px-4 py-2.5 text-[13px] font-medium text-ink-soft shadow-[0_2px_8px_-4px_rgb(12_22_34/0.25)]";
+  "shrink-0 whitespace-nowrap rounded-full border border-accent bg-accent px-4 py-2.5 text-[13px] font-medium text-white shadow-[0_4px_12px_-6px_rgb(50_53_96/0.55)]";
 
 /* Quanto a fita anda por segundo, em px. Igual nas duas para não parecer
    que uma especialidade corre mais que a outra */

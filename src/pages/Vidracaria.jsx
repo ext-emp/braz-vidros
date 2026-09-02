@@ -19,7 +19,7 @@ export default function Vidracaria() {
       <PageHeader
         eyebrow="Vidraçaria"
         title="Vidro sob medida, do box à fachada"
-        text="Vidro temperado e laminado de procedência, cortado na medida exata do seu ambiente e instalado pela mesma equipe que fez o orçamento."
+        text="Vidro temperado de procedência, cortado na medida exata do seu ambiente e instalado pela mesma equipe que fez o orçamento."
       />
 
       {/* Serviços, fotos e processo, nesta ordem */}

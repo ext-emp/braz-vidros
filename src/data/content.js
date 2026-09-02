@@ -31,7 +31,7 @@ export const PAGE_META = {
   home: {
     title: "Braz Vidros | Vidraçaria e Esquadrias de Alumínio em Novo Hamburgo",
     description:
-      "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida, com garantia de no mínimo 1 ano. Orçamento pelo WhatsApp.",
+      "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida, com garantia de no mínimo 1 ano. Orçamento presencial ou pelo WhatsApp.",
   },
   vidracaria: {
     title: "Vidraçaria em Novo Hamburgo | Braz Vidros",
@@ -51,7 +51,7 @@ export const PAGE_META = {
   contato: {
     title: "Contato | Braz Vidros",
     description:
-      "Peça seu orçamento pelo WhatsApp: vidraçaria e esquadrias de alumínio em Novo Hamburgo e região.",
+      "Peça seu orçamento presencial ou pelo WhatsApp: vidraçaria e esquadrias de alumínio em Novo Hamburgo e região.",
   },
 };
 
@@ -85,8 +85,8 @@ export const HERO_STATS = [
 export const PROCESS = [
   {
     step: "01",
-    title: "Orçamento pelo WhatsApp",
-    text: "Fotos do ambiente e medidas aproximadas já bastam para o primeiro valor.",
+    title: "Orçamento",
+    text: "Presencial ou pelo WhatsApp: fotos e medidas aproximadas já bastam.",
   },
   {
     step: "02",
@@ -112,7 +112,7 @@ export const DIFFERENTIALS = [
   },
   {
     title: "Material de procedência",
-    text: "Vidro temperado e laminado certificados e perfis de alumínio de qualidade, com acabamento pensado para o clima do Sul.",
+    text: "Vidro temperado certificado e perfis de alumínio de qualidade, com acabamento pensado para o clima do Sul.",
   },
   {
     title: "Vidro e alumínio juntos",
@@ -163,7 +163,7 @@ export const FOCUS = [
   {
     id: "vidracaria",
     title: "Vidraçaria",
-    text: "Box de banheiro, espelhos, sacadas e guarda-corpo instalados com vidro temperado e laminado de procedência. Medição no local, corte sob medida e instalação limpa.",
+    text: "Box de banheiro, espelhos, sacadas e guarda-corpo instalados com vidro temperado de procedência. Medição no local, corte sob medida e instalação limpa.",
     image: "/focus/focus-vidracaria.jpg",
     link: "/vidracaria",
     linkText: "Ver tudo em vidraçaria",
@@ -198,7 +198,7 @@ export const SERVICES_GLASS = [
   {
     icon: "guardaCorpo",
     title: "Guarda-corpo",
-    text: "Segurança com vidro laminado e fixação estrutural certificada.",
+    text: "Segurança com vidro temperado e fixação estrutural certificada.",
   },
   {
     icon: "cobertura",
@@ -306,7 +306,7 @@ export const ABOUT = {
   text: [
     "A Braz Vidros nasceu de um sonho: construir uma empresa reconhecida pela qualidade, pela responsabilidade e pela confiança em cada projeto realizado.",
     `Começamos com uma estrutura pequena, atendendo os primeiros clientes, e crescemos obra por obra. Hoje são ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações em Novo Hamburgo e região, do box de banheiro à fachada comercial.`,
-    "Do orçamento à instalação, quem mede é quem instala, com vidro temperado e laminado de procedência e perfis de alumínio de qualidade. E o serviço não acaba na entrega: todo trabalho tem garantia de no mínimo 1 ano e seguimos à disposição depois que a obra fica pronta.",
+    "Do orçamento à instalação, quem mede é quem instala, com vidro temperado de procedência e perfis de alumínio de qualidade. E o serviço não acaba na entrega: todo trabalho tem garantia de no mínimo 1 ano e seguimos à disposição depois que a obra fica pronta.",
   ],
   image: "/sobre/equipe.jpg",
 };

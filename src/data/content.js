@@ -53,6 +53,16 @@ export const PAGE_META = {
     description:
       "Peça seu orçamento presencial ou pelo WhatsApp: vidraçaria e esquadrias de alumínio em Novo Hamburgo e região.",
   },
+  privacidade: {
+    title: "Política de Privacidade | Braz Vidros",
+    description:
+      "Como a Braz Vidros trata os dados pessoais de quem visita o site e pede orçamento, conforme a LGPD (Lei 13.709/2018).",
+  },
+  cookies: {
+    title: "Política de Cookies | Braz Vidros",
+    description:
+      "Quais cookies o site da Braz Vidros usa, para que servem e como mudar suas preferências a qualquer momento.",
+  },
 };
 
 /*
@@ -235,47 +245,93 @@ export const SERVICES_ALUMINUM = [
   },
 ];
 
+/*
+  Portfólio completo. `spec` é a especialidade e é o que separa as galerias:
+  "vidro" alimenta a página da vidraçaria, "aluminio" a de esquadrias.
+  `destaque: true` marca as oito obras que aparecem na home, quatro de cada
+  especialidade, na ordem em que entram na grade.
+*/
 export const PORTFOLIO = [
   {
     image: "/projetos/box.jpg",
     title: "Box incolor em apartamento",
     category: "Box",
+    spec: "vidro",
+    destaque: true,
   },
   {
     image: "/projetos/espelho.jpg",
     title: "Espelho bisotado na sala",
     category: "Espelhos",
+    spec: "vidro",
+    destaque: true,
   },
   {
     image: "/projetos/sacada.jpg",
     title: "Cortina de vidro na sacada",
     category: "Sacadas",
+    spec: "vidro",
+    destaque: true,
   },
   {
     image: "/projetos/guarda-corpo.jpg",
     title: "Guarda-corpo de escada",
     category: "Guarda-corpo",
+    spec: "vidro",
+    destaque: true,
   },
   {
     image: "/projetos/pergolado.jpg",
     title: "Pergolado em área externa",
     category: "Policarbonato",
-  },
-  {
-    image: "/projetos/janelas.jpg",
-    title: "Janelas de correr em casa nova",
-    category: "Esquadrias",
-  },
-  {
-    image: "/projetos/porta.jpg",
-    title: "Porta pivotante na entrada",
-    category: "Esquadrias",
+    spec: "vidro",
   },
   {
     image: "/projetos/quiosque.jpg",
     title: "Quiosque envidraçado",
     category: "Sacadas",
+    spec: "vidro",
   },
+  {
+    image: "/projetos/janelas.jpg",
+    title: "Janelas de correr em casa nova",
+    category: "Janelas",
+    spec: "aluminio",
+    destaque: true,
+  },
+  {
+    image: "/projetos/porta.jpg",
+    title: "Porta pivotante na entrada",
+    category: "Portas",
+    spec: "aluminio",
+    destaque: true,
+  },
+  {
+    image: "/projetos/fachada.jpg",
+    title: "Fachada de alumínio com vidro",
+    category: "Fachadas",
+    spec: "aluminio",
+    destaque: true,
+  },
+  {
+    image: "/projetos/porta-correr.jpg",
+    title: "Porta de correr entre sala e pátio",
+    category: "Portas de correr",
+    spec: "aluminio",
+    destaque: true,
+  },
+];
+
+/* As oito obras da galeria da home, já na ordem: vidro primeiro, alumínio
+   depois, para que o filtro "Tudo" mostre uma linha de cada especialidade */
+export const PORTFOLIO_DESTAQUE = PORTFOLIO.filter((p) => p.destaque);
+
+/* Os três botões do filtro da home. O id casa com o campo `spec`;
+   "tudo" é o estado inicial e não filtra nada */
+export const PORTFOLIO_FILTROS = [
+  { id: "tudo", label: "Tudo" },
+  { id: "vidro", label: "Vidro temperado" },
+  { id: "aluminio", label: "Esquadrias de alumínio" },
 ];
 
 /* Endereço da empresa: alimenta o mapa do Contato, o rodapé e o schema.org */

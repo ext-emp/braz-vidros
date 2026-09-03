@@ -1,13 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Lightbox from "./Lightbox.jsx";
 
-export default function ProjectGrid({ items, columns = "sm:grid-cols-2 lg:grid-cols-4" }) {
+/*
+  `reveal` desliga o data-reveal da grade. Serve para quem troca a lista em
+  tempo de execução (o filtro da home): o GSAP anima cada [data-reveal] uma
+  vez só e deixa a opacidade cravada no elemento, então uma grade que muda
+  de conteúdo precisa revelar pelo wrapper, não por ela mesma.
+*/
+export default function ProjectGrid({
+  items,
+  columns = "sm:grid-cols-2 lg:grid-cols-4",
+  reveal = true,
+}) {
   // null = galeria fechada; número = índice da foto aberta
   const [open, setOpen] = useState(null);
 
+  // Lista nova, índice velho: fecha o lightbox para ele nunca apontar para
+  // uma foto que saiu da lista
+  useEffect(() => {
+    setOpen(null);
+  }, [items]);
+
   return (
     <>
-      <div data-reveal className={`grid gap-5 ${columns}`}>
+      <div
+        data-reveal={reveal ? "" : undefined}
+        className={`grid gap-5 ${columns}`}
+      >
         {items.map((p, i) => (
           <button
             key={p.title}

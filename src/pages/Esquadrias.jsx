@@ -10,7 +10,7 @@ export default function Esquadrias() {
   usePageMeta(PAGE_META.esquadrias);
   // Todas as fotos de alumínio: esta é a galeria da especialidade, não uma
   // prévia, desde que a página geral de projetos saiu do ar
-  const projects = PORTFOLIO.filter((p) => p.category === "Esquadrias");
+  const projects = PORTFOLIO.filter((p) => p.spec === "aluminio");
 
   return (
     <>

@@ -8,6 +8,7 @@ import {
   addressShort,
   mapLink,
 } from "../data/content.js";
+import { openCookiePreferences } from "../lib/consent.js";
 
 const phonePretty = `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, 9)}-${WHATSAPP.slice(9)}`;
 
@@ -218,13 +219,47 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Barra inferior: direitos + crédito de desenvolvimento */}
+      {/* Barra inferior: direitos, links legais e crédito de desenvolvimento */}
       <div className="relative border-t border-white/10">
-        <div className="container-site flex flex-col items-center justify-between gap-2 py-5 text-center sm:flex-row sm:text-left">
+        <div className="container-site flex flex-col items-center justify-between gap-3 py-5 text-center lg:flex-row lg:gap-6 lg:text-left">
           <p className="text-xs text-white/50">
             © {new Date().getFullYear()} Braz Vidros. Todos os direitos
             reservados.
           </p>
+
+          {/* Consentimento revogável a qualquer momento, como pede a LGPD:
+              o botão reabre o mesmo painel do aviso de cookies */}
+          <nav
+            aria-label="Privacidade"
+            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-white/50"
+          >
+            <Link
+              to="/privacidade"
+              className="transition-colors duration-300 hover:text-accent-soft"
+            >
+              Política de Privacidade
+            </Link>
+            <span aria-hidden="true" className="text-white/25">
+              &middot;
+            </span>
+            <Link
+              to="/cookies"
+              className="transition-colors duration-300 hover:text-accent-soft"
+            >
+              Política de Cookies
+            </Link>
+            <span aria-hidden="true" className="text-white/25">
+              &middot;
+            </span>
+            <button
+              type="button"
+              onClick={openCookiePreferences}
+              className="transition-colors duration-300 hover:text-accent-soft"
+            >
+              Preferências de cookies
+            </button>
+          </nav>
+
           <a
             href="https://www.instagram.com/extechsolucoes/"
             target="_blank"

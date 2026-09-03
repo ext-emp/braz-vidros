@@ -6,13 +6,11 @@ import CTABand from "../components/CTABand.jsx";
 import { SERVICES_GLASS, PORTFOLIO, INSTAGRAM, PAGE_META } from "../data/content.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 
-const GLASS_CATEGORIES = ["Box", "Espelhos", "Sacadas", "Guarda-corpo", "Policarbonato"];
-
 export default function Vidracaria() {
   usePageMeta(PAGE_META.vidracaria);
   // Todas as fotos de vidraçaria: esta é a galeria da especialidade, não uma
   // prévia, desde que a página geral de projetos saiu do ar
-  const projects = PORTFOLIO.filter((p) => GLASS_CATEGORIES.includes(p.category));
+  const projects = PORTFOLIO.filter((p) => p.spec === "vidro");
 
   return (
     <>

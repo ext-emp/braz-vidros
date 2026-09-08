@@ -2,6 +2,7 @@ import Hero from "../components/Hero.jsx";
 import DualFocus from "../components/DualFocus.jsx";
 import DifferentialsBand from "../components/DifferentialsBand.jsx";
 import ProjectShowcase from "../components/ProjectShowcase.jsx";
+import AboutBand from "../components/AboutBand.jsx";
 import CTABand from "../components/CTABand.jsx";
 import { PAGE_META } from "../data/content.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
@@ -29,6 +30,9 @@ export default function Home() {
           <ProjectShowcase />
         </div>
       </section>
+
+      {/* Quem é a empresa, depois da prova e antes da chamada final */}
+      <AboutBand />
 
       <CTABand />
     </>

@@ -152,6 +152,21 @@ h3 {
 }
 
 /*
+  Scrim do bloco Sobre da home: costura a foto ao cartão escuro para não
+  ficar um corte seco entre a imagem e a tinta. No celular a foto fica em
+  cima do texto, então o degradê sobe do rodapé dela; a partir de md a foto
+  vai para a coluna da direita e ele passa a vir da esquerda.
+*/
+.about-scrim {
+  background: linear-gradient(0deg, rgb(12 22 34) 0%, rgb(12 22 34 / 0) 65%);
+}
+@media (min-width: 768px) {
+  .about-scrim {
+    background: linear-gradient(90deg, rgb(12 22 34) 0%, rgb(12 22 34 / 0) 45%);
+  }
+}
+
+/*
   Faixa de serviços do DualFocus.
   No celular são dois grupos idênticos lado a lado que o JS do componente
   desloca em loop: quando o primeiro sai da tela o segundo já ocupou o lugar

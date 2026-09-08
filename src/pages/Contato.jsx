@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
+import CTABand from "../components/CTABand.jsx";
+import WhatsAppIcon from "../components/WhatsAppIcon.jsx";
 import {
-  waLink,
-  INSTAGRAM,
-  WHATSAPP,
+  CONTACT_CHANNELS,
   PAGE_META,
   addressLine,
   mapEmbed,
@@ -12,7 +12,84 @@ import {
 import { useConsent, saveConsent } from "../lib/consent.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 
-const phonePretty = `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, 9)}-${WHATSAPP.slice(9)}`;
+/* Ícones dos canais, mesmo traço dos serviços. A chave vem do campo `icon`
+   de cada canal em content.js. O do WhatsApp é o único preenchido, porque
+   é a marca dele e vem do componente compartilhado */
+const ICONS = {
+  local: (
+    <>
+      <path d="M12 21.5s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" />
+      <circle cx="12" cy="10.2" r="2.6" />
+    </>
+  ),
+  instagram: (
+    <>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
+      <circle cx="12" cy="12" r="4" />
+      <path d="M16.9 7.1h.01" />
+    </>
+  ),
+  relogio: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.2V12l3.2 2" />
+    </>
+  ),
+};
+
+function CanalIcone({ icon }) {
+  if (icon === "whatsapp") return <WhatsAppIcon className="h-6 w-6 fill-current" />;
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-6 w-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {ICONS[icon] ?? ICONS.local}
+    </svg>
+  );
+}
+
+/* Um canal. Vira link quando tem `href`, e continua sendo uma caixa comum
+   quando é só informação, como o horário de atendimento */
+function Canal({ icon, label, value, text, href, external }) {
+  const conteudo = (
+    <>
+      <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-accent/15 text-accent ring-1 ring-accent/30 transition-colors duration-300 group-hover:bg-accent/25 sm:mb-0 sm:shrink-0">
+        <CanalIcone icon={icon} />
+      </span>
+      <span className="block">
+        <span className="block text-xs font-bold tracking-widest text-steel uppercase">
+          {label}
+        </span>
+        <span className="font-display mt-1.5 block text-xl font-semibold text-ink">
+          {value}
+        </span>
+        <span className="mt-1.5 block text-sm leading-relaxed text-steel">{text}</span>
+      </span>
+    </>
+  );
+
+  const classe =
+    "glass sheen group block h-full rounded-3xl p-6 transition-transform duration-500 ease-out sm:flex sm:gap-5";
+
+  if (!href) return <div className={classe}>{conteudo}</div>;
+
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className={`${classe} hover:-translate-y-1.5`}
+    >
+      {conteudo}
+    </a>
+  );
+}
 
 export default function Contato() {
   usePageMeta(PAGE_META.contato);
@@ -32,99 +109,104 @@ export default function Contato() {
         text="Manda as medidas pelo WhatsApp e a gente responde com o preço."
       />
 
+      {/* Canais à esquerda, foto à direita. A foto ocupa o lugar que numa
+          página de contato costuma ser o formulário, que este site não tem
+          por ser estático */}
       <section className="container-site py-16 md:py-24">
-        <div data-reveal-group className="grid gap-5 md:grid-cols-3">
-          <a
-            href={waLink("Olá! Quero um orçamento com a Braz Vidros.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-reveal
-            className="sheen group block rounded-3xl bg-accent-soft p-7 transition-[filter] duration-300 hover:brightness-110"
-          >
-            <p className="text-xs font-bold tracking-widest text-ink/70 uppercase">WhatsApp</p>
-            <p className="font-display mt-2 text-2xl font-semibold text-ink">{phonePretty}</p>
-            <p className="mt-4 text-sm font-bold text-ink">Chamar agora</p>
-          </a>
-
-          <a
-            href={INSTAGRAM}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-reveal
-            className="glass sheen group block rounded-3xl p-7"
-          >
-            <p className="text-xs font-bold tracking-widest text-steel uppercase">Instagram</p>
-            <p className="font-display mt-2 text-2xl font-semibold text-ink">@braz_vidross</p>
-            <p className="mt-4 text-sm font-bold text-accent">Ver projetos recentes</p>
-          </a>
-
-          <div data-reveal>
-            <div className="glass h-full rounded-3xl p-7">
-              <p className="text-xs font-bold tracking-widest text-steel uppercase">Atendimento</p>
-              <p className="font-display mt-2 text-2xl font-semibold text-ink">
-                Novo Hamburgo <span className="text-accent">e região</span>
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-steel">
-                Seg. a sáb., orçamento sem compromisso
+        <div className="grid items-stretch gap-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-16">
+          <div>
+            <div data-reveal>
+              <p className="eyebrow mb-3">Fale com a gente</p>
+              <h2 className="font-display text-3xl leading-tight font-semibold md:text-4xl">
+                Todos os caminhos até a gente
+              </h2>
+              <p className="mt-4 max-w-md leading-relaxed text-steel">
+                O WhatsApp é o mais rápido, mas se preferir passar na loja ou
+                acompanhar as obras pelo Instagram, está tudo aqui.
               </p>
             </div>
-          </div>
-        </div>
 
-        {/* Mapa: carrega só quando chega perto, para não pesar a página */}
-        <div data-reveal className="mt-10">
-          <p className="eyebrow mb-3 text-center">Onde estamos</p>
-          <div className="glass overflow-hidden rounded-3xl p-2">
-            {showMap ? (
-              <iframe
-                title={`Mapa: ${addressLine}`}
-                src={mapEmbed()}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-                className="h-85 w-full rounded-[1.25rem] border-0 md:h-110"
-              />
-            ) : (
-              <div className="flex h-85 flex-col items-center justify-center gap-4 rounded-[1.25rem] bg-mist/70 px-6 text-center md:h-110">
-                <p className="max-w-md leading-relaxed text-steel">
-                  O mapa é carregado pelo Google e grava cookies de terceiros no
-                  seu navegador. Para vê-lo aqui dentro, é preciso liberar os
-                  cookies de marketing.
-                </p>
-                <button
-                  type="button"
-                  onClick={enableMap}
-                  className="sheen rounded-full bg-accent px-7 py-3 text-sm font-bold text-white transition-colors duration-300 hover:bg-ink-soft"
-                >
-                  Liberar e carregar o mapa
-                </button>
-                <p className="text-xs text-steel">
-                  Prefere não liberar? Use o link abaixo para abrir no Google
-                  Maps, ou veja a{" "}
-                  <Link
-                    to="/cookies"
-                    className="font-semibold text-accent hover:underline"
-                  >
-                    Política de Cookies
-                  </Link>
-                  .
-                </p>
-              </div>
-            )}
+            <div data-reveal-group className="mt-10 grid gap-4 sm:grid-cols-2">
+              {CONTACT_CHANNELS.map((c) => (
+                <div key={c.label} data-reveal>
+                  <Canal {...c} />
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-            <address className="text-sm text-steel not-italic">{addressLine}</address>
-            <a
-              href={mapLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-bold text-accent hover:underline"
-            >
-              Abrir no Google Maps
-            </a>
+
+          <div data-reveal className="overflow-hidden rounded-[1.75rem]">
+            <img
+              src="/focus/focus-vidracaria.jpg"
+              alt="Box de vidro temperado instalado pela Braz Vidros"
+              loading="lazy"
+              className="h-72 w-full object-cover lg:h-full"
+            />
           </div>
         </div>
       </section>
+
+      {/* Mapa de borda a borda: fora do container para sangrar a tela toda */}
+      <section className="pb-16 md:pb-24">
+        <div data-reveal className="container-site">
+          <p className="eyebrow mb-5 text-center">Onde estamos</p>
+        </div>
+
+        <div className="h-105 w-full md:h-140">
+          {showMap ? (
+            <iframe
+              title={`Mapa: ${addressLine}`}
+              src={mapEmbed()}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+              className="h-full w-full border-0"
+            />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center gap-4 bg-mist/70 px-6 text-center">
+              <p className="max-w-md leading-relaxed text-steel">
+                O mapa é carregado pelo Google e grava cookies de terceiros no
+                seu navegador. Para vê-lo aqui dentro, é preciso liberar os
+                cookies de marketing.
+              </p>
+              <button
+                type="button"
+                onClick={enableMap}
+                className="sheen rounded-full bg-accent px-7 py-3 text-sm font-bold text-white transition-colors duration-300 hover:bg-ink-soft"
+              >
+                Liberar e carregar o mapa
+              </button>
+              <p className="text-xs text-steel">
+                Prefere não liberar? Use o link abaixo para abrir no Google
+                Maps, ou veja a{" "}
+                <Link
+                  to="/cookies"
+                  className="font-semibold text-accent hover:underline"
+                >
+                  Política de Cookies
+                </Link>
+                .
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="container-site mt-4 flex flex-wrap items-center justify-between gap-3">
+          <address className="text-sm text-steel not-italic">{addressLine}</address>
+          <a
+            href={mapLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-bold text-accent hover:underline"
+          >
+            Abrir no Google Maps
+          </a>
+        </div>
+      </section>
+
+      {/* Sem a coluna de telefone e endereço: aqui em cima isso já é o
+          conteúdo principal da página */}
+      <CTABand compact />
     </>
   );
 }

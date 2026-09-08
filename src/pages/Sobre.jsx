@@ -24,7 +24,7 @@ export default function Sobre() {
           />
           <div className="glass absolute -right-3 -bottom-5 hidden max-w-[15rem] rounded-3xl p-5 md:block">
             <p className="font-display text-3xl font-bold text-accent">NH/RS</p>
-            <p className="mt-1 text-xs leading-relaxed text-steel">
+            <p className="mt-1 text-xs leading-relaxed text-ink">
               Atendimento em Novo Hamburgo e região
             </p>
           </div>
@@ -74,9 +74,12 @@ export default function Sobre() {
               </div>
             ))}
 
+            {/* Mesmo recuo e mesma largura máxima dos parágrafos dos blocos
+                acima, para o cartão terminar na mesma linha que o texto e não
+                avançar sozinho até o fim da coluna */}
             <p
               data-reveal
-              className="glass rounded-3xl p-6 leading-relaxed font-semibold md:p-7 md:text-lg"
+              className="glass ml-6 max-w-prose rounded-3xl p-6 leading-relaxed font-semibold md:ml-8 md:p-7 md:text-lg"
             >
               {ABOUT_STORY.closing}
             </p>

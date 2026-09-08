@@ -354,6 +354,41 @@ export const mapEmbed = (zoom = 17) =>
 export const mapLink = () =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLine)}`;
 
+/* Os canais da página de contato, na ordem em que aparecem. `icon` casa com
+   as chaves do mapa em Contato.jsx, e o canal sem `href` é só informação */
+export const CONTACT_CHANNELS = [
+  {
+    icon: "whatsapp",
+    label: "WhatsApp",
+    value: PHONE,
+    text: "Manda foto do ambiente e as medidas aproximadas. Respondemos no mesmo dia útil.",
+    href: waLink("Olá! Quero um orçamento com a Braz Vidros."),
+    external: true,
+  },
+  {
+    icon: "local",
+    label: "Onde estamos",
+    value: ADDRESS.street,
+    text: `${ADDRESS.district}, ${ADDRESS.city}, ${ADDRESS.state}, ${ADDRESS.cep}`,
+    href: mapLink(),
+    external: true,
+  },
+  {
+    icon: "instagram",
+    label: "Instagram",
+    value: "@braz_vidross",
+    text: "As obras recentes aparecem lá antes de virarem foto no site.",
+    href: INSTAGRAM,
+    external: true,
+  },
+  {
+    icon: "relogio",
+    label: "Atendimento",
+    value: "Segunda a sábado",
+    text: "Orçamento presencial ou pelo WhatsApp, sem compromisso.",
+  },
+];
+
 /* Os números do texto saem das mesmas constantes da faixa do hero, então
    viram 10 anos e 4.500 instalações sozinhos na virada do ano */
 export const ABOUT = {
@@ -365,6 +400,18 @@ export const ABOUT = {
     "Do orçamento à instalação, quem mede é quem instala, com vidro temperado de procedência e perfis de alumínio de qualidade. E o serviço não acaba na entrega: todo trabalho tem garantia de no mínimo 1 ano e seguimos à disposição depois que a obra fica pronta.",
   ],
   image: "/sobre/equipe.jpg",
+};
+
+/* Resumo do Sobre que vai na home, entre a galeria e a chamada final.
+   Texto próprio e mais curto que o da página Sobre de propósito: a home
+   diz quem é a empresa em três linhas e manda quem quiser mais para /sobre */
+export const ABOUT_HOME = {
+  eyebrow: ABOUT.eyebrow,
+  title: ABOUT.title,
+  text: "Começamos com uma estrutura pequena e crescemos obra por obra, com o mesmo compromisso de sempre: qualidade na instalação, confiança no atendimento e presença também no pós-venda.",
+  image: ABOUT.image,
+  link: "/sobre",
+  linkText: "Conheça a Braz Vidros",
 };
 
 /* Nossa história, do jeito que o cliente conta */

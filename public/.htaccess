@@ -61,6 +61,14 @@ ErrorDocument 404 /index.html
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
 
+  # As capas de preview de link são a exceção: mantêm o mesmo nome para sempre
+  # e são lidas por robô de rede social, que guarda o que baixou. Um mês de
+  # cache aqui significa um mês mostrando a capa antiga depois de trocar a
+  # imagem. Vem depois da regra acima de propósito, para vencer ela
+  <FilesMatch "^og-.*\.jpe?g$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+
   # O navegador respeita o Content-Type declarado em vez de adivinhar pelo
   # conteúdo, e o referenciador só sai daqui em navegação para outro site
   # seguro, sem o caminho da página

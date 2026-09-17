@@ -55,8 +55,9 @@ export const PAGE_META = {
     description:
       "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida, com garantia de no mínimo 1 ano. Orçamento presencial ou pelo WhatsApp.",
     image: "/og-cover.jpg",
-    imageAlt: "Porta de correr de alumínio com vidro instalada pela Braz Vidros",
-    lastmod: "2026-09-16",
+    imageAlt:
+      "Porta de correr de alumínio com vidro instalada pela Braz Vidros",
+    lastmod: "2026-09-17",
     changefreq: "monthly",
     priority: "1.0",
   },
@@ -67,7 +68,7 @@ export const PAGE_META = {
       "Box de banheiro, espelhos sob medida, sacadas de vidro, guarda-corpo, coberturas de policarbonato e quiosques em Novo Hamburgo e região.",
     image: "/og-vidracaria.jpg",
     imageAlt: "Cortina de vidro instalada em sacada pela Braz Vidros",
-    lastmod: "2026-09-16",
+    lastmod: "2026-09-17",
     changefreq: "monthly",
     priority: "0.9",
   },
@@ -78,7 +79,7 @@ export const PAGE_META = {
       "Janelas, portas, portões e fechamentos de alumínio fabricados sob medida para sua obra em Novo Hamburgo e região.",
     image: "/og-esquadrias.jpg",
     imageAlt: "Fachada de alumínio com vidro executada pela Braz Vidros",
-    lastmod: "2026-09-16",
+    lastmod: "2026-09-17",
     changefreq: "monthly",
     priority: "0.9",
   },
@@ -89,7 +90,7 @@ export const PAGE_META = {
       "A história da Braz Vidros: vidraçaria e esquadrias de alumínio em Novo Hamburgo/RS, com medição e instalação próprias, garantia de no mínimo 1 ano e pós-venda de verdade.",
     image: "/og-sobre.jpg",
     imageAlt: "Fachada da loja da Braz Vidros em Novo Hamburgo",
-    lastmod: "2026-09-16",
+    lastmod: "2026-09-17",
     changefreq: "yearly",
     priority: "0.6",
   },
@@ -98,7 +99,7 @@ export const PAGE_META = {
     title: "Contato | Braz Vidros",
     description:
       "Peça seu orçamento presencial ou pelo WhatsApp: vidraçaria e esquadrias de alumínio em Novo Hamburgo e região.",
-    lastmod: "2026-09-16",
+    lastmod: "2026-09-17",
     changefreq: "yearly",
     priority: "0.8",
   },
@@ -107,16 +108,7 @@ export const PAGE_META = {
     title: "Política de Privacidade | Braz Vidros",
     description:
       "Como a Braz Vidros trata os dados pessoais de quem visita o site e pede orçamento, conforme a LGPD (Lei 13.709/2018).",
-    lastmod: "2026-09-02",
-    changefreq: "yearly",
-    priority: "0.3",
-  },
-  cookies: {
-    path: "/cookies",
-    title: "Política de Cookies | Braz Vidros",
-    description:
-      "Quais cookies o site da Braz Vidros usa, para que servem e como mudar suas preferências a qualquer momento.",
-    lastmod: "2026-09-02",
+    lastmod: "2026-09-17",
     changefreq: "yearly",
     priority: "0.3",
   },
@@ -410,7 +402,7 @@ export const PORTFOLIO_FILTROS = [
   { id: "aluminio", label: "Esquadrias de alumínio", curto: "Alumínio" },
 ];
 
-/* Endereço da empresa: alimenta o mapa do Contato, o rodapé e o schema.org */
+/* Endereço da empresa: alimenta o Contato, o rodapé e o schema.org */
 export const ADDRESS = {
   street: "R. Oswaldo Artur Hartz, 776",
   district: "Canudos",
@@ -424,6 +416,8 @@ export const addressLine = `${ADDRESS.street} - ${ADDRESS.district}, ${ADDRESS.c
 /* Versão curta, sem CEP, para onde o espaço é apertado (rodapé) */
 export const addressShort = `${ADDRESS.street} - ${ADDRESS.district}, ${ADDRESS.city} - ${ADDRESS.state}`;
 
+/* O mapa embutido é um iframe do Google e grava cookie de terceiro, por isso
+   na página de Contato ele só é montado depois que a pessoa clica para ver */
 export const mapEmbed = (zoom = 17) =>
   `https://www.google.com/maps?q=${encodeURIComponent(addressLine)}&z=${zoom}&output=embed`;
 
@@ -436,7 +430,7 @@ export const CONTACT_CHANNELS = [
   {
     label: "WhatsApp",
     value: PHONE,
-    text: "Manda foto do ambiente e as medidas aproximadas. Respondemos no mesmo dia útil.",
+    text: "Mande foto do ambiente e as medidas aproximadas. Respondemos no mesmo dia útil.",
     href: waLink("Olá! Quero um orçamento com a Braz Vidros."),
     external: true,
   },
@@ -457,7 +451,7 @@ export const CONTACT_CHANNELS = [
   {
     label: "Atendimento",
     value: "Segunda a sexta",
-    text: "Das 8h às 11h30 e das 13h às 18h. Orçamento presencial ou pelo WhatsApp, sem compromisso.",
+    text: "Das 8h às 11h30 e das 13h às 18h.",
   },
 ];
 
@@ -465,7 +459,7 @@ export const CONTACT_CHANNELS = [
    viram 10 anos e 4.500 instalações sozinhos na virada do ano */
 export const ABOUT = {
   eyebrow: "Sobre a Braz Vidros",
-  title: "Feito aqui, instalado direito",
+  title: "Mesma equipe da medida à instalação",
   text: [
     "A Braz Vidros nasceu de um sonho: construir uma empresa reconhecida pela qualidade, pela responsabilidade e pela confiança em cada projeto realizado.",
     `Começamos com uma estrutura pequena, atendendo os primeiros clientes, e crescemos obra por obra. Hoje são ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações em Novo Hamburgo e região, do box de banheiro à fachada comercial.`,
@@ -495,8 +489,20 @@ export const ABOUT_STORY = {
   eyebrow: "Nossa história",
   title: "Nossa história",
   lede: "Crescemos, ampliamos os serviços e melhoramos os processos, mas os princípios que nos trouxeram até aqui continuam os mesmos.",
-  closing:
-    "Braz Vidros: qualidade na instalação, confiança no atendimento e compromisso também no pós-venda.",
+  /* O fechamento sempre foi uma lista de três dentro de um período só. Em
+     itens separados cada promessa ganha o próprio espaço na fita, e o título
+     vem partido em dois: a primeira metade em romano, a segunda em itálico.
+     "Presença" no último item, e não "compromisso", para não repetir a
+     palavra que já está no título */
+  closing: {
+    title: "O compromisso",
+    titleItalic: "da Braz Vidros",
+    items: [
+      "Qualidade na instalação",
+      "Confiança no atendimento",
+      "Presença no pós-venda",
+    ],
+  },
   blocks: [
     {
       title: "Onde tudo começou",

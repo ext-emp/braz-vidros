@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PageHeader from "../components/PageHeader.jsx";
 import CTABand from "../components/CTABand.jsx";
+import CommitmentBand from "../components/CommitmentBand.jsx";
 import DifferentialsBand from "../components/DifferentialsBand.jsx";
 import SectionHeading from "../components/SectionHeading.jsx";
 import { ABOUT, ABOUT_STORY, PAGE_META } from "../data/content.js";
@@ -18,7 +19,7 @@ export default function Sobre() {
       <PageHeader
         eyebrow={ABOUT.eyebrow}
         title={ABOUT.title}
-        text="Vidraçaria e esquadrias de alumínio com a mesma equipe do orçamento à instalação, e suporte também depois da entrega."
+        text="Vidraçaria e esquadrias de alumínio em Novo Hamburgo e região, com garantia e suporte depois da entrega."
       />
 
       {/* Nossa história em capítulos que abrem: os quatro títulos ficam à
@@ -39,9 +40,9 @@ export default function Sobre() {
                 sairia da tela e a coluna ficaria vazia */}
             <div data-reveal className="lg:sticky lg:top-28">
               <div className="relative">
-                {/* A foto é vertical (3:4). Solta, ela empurrava a frase de
-                    fechamento para fora da tela na coluna grudada; em 4/5 o
-                    corte tira só céu e calçada e a placa fica inteira */}
+                {/* A foto é vertical (3:4) e solta fica alta demais para a
+                    coluna grudada; em 4/5 o corte tira só céu e calçada e a
+                    placa da loja fica inteira */}
                 <img
                   src={ABOUT.image}
                   alt={ABOUT.imageAlt}
@@ -57,12 +58,6 @@ export default function Sobre() {
                   </p>
                 </div>
               </div>
-
-              {/* A frase de fechamento fica aqui, e não no fim dos capítulos:
-                  no fim ela só apareceria para quem abrisse o último */}
-              <p className="font-display mt-10 rounded-3xl bg-accent p-6 text-center text-lg leading-relaxed font-semibold text-white md:mt-12 md:p-7 md:text-left md:text-xl">
-                {ABOUT_STORY.closing}
-              </p>
             </div>
 
             <div data-reveal-group>
@@ -123,10 +118,14 @@ export default function Sobre() {
                     >
                       <div className="overflow-hidden">
                         <div className="pb-7 md:pr-10">
+                          {/* Justificado com hifenização: sem quebrar palavra,
+                              a linha justificada abre buracos entre as palavras
+                              no celular, onde a coluna é estreita. O idioma sai
+                              do lang="pt-BR" do documento */}
                           {b.text.map((t, j) => (
                             <p
                               key={j}
-                              className="mb-3 max-w-prose leading-relaxed text-steel"
+                              className="mb-3 max-w-prose text-justify leading-relaxed text-steel hyphens-auto"
                             >
                               {t}
                             </p>
@@ -144,6 +143,10 @@ export default function Sobre() {
               })}
             </div>
           </div>
+
+          {/* Fechamento da seção. Fita própria porque no celular ela sangra a
+              tela e vira slider, e isso não cabia dentro da página */}
+          <CommitmentBand />
         </div>
       </section>
 

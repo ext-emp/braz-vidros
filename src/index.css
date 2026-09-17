@@ -247,6 +247,86 @@ h3 {
   }
 }
 
+/*
+  Fita do compromisso, no fim da página Sobre.
+  No celular as três promessas não cabem lado a lado, então elas correm em
+  loop: dois grupos idênticos, e a corrida anda exatamente meia fita (-50%),
+  que é o ponto em que o segundo grupo ocupa o lugar do primeiro. Por isso a
+  volta não tem emenda e não precisa de marcador nenhum.
+  A partir de md a corrida para, o grupo repetido some e as promessas viram
+  uma fileira com filete entre elas.
+*/
+@keyframes commitment-run {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.commitment-track {
+  overflow: hidden;
+  /* Esmaecida nas pontas para o texto não terminar em corte seco na borda */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 20px,
+    #000 calc(100% - 20px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 20px,
+    #000 calc(100% - 20px),
+    transparent 100%
+  );
+}
+.commitment-tape {
+  display: flex;
+  width: max-content;
+  animation: commitment-run 18s linear infinite;
+  will-change: transform;
+}
+.commitment-group {
+  display: flex;
+}
+.commitment-item {
+  padding-inline: 1.25rem;
+  border-inline-start: 1px solid rgb(255 255 255 / 0.15);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .commitment-tape {
+    animation: none;
+  }
+}
+@media (min-width: 768px) {
+  .commitment-track {
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .commitment-tape {
+    width: auto;
+    justify-content: center;
+    animation: none;
+  }
+  /* `contents` tira o grupo do caminho para as promessas ficarem lado a lado
+     direto na fita */
+  .commitment-group {
+    display: contents;
+  }
+  .commitment-group-dup {
+    display: none;
+  }
+  .commitment-item:first-child {
+    border-inline-start: 0;
+  }
+}
+@media (min-width: 1024px) {
+  .commitment-item {
+    padding-inline: 1.5rem;
+  }
+}
+
 /* Trilho que rola para o lado sem a barra de rolagem à mostra */
 .no-scrollbar {
   scrollbar-width: none;

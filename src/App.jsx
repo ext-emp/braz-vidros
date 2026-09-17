@@ -8,7 +8,6 @@ import { useGSAP } from "@gsap/react";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import WhatsAppFloat from "./components/WhatsAppFloat.jsx";
-import CookieConsent from "./components/CookieConsent.jsx";
 
 import Home from "./pages/Home.jsx";
 import Vidracaria from "./pages/Vidracaria.jsx";
@@ -16,7 +15,6 @@ import Esquadrias from "./pages/Esquadrias.jsx";
 import Sobre from "./pages/Sobre.jsx";
 import Contato from "./pages/Contato.jsx";
 import Privacidade from "./pages/Privacidade.jsx";
-import Cookies from "./pages/Cookies.jsx";
 import NaoEncontrada from "./pages/NaoEncontrada.jsx";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -144,7 +142,6 @@ export default function App() {
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/contato" element={<Contato />} />
               <Route path="/privacidade" element={<Privacidade />} />
-              <Route path="/cookies" element={<Cookies />} />
               {/* Endereço que não existe cai na página de erro, não na home:
                   home no lugar de 404 devolve 200 com conteúdo certo para um
                   endereço errado, e o buscador trata isso como duplicata */}
@@ -155,7 +152,6 @@ export default function App() {
         </div>
       </div>
       <WhatsAppFloat />
-      <CookieConsent />
     </div>
   );
 }

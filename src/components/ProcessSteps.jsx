@@ -70,48 +70,51 @@ export default function ProcessSteps() {
         />
 
         <ol className="grid sm:grid-cols-2 sm:gap-y-9 lg:grid-cols-4 lg:gap-y-0">
-          {PROCESS.map((p, i) => (
-            <li
-              key={p.title}
-              className="relative pb-8 pl-8 sm:pt-8 sm:pr-6 sm:pb-0 sm:pl-0 md:pr-8"
-            >
-              {/* De pé no celular (left-1.25 = centro do ponto), deitado em sm.
-                  top-3.25 no trilho é o centro do ponto, de onde a linha desce */}
-              <span
-                data-rail
-                aria-hidden="true"
-                className="bg-accent/25 absolute top-3.25 bottom-0 left-1.25 w-px sm:inset-x-0 sm:top-0 sm:bottom-auto sm:h-px sm:w-auto"
-              />
-              {/* top-2 deixa o centro do ponto na altura do meio da primeira
-                  linha do título (caixa de 28px do text-lg) */}
-              <span
-                data-dot
-                aria-hidden="true"
-                className="bg-accent absolute top-2 left-0 z-10 h-2.5 w-2.5 rounded-full sm:-top-1.25"
-              />
+          {PROCESS.map((p, i) => {
+            const ultimo = i === PROCESS.length - 1;
 
-              {/* Ponto de chegada: fecha o trilho no fim da lista */}
-              {i === PROCESS.length - 1 && (
-                <>
-                  <span
-                    data-dot
-                    aria-hidden="true"
-                    className="bg-accent absolute bottom-0 left-0 z-10 h-2.5 w-2.5 rounded-full sm:hidden"
-                  />
+            return (
+              <li
+                key={p.title}
+                className="relative pb-8 pl-8 sm:pt-8 sm:pr-6 sm:pb-0 sm:pl-0 md:pr-8"
+              >
+                {/* De pé no celular (left-1.25 = centro do ponto), deitado em sm.
+                    top-3.25 no trilho é o centro do ponto, de onde a linha desce.
+                    No último o trilho para junto com o texto (bottom-8 = o pb-8),
+                    senão sobraria um traço solto embaixo */}
+                <span
+                  data-rail
+                  aria-hidden="true"
+                  className={`bg-accent/25 absolute top-3.25 left-1.25 w-px sm:inset-x-0 sm:top-0 sm:bottom-auto sm:h-px sm:w-auto ${
+                    ultimo ? "bottom-8 sm:bottom-auto" : "bottom-0"
+                  }`}
+                />
+                {/* top-2 deixa o centro do ponto na altura do meio da primeira
+                    linha do título (caixa de 28px do text-lg) */}
+                <span
+                  data-dot
+                  aria-hidden="true"
+                  className="bg-accent absolute top-2 left-0 z-10 h-2.5 w-2.5 rounded-full sm:-top-1.25"
+                />
+
+                {/* Ponto de chegada do trilho deitado, que em lg vai até a borda
+                    direita da última coluna. De pé não existe: lá o trilho
+                    termina junto com o texto */}
+                {ultimo && (
                   <span
                     data-dot
                     aria-hidden="true"
                     className="bg-accent absolute -top-1.25 right-0 z-10 hidden h-2.5 w-2.5 rounded-full lg:block"
                   />
-                </>
-              )}
+                )}
 
-              <div data-step>
-                <h3 className="font-display mb-2 text-lg font-semibold">{p.title}</h3>
-                <p className="text-sm leading-relaxed text-steel">{p.text}</p>
-              </div>
-            </li>
-          ))}
+                <div data-step>
+                  <h3 className="font-display mb-2 text-lg font-semibold">{p.title}</h3>
+                  <p className="text-sm leading-relaxed text-steel">{p.text}</p>
+                </div>
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>

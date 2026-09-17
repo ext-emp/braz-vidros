@@ -1,73 +1,17 @@
 /*
-  Textos jurídicos do site: política de privacidade e política de cookies.
-  Ficam aqui, junto do resto do conteúdo editável, para o cliente conseguir
-  revisar sem mexer em componente.
+  Texto jurídico do site: a política de privacidade. Fica aqui, junto do resto
+  do conteúdo editável, para o cliente conseguir revisar sem mexer em
+  componente. Ao mudar qualquer coisa relevante, atualize LEGAL_UPDATED.
 
-  Ao mudar qualquer coisa relevante, atualize LEGAL_UPDATED. E se entrar uma
-  ferramenta nova que use cookies, suba também o VERSION em src/lib/consent.js:
-  é o que faz o site pedir o consentimento outra vez.
+  O site não grava cookie próprio e não usa medição de audiência. O que carrega
+  de fora são as fontes do layout e o mapa do Google na página de Contato, que
+  desde 17/09/2026 entra junto com a página, sem depender de clique: por isso a
+  seção de cookies abaixo fala em cookie de terceiro. Se um dia entrar analytics
+  ou qualquer outra tag de terceiro, aí é caso de banner de consentimento, e o
+  texto abaixo precisa acompanhar de novo.
 */
 
-export const LEGAL_UPDATED = "2 de setembro de 2026";
-
-/*
-  As categorias do painel de preferências.
-  `key` é o que casa com src/lib/consent.js. Necessários não têm key porque
-  não podem ser desligados.
-*/
-export const COOKIE_CATEGORIES = [
-  {
-    id: "necessarios",
-    name: "Necessários",
-    required: true,
-    summary:
-      "Mantêm o site funcionando e guardam a sua escolha aqui. Sem eles a página não se lembra do que você respondeu neste aviso.",
-    items: [
-      {
-        name: "bv:consent",
-        provider: "Braz Vidros (este site)",
-        purpose:
-          "Guarda quais categorias de cookies você aceitou ou recusou. Fica no armazenamento local do navegador, não é enviado a ninguém.",
-        duration: "6 meses",
-      },
-    ],
-  },
-  {
-    id: "estatisticas",
-    key: "analytics",
-    name: "Estatísticas",
-    required: false,
-    summary:
-      "Contam de forma agregada quais páginas são mais visitadas e por onde as pessoas chegam, para melhorarmos o site.",
-    note: "Hoje o site não carrega nenhuma ferramenta de estatística. Se passarmos a usar, ela só será ativada depois do seu aceite nesta categoria.",
-    items: [
-      {
-        name: "_ga, _ga_*",
-        provider: "Google Analytics",
-        purpose:
-          "Distingue visitantes e sessões para gerar relatórios de audiência. Reservado para uso futuro.",
-        duration: "até 2 anos",
-      },
-    ],
-  },
-  {
-    id: "marketing",
-    key: "marketing",
-    name: "Marketing e conteúdo de terceiros",
-    required: false,
-    summary:
-      "Liberam conteúdos hospedados por outras empresas dentro do site e permitem medir campanhas. É o que carrega o mapa do Google na página de Contato.",
-    items: [
-      {
-        name: "NID, SOCS e afins",
-        provider: "Google Maps",
-        purpose:
-          "Mapa incorporado na página de Contato. Enquanto esta categoria estiver desligada, mostramos no lugar dele um link para abrir o mapa direto no Google.",
-        duration: "até 6 meses",
-      },
-    ],
-  },
-];
+export const LEGAL_UPDATED = "17 de setembro de 2026";
 
 export const PRIVACY_SECTIONS = [
   {
@@ -84,7 +28,7 @@ export const PRIVACY_SECTIONS = [
     ],
     list: [
       "Dados que você mesmo envia quando decide falar com a gente: nome, telefone, endereço da obra, fotos e medidas enviadas pelo WhatsApp ou pelo Instagram, além do conteúdo da conversa.",
-      "Dados de navegação gerados automaticamente: endereço IP, tipo de navegador e aparelho, páginas visitadas e horários, registrados pelo servidor que hospeda o site e, se você autorizar, por ferramentas de estatística.",
+      "Dados de navegação gerados automaticamente: endereço IP, tipo de navegador e aparelho, páginas visitadas e horários, registrados pelo servidor que hospeda o site. O site não usa nenhuma ferramenta de estatística, publicidade ou rastreamento.",
     ],
   },
   {
@@ -94,33 +38,32 @@ export const PRIVACY_SECTIONS = [
       "Responder ao seu contato, montar o orçamento e agendar medição e instalação.",
       "Executar o serviço contratado e prestar a garantia e o pós-venda.",
       "Manter o site no ar, seguro e funcionando bem.",
-      "Entender de forma agregada como o site é usado, quando você aceita os cookies de estatística.",
       "Cumprir obrigações fiscais e legais ligadas ao serviço prestado.",
     ],
   },
   {
     title: "Com que base legal",
     text: [
-      "Cada uso tem sua base no artigo 7º da LGPD: o seu consentimento, para os cookies opcionais e para o contato que você inicia; a execução de contrato e dos procedimentos preliminares, quando você pede orçamento e contrata o serviço; o cumprimento de obrigação legal, para notas fiscais e prazos de guarda; e o legítimo interesse, para manter o site seguro e melhorá-lo, sempre sem tratar dados sensíveis.",
+      "Cada uso tem sua base no artigo 7º da LGPD: o seu consentimento, para o contato que você inicia; a execução de contrato e dos procedimentos preliminares, quando você pede orçamento e contrata o serviço; o cumprimento de obrigação legal, para notas fiscais e prazos de guarda; e o legítimo interesse, para manter o site seguro e melhorá-lo, sempre sem tratar dados sensíveis.",
     ],
   },
   {
     title: "Com quem compartilhamos",
     text: [
-      "Não vendemos, alugamos nem cedemos seus dados. O compartilhamento se limita ao necessário para o site e o atendimento funcionarem: a empresa que hospeda o site, o Google (fontes de texto e o mapa da página de Contato, este último só depois do seu aceite) e a Meta (WhatsApp e Instagram), quando é por lá que você escolhe conversar com a gente.",
+      "Não vendemos, alugamos nem cedemos seus dados. O compartilhamento se limita ao necessário para o site e o atendimento funcionarem: a empresa que hospeda o site, o Google (as fontes de texto do layout e o mapa da página de Contato) e a Meta (WhatsApp e Instagram), quando é por lá que você escolhe conversar com a gente.",
       "Também podemos compartilhar informações se formos obrigados por lei, ordem judicial ou pedido de autoridade competente.",
     ],
   },
   {
     title: "Transferência internacional",
     text: [
-      "Google e Meta processam dados em servidores fora do Brasil. Essa transferência acontece nos termos do artigo 33 da LGPD e das cláusulas de proteção adotadas por essas empresas. Se você não quiser esse tratamento, mantenha a categoria de marketing desligada e fale com a gente por telefone ou pessoalmente.",
+      "Google e Meta processam dados em servidores fora do Brasil. Essa transferência acontece nos termos do artigo 33 da LGPD e das cláusulas de proteção adotadas por essas empresas. No caso do Google, o que sai daqui é o pedido das fontes de texto que o navegador faz para montar a página e, na página de Contato, o que o Google Maps recebe de quem abre o mapa. Se preferir não passar por essas plataformas, fale com a gente por telefone ou pessoalmente, usando o endereço e o número que ficam no rodapé de todas as páginas.",
     ],
   },
   {
     title: "Por quanto tempo guardamos",
     text: [
-      "As conversas e os dados de orçamento ficam conosco enquanto durar o atendimento e, depois disso, pelo prazo da garantia e pelos prazos legais de guarda de documentos fiscais. Registros de navegação seguem o prazo do artigo 15 do Marco Civil da Internet. A sua escolha de cookies fica no seu navegador por 6 meses. Passado o prazo, apagamos ou anonimizamos.",
+      "As conversas e os dados de orçamento ficam conosco enquanto durar o atendimento e, depois disso, pelo prazo da garantia e pelos prazos legais de guarda de documentos fiscais. Registros de navegação seguem o prazo do artigo 15 do Marco Civil da Internet. Passado o prazo, apagamos ou anonimizamos.",
     ],
   },
   {
@@ -141,7 +84,7 @@ export const PRIVACY_SECTIONS = [
       "Pedir a portabilidade dos dados a outro fornecedor.",
       "Eliminar os dados tratados com base no seu consentimento, respeitadas as guardas legais.",
       "Saber com quem compartilhamos seus dados.",
-      "Revogar o consentimento, inclusive o de cookies, a qualquer momento.",
+      "Revogar o consentimento a qualquer momento.",
       "Se opor a um tratamento feito com base no legítimo interesse.",
     ],
     after: [
@@ -155,54 +98,18 @@ export const PRIVACY_SECTIONS = [
     ],
   },
   {
-    title: "Cookies",
+    title: "Cookies e conteúdo de terceiros",
     text: [
-      "O uso de cookies e tecnologias parecidas está detalhado na Política de Cookies, onde você também consegue rever ou mudar as categorias que aceitou.",
+      "Este site não grava cookies próprios no seu navegador, não guarda nada no armazenamento local e não usa nenhuma ferramenta de estatística, publicidade ou rastreamento. Não existe aqui perfil de navegação, e nada do que você faz no site é usado para anúncio.",
+      "As fontes de texto do layout são servidas pelo Google Fonts. Esse pedido informa o seu endereço IP ao Google, sem criar cookie e sem identificar você. A página de Contato mostra a nossa localização num mapa do Google Maps, que é carregado junto com a página: ao abri-la, o Google recebe o seu endereço IP e pode gravar cookie de terceiro no seu navegador, como faria em qualquer visita ao Google Maps. Esse é o único conteúdo de terceiros incorporado ao site, e ele existe só para mostrar onde a loja fica.",
+      "Se preferir não passar por isso, não abra a página de Contato: o endereço da loja, o telefone e o WhatsApp também ficam no rodapé de todas as páginas, e o seu navegador permite bloquear cookies de terceiros a qualquer momento.",
+      "Os links para WhatsApp, Instagram e Google Maps levam você para fora do site, e o que acontece depois do clique já é responsabilidade dessas plataformas.",
     ],
   },
   {
     title: "Mudanças nesta política",
     text: [
-      "Se esta política mudar, publicamos a versão nova nesta mesma página e atualizamos a data no topo. Quando a mudança envolver novas ferramentas com cookies, o aviso de consentimento aparece outra vez para você escolher de novo.",
-    ],
-  },
-];
-
-export const COOKIE_SECTIONS_INTRO = [
-  {
-    title: "O que são cookies",
-    text: [
-      "Cookies são arquivos pequenos que um site guarda no seu navegador para lembrar de alguma coisa entre uma página e outra. Junto deles existem tecnologias parecidas, como o armazenamento local, que é justamente onde este site guarda a sua escolha aqui embaixo.",
-      "Nem todo cookie serve para rastrear alguém. Uns só fazem o site funcionar, outros contam visitas e outros vêm de empresas de fora, quando o site mostra um conteúdo hospedado por elas.",
-    ],
-  },
-  {
-    title: "Como este site usa",
-    text: [
-      "Quando você abre o site pela primeira vez, nada opcional é carregado: só entra em funcionamento depois que você aceita. Recusar não tira nenhuma função essencial da página, e a única diferença visível é o mapa da página de Contato, que fica no lugar substituído por um link.",
-    ],
-  },
-];
-
-export const COOKIE_SECTIONS_OUTRO = [
-  {
-    title: "Como mudar sua escolha depois",
-    text: [
-      "É só clicar no botão acima e ajustar as categorias, quantas vezes quiser. A escolha nova passa a valer na hora e substitui a anterior.",
-      "Você também pode apagar ou bloquear cookies pelas configurações do próprio navegador, no menu de privacidade. Se limpar os dados do site, a sua escolha some junto e o aviso aparece de novo na próxima visita.",
-    ],
-  },
-  {
-    title: "Cookies de terceiros",
-    text: [
-      "Os cookies das categorias opcionais são criados pelas empresas donas de cada ferramenta, e são elas que definem a duração e a finalidade deles. Ao aceitar essas categorias, você também está sujeito às políticas de privacidade dessas empresas.",
-      "Os links para WhatsApp, Instagram e Google Maps levam você para fora do site. O que acontece depois do clique é responsabilidade dessas plataformas.",
-    ],
-  },
-  {
-    title: "Por quanto tempo vale",
-    text: [
-      "A sua escolha fica guardada por 6 meses. Depois disso perguntamos outra vez, para o consentimento continuar atual. Se o site passar a usar alguma ferramenta nova com cookies, perguntamos antes do prazo.",
+      "Se esta política mudar, publicamos a versão nova nesta mesma página e atualizamos a data no topo. Se um dia o site passar a usar cookies próprios, medição de audiência ou qualquer ferramenta de publicidade, passa a existir aqui um aviso de consentimento, e nada disso é ativado antes de você escolher.",
     ],
   },
 ];

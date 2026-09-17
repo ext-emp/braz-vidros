@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 import CTABand from "../components/CTABand.jsx";
 import SectionHeading from "../components/SectionHeading.jsx";
@@ -9,7 +8,6 @@ import {
   mapEmbed,
   mapLink,
 } from "../data/content.js";
-import { useConsent, saveConsent } from "../lib/consent.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 
 /* Um canal. Vira link quando tem `href`, e continua sendo uma caixa comum
@@ -48,19 +46,12 @@ function Canal({ label, value, text, href, external }) {
 export default function Contato() {
   usePageMeta(PAGE_META.contato);
 
-  /* O mapa é um iframe do Google e grava cookies de terceiros, então só entra
-     depois do aceite da categoria de marketing. Sem aceite, o lugar dele fica
-     com o endereço e o link para abrir o mapa fora do site */
-  const consent = useConsent();
-  const showMap = consent.prefs.marketing === true;
-  const enableMap = () => saveConsent({ ...consent.prefs, marketing: true });
-
   return (
     <>
       <PageHeader
         eyebrow="Contato"
         title="Peça seu orçamento"
-        text="Manda as medidas pelo WhatsApp e a gente responde com o preço."
+        text="Mande as medidas pelo WhatsApp e a gente responde com o preço."
       />
 
       {/* Canais à esquerda, foto à direita. A foto ocupa o lugar que numa
@@ -84,7 +75,13 @@ export default function Contato() {
             </div>
           </div>
 
-          <div data-reveal className="overflow-hidden rounded-[1.75rem]">
+          {/* Fora no celular: lá ela não faz par com nada, só empurra o mapa
+              e o resto da página para baixo. Escondida por display, e não por
+              altura zero, então o arquivo nem chega a ser baixado */}
+          <div
+            data-reveal
+            className="hidden overflow-hidden rounded-[1.75rem] md:block"
+          >
             <img
               src="/focus/focus-vidracaria.jpg"
               alt="Box de vidro temperado instalado pela Braz Vidros"
@@ -101,43 +98,17 @@ export default function Contato() {
           <p className="eyebrow mb-5 text-center">Onde estamos</p>
         </div>
 
-        <div className="h-105 w-full md:h-140">
-          {showMap ? (
-            <iframe
-              title={`Mapa: ${addressLine}`}
-              src={mapEmbed()}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-              className="h-full w-full border-0"
-            />
-          ) : (
-            <div className="flex h-full flex-col items-center justify-center gap-4 bg-mist/70 px-6 text-center">
-              <p className="max-w-md leading-relaxed text-steel">
-                O mapa é carregado pelo Google e grava cookies de terceiros no
-                seu navegador. Para vê-lo aqui dentro, é preciso liberar os
-                cookies de marketing.
-              </p>
-              <button
-                type="button"
-                onClick={enableMap}
-                className="sheen rounded-full bg-accent px-7 py-3 text-sm font-bold text-white transition-colors duration-300 hover:bg-ink-soft"
-              >
-                Liberar e carregar o mapa
-              </button>
-              <p className="text-xs text-steel">
-                Prefere não liberar? Use o link abaixo para abrir no Google
-                Maps, ou veja a{" "}
-                <Link
-                  to="/cookies"
-                  className="font-semibold text-accent hover:underline"
-                >
-                  Política de Cookies
-                </Link>
-                .
-              </p>
-            </div>
-          )}
+        {/* Sem `loading="lazy"`: o mapa fica abaixo da dobra e, adiado, só
+            entraria quando a rolagem chegasse perto. Aqui ele tem que estar
+            pronto desde a abertura da página */}
+        <div className="h-105 w-full bg-mist/70 md:h-140">
+          <iframe
+            title={`Mapa: ${addressLine}`}
+            src={mapEmbed()}
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+            className="h-full w-full border-0"
+          />
         </div>
 
         <div className="container-site mt-4 flex flex-wrap items-center justify-center gap-3 text-center md:justify-between md:text-left">
@@ -154,8 +125,18 @@ export default function Contato() {
       </section>
 
       {/* Sem a coluna de telefone e endereço: aqui em cima isso já é o
-          conteúdo principal da página */}
-      <CTABand compact />
+          conteúdo principal da página. O texto também é próprio: o das outras
+          páginas fala em mandar a medida, que é o que o cabeçalho daqui já
+          pede, então o fecho fica com o outro caminho, o da visita */}
+      <CTABand
+        compact
+        tone="accent"
+        eyebrow="Medição no local"
+        title="Prefere que a gente vá até a obra?"
+        text="Marque a visita pelo WhatsApp: a gente mede no local e o orçamento sai sem compromisso."
+        cta="Marcar uma visita"
+        message="Olá! Quero marcar uma medição com a Braz Vidros."
+      />
     </>
   );
 }

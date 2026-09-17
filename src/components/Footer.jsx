@@ -8,7 +8,6 @@ import {
   addressShort,
   mapLink,
 } from "../data/content.js";
-import { openCookiePreferences } from "../lib/consent.js";
 
 const phonePretty = `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, 9)}-${WHATSAPP.slice(9)}`;
 
@@ -194,37 +193,17 @@ export default function Footer() {
             reservados.
           </p>
 
-          {/* Consentimento revogável a qualquer momento, como pede a LGPD:
-              o botão reabre o mesmo painel do aviso de cookies */}
-          <nav
-            aria-label="Privacidade"
-            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-white/50"
-          >
+          {/* O dever de informação da LGPD, que é o que sobra de obrigação
+              legal aqui: o site não usa cookie próprio nem medição de
+              audiência. O que carrega de terceiro é o mapa do Contato, e a
+              política diz o que isso significa */}
+          <nav aria-label="Privacidade" className="text-xs text-white/50">
             <Link
               to="/privacidade"
               className="transition-colors duration-300 hover:text-accent-soft"
             >
               Política de Privacidade
             </Link>
-            <span aria-hidden="true" className="text-white/25">
-              &middot;
-            </span>
-            <Link
-              to="/cookies"
-              className="transition-colors duration-300 hover:text-accent-soft"
-            >
-              Política de Cookies
-            </Link>
-            <span aria-hidden="true" className="text-white/25">
-              &middot;
-            </span>
-            <button
-              type="button"
-              onClick={openCookiePreferences}
-              className="transition-colors duration-300 hover:text-accent-soft"
-            >
-              Preferências de cookies
-            </button>
           </nav>
 
           <a

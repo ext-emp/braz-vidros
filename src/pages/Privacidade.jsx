@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 import LegalSections from "../components/LegalSections.jsx";
 import { PAGE_META } from "../data/content.js";
@@ -22,14 +21,6 @@ export default function Privacidade() {
         </p>
 
         <LegalSections sections={PRIVACY_SECTIONS} />
-
-        <p data-reveal className="mt-10 text-sm text-steel">
-          Sobre cookies, veja a{" "}
-          <Link to="/cookies" className="font-semibold text-accent hover:underline">
-            Política de Cookies
-          </Link>
-          .
-        </p>
       </section>
     </>
   );

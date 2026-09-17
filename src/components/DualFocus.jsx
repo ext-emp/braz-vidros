@@ -259,12 +259,15 @@ export default function DualFocus() {
             um só padrão de acabamento
           </h2>
         </div>
+        {/* Uma frase por linha. Os spans em bloco no lugar do <br /> deixam cada
+            frase equilibrar as próprias linhas com o text-balance: no celular a
+            primeira quebrava deixando só "obra." embaixo */}
         <p
           data-reveal
-          className="mx-auto mt-4 max-w-md leading-relaxed text-steel md:mx-0 md:mt-5"
+          className="mx-auto mt-4 max-w-md text-balance leading-relaxed text-steel md:mx-0 md:mt-5"
         >
-          Vidro e alumínio andam juntos em quase toda obra.
-          <br /> Aqui você resolve os dois com a mesma equipe.
+          <span className="block">Vidro e alumínio andam juntos em quase toda obra.</span>
+          <span className="block">Aqui você resolve os dois com a mesma equipe.</span>
         </p>
       </div>
 

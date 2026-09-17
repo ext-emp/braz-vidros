@@ -363,7 +363,14 @@ export default function Hero() {
 
         <div className="absolute inset-0 z-[4] flex items-center">
           <div className="container-hero">
-            <div key={active} ref={panelRef} className="max-w-[44rem]">
+            {/* Centrado no celular, onde o painel ocupa a largura toda e não
+                existe a coluna escura da esquerda; a partir de md volta a ser
+                a coluna alinhada à borda do .container-hero */}
+            <div
+              key={active}
+              ref={panelRef}
+              className="mx-auto max-w-[44rem] text-center md:mx-0 md:text-left"
+            >
               <p data-exit className="eyebrow mb-5 text-accent-soft" aria-label={slide.label}>
                 {slide.label.split("").map((ch, i) => (
                   <span key={i} className="inline-block overflow-hidden align-bottom" aria-hidden="true">
@@ -379,7 +386,11 @@ export default function Hero() {
               </p>
               <h1
                 data-exit
-                className="font-display text-[clamp(2.15rem,6.2vw,4.6rem)] leading-[1.03] font-medium tracking-[-0.015em] text-white"
+                /* Piso de 2rem (32px), o mesmo degrau do h1 das páginas
+                   internas: em 34px a linha mais longa dos slides,
+                   "precisão de milímetro", estourava os 335px úteis de uma
+                   tela de 375px e virava uma terceira linha */
+                className="font-display text-[clamp(2rem,6.2vw,4.6rem)] leading-[1.06] font-medium tracking-[-0.015em] text-white md:leading-[1.03]"
               >
                 {slide.title.map((line, i) => (
                   <span key={i} className="block overflow-hidden pb-1">
@@ -392,13 +403,13 @@ export default function Hero() {
               <p
                 data-exit
                 data-cta
-                className="mt-5 max-w-[29rem] text-[1.0625rem] leading-[1.55] text-white/70"
+                className="mx-auto mt-5 max-w-[29rem] text-[1.0625rem] leading-[1.55] text-white/70 md:mx-0"
               >
                 {slide.lede}
               </p>
               <div
                 data-exit
-                className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-nowrap sm:items-center sm:gap-3.5"
+                className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-nowrap sm:items-center sm:justify-center sm:gap-3.5 md:justify-start"
               >
                 <a
                   data-cta
@@ -426,7 +437,7 @@ export default function Hero() {
 
         {/* Fora do painel animado: os números não mudam de slide */}
         <div className="absolute inset-x-0 bottom-28 z-[4] lg:bottom-22">
-          <div className="container-hero flex lg:justify-end">
+          <div className="container-hero flex justify-center md:justify-start lg:justify-end">
             <ul ref={statsRef} className="flex items-end gap-8 sm:gap-12 lg:gap-14">
               {HERO_STATS.map((s) => (
                 <li key={s.label} data-stat className="text-center">

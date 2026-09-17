@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SectionHeading from "./SectionHeading.jsx";
 import { ABOUT_HOME, HERO_STATS } from "../data/content.js";
 
 /*
@@ -26,27 +27,36 @@ export default function AboutBand() {
         <div className="relative h-56 md:order-2 md:h-auto">
           <img
             src={ABOUT_HOME.image}
-            alt="Equipe da Braz Vidros em instalação"
+            alt={ABOUT_HOME.imageAlt}
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="about-scrim absolute inset-0" />
         </div>
 
-        <div className="relative p-8 sm:p-10 md:order-1 md:p-14">
-          <p className="eyebrow mb-3 text-accent-soft">{ABOUT_HOME.eyebrow}</p>
-          <h2 className="font-display text-3xl leading-tight font-semibold text-white md:text-4xl">
-            {ABOUT_HOME.title}
-          </h2>
-          <p className="mt-5 max-w-md leading-relaxed text-white/70">{ABOUT_HOME.text}</p>
+        {/* text-center leva junto o link do fim, que é inline-flex */}
+        <div className="relative p-8 text-center sm:p-10 md:order-1 md:p-14 md:text-left">
+          {/* O cartão inteiro já entra de uma vez: aqui o cabeçalho não anima
+              por conta própria */}
+          <SectionHeading
+            eyebrow={ABOUT_HOME.eyebrow}
+            title={ABOUT_HOME.title}
+            text={ABOUT_HOME.text}
+            tone="dark"
+            reveal={false}
+          />
 
           {/* Três colunas no celular: com flex-wrap, o terceiro número caía
               sozinho numa segunda linha e abria um buraco no meio do cartão.
               O valor encolhe junto, senão "4.000+" não cabe na coluna que
-              sobra depois do padding. A partir de sm volta a ser fita */}
-          <ul className="mt-8 grid grid-cols-3 gap-x-3 gap-y-5 border-t border-white/15 pt-7 sm:flex sm:flex-wrap sm:gap-x-10">
+              sobra depois do padding. A partir de sm volta a ser fita.
+
+              Número centrado sobre a legenda, como na faixa do hero: o valor
+              é mais curto que o rótulo, e pela esquerda cada par ficava com
+              um encaixe diferente */}
+          <ul className="mt-8 grid grid-cols-3 gap-x-3 gap-y-5 border-t border-white/15 pt-7 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-10 md:justify-start">
             {HERO_STATS.map((s) => (
-              <li key={s.label}>
+              <li key={s.label} className="text-center">
                 <p className="font-display text-xl leading-none font-semibold text-white sm:text-3xl">
                   {s.value}
                 </p>

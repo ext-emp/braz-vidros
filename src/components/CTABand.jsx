@@ -1,4 +1,5 @@
 import WhatsAppIcon from "./WhatsAppIcon.jsx";
+import SectionHeading from "./SectionHeading.jsx";
 import {
   waLink,
   PHONE,
@@ -31,15 +32,16 @@ export default function CTABand({
           compact ? "" : "md:grid-cols-[1.25fr_minmax(0,1fr)]"
         }`}
       >
-        <div>
-          <p className="eyebrow mb-3">Orçamento sem compromisso</p>
-          <h2 className="font-display text-3xl leading-tight font-semibold md:text-4xl">
-            Manda a medida, a gente manda o preço
-          </h2>
-          <p className="mt-4 max-w-md leading-relaxed text-steel">
-            Fotos do ambiente e medidas aproximadas já bastam para um primeiro
-            orçamento.
-          </p>
+        {/* text-center leva junto o botão, que é inline-flex */}
+        <div className="text-center md:text-left">
+          {/* O cartão inteiro já entra de uma vez: aqui o cabeçalho não anima
+              por conta própria */}
+          <SectionHeading
+            eyebrow="Orçamento sem compromisso"
+            title="Manda a medida, a gente manda o preço"
+            text="Fotos do ambiente e medidas aproximadas já bastam para um primeiro orçamento."
+            reveal={false}
+          />
           <a
             href={waLink(message)}
             target="_blank"

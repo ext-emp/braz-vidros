@@ -202,45 +202,61 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* Painel lateral: entra deslizando da direita, não é dropdown.
-          Fica sempre montado para a saída também ser animada */}
-      <div
-        onClick={() => setOpen(false)}
-        aria-hidden="true"
-        className={`fixed inset-0 bg-ink/70 backdrop-blur-sm transition-opacity duration-500 lg:hidden ${
-          open
-            ? "pointer-events-auto opacity-100"
-            : "pointer-events-none opacity-0"
-        }`}
-      />
+      {/* Menu em tela cheia: logo e fechar em cima, os destinos em serifada
+          grande separados por filete, e a chamada presa embaixo. Sem painel
+          lateral e sem véu: a tela toda é o menu, então nada do fundo disputa
+          atenção. Fica sempre montado para a saída também ser animada */}
       <aside
         aria-label="Menu"
         aria-hidden={!open}
-        className={`pointer-events-auto fixed top-0 right-0 flex h-dvh w-[min(20rem,85vw)] flex-col bg-ink px-6 py-6 shadow-2xl transition-transform duration-500 ease-out lg:hidden ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-0 flex h-dvh flex-col overflow-y-auto bg-ink px-6 pt-6 pb-8 transition-[opacity,translate] duration-400 ease-out sm:px-10 lg:hidden ${
+          open
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-3 opacity-0"
         }`}
       >
-        <div className="flex items-center justify-between">
-          <Logo className="h-6" tabIndex={open ? 0 : -1} />
+        {/* Mesmo brilho de acento das faixas escuras do site, para o fundo do
+            menu não ser um retângulo chapado */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-24 -right-20 h-80 w-80 rounded-full opacity-25"
+          style={{
+            background: "radial-gradient(circle, #8cceee 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="relative flex items-center justify-between">
+          <Logo className="h-7" tabIndex={open ? 0 : -1} />
           <button
             type="button"
             onClick={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
             aria-label="Fechar menu"
-            className="glass-dark flex h-10 w-10 items-center justify-center rounded-full text-xl leading-none text-white transition-transform duration-300 hover:scale-110"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors duration-300 hover:bg-white/20"
           >
-            &times;
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            >
+              <path d="M6 6l12 12" />
+              <path d="M18 6 6 18" />
+            </svg>
           </button>
         </div>
 
-        <ul className="mt-8 flex-1 overflow-y-auto">
+        <ul className="relative mt-8 border-t border-white/12">
           {NAV_LINKS.map((l) => (
-            <li key={l.href} className="border-b border-white/10">
+            <li key={l.href} className="border-b border-white/12">
               <NavLink
                 to={l.href}
                 tabIndex={open ? 0 : -1}
                 className={({ isActive }) =>
-                  `font-display block py-4 text-2xl font-semibold transition-colors duration-300 ${
+                  `font-display block py-5 text-[28px] leading-tight font-semibold transition-colors duration-300 ${
                     isActive
                       ? "text-accent-soft"
                       : "text-white hover:text-accent-soft"
@@ -253,22 +269,26 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <a
-          href={PHONE_HREF}
-          tabIndex={open ? 0 : -1}
-          className="mt-6 block text-center text-sm font-bold text-white/80 transition-colors duration-300 hover:text-accent-soft"
-        >
-          {PHONE}
-        </a>
-        <a
-          href={waLink(WA_MESSAGE)}
-          target="_blank"
-          rel="noopener noreferrer"
-          tabIndex={open ? 0 : -1}
-          className="sheen mt-4 block rounded-full bg-accent-soft px-8 py-4 text-center text-sm font-bold text-ink transition-colors duration-300 hover:bg-white"
-        >
-          Solicitar orçamento
-        </a>
+        {/* mt-auto prende o bloco no rodapé em tela alta, e o pt-10 garante o
+            respiro quando a lista já ocupa tudo */}
+        <div className="relative mt-auto pt-10">
+          <a
+            href={PHONE_HREF}
+            tabIndex={open ? 0 : -1}
+            className="block text-center text-sm font-bold text-white/80 transition-colors duration-300 hover:text-accent-soft"
+          >
+            {PHONE}
+          </a>
+          <a
+            href={waLink(WA_MESSAGE)}
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={open ? 0 : -1}
+            className="sheen mt-4 block rounded-full bg-accent-soft px-8 py-4 text-center text-sm font-bold text-ink transition-colors duration-300 hover:bg-white"
+          >
+            Solicitar orçamento
+          </a>
+        </div>
       </aside>
     </header>
   );

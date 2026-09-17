@@ -2,8 +2,9 @@
   Todo o conteúdo editável do site num lugar só.
   TODO (aguardando cliente):
    - Fotos reais dos projetos: as de /public/projetos, /public/focus e
-     /public/sobre são banco de imagens (Unsplash License, uso comercial
-     liberado) e devem sair assim que o cliente mandar as dele
+     /public/sobre/equipe.jpg são banco de imagens (Unsplash License, uso
+     comercial liberado) e devem sair assim que o cliente mandar as dele
+     (/public/sobre/sobre-nos.jpg já é foto real da loja)
    - Logo, se existir
 */
 
@@ -26,44 +27,116 @@ export const NAV_LINKS = [
   { label: "Contato", href: "/contato" },
 ];
 
-/* Meta de cada página (título da aba + description) */
+/* Domínio do site. Vale para o canonical, para as URLs absolutas do Open
+   Graph e para o sitemap, que precisam da URL inteira */
+export const SITE_URL = "https://brazvidros.com.br";
+
+/* Capa padrão do preview de link (1200x630). Foto de obra entregue, não a
+   logo: o preview costuma ser o primeiro contato com a marca */
+export const OG_IMAGE = "/og-cover.jpg";
+export const OG_IMAGE_ALT =
+  "Porta de correr de alumínio com vidro instalada pela Braz Vidros";
+
+/*
+  Meta de cada página. É a fonte única do SEO e do sitemap, então rota nova
+  entra aqui e aparece nos dois lugares.
+
+  - `path`: a rota, de onde saem o canonical, a og:url e o <loc> do sitemap
+  - `image`: capa 1200x630 do preview de link; sem ela vale a OG_IMAGE
+  - `lastmod`: data da última mudança de conteúdo da página, escrita à mão.
+    É o que vai para o sitemap, então atualize junto com o texto
+  - `noindex`: tira a página do sitemap e manda `noindex, nofollow` para o
+    robô. Hoje nenhuma rota usa, porque o site inteiro é público
+*/
 export const PAGE_META = {
   home: {
+    path: "/",
     title: "Braz Vidros | Vidraçaria e Esquadrias de Alumínio em Novo Hamburgo",
     description:
       "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida, com garantia de no mínimo 1 ano. Orçamento presencial ou pelo WhatsApp.",
+    image: "/og-cover.jpg",
+    imageAlt: "Porta de correr de alumínio com vidro instalada pela Braz Vidros",
+    lastmod: "2026-09-16",
+    changefreq: "monthly",
+    priority: "1.0",
   },
   vidracaria: {
+    path: "/vidracaria",
     title: "Vidraçaria em Novo Hamburgo | Braz Vidros",
     description:
       "Box de banheiro, espelhos sob medida, sacadas de vidro, guarda-corpo, coberturas de policarbonato e quiosques em Novo Hamburgo e região.",
+    image: "/og-vidracaria.jpg",
+    imageAlt: "Cortina de vidro instalada em sacada pela Braz Vidros",
+    lastmod: "2026-09-16",
+    changefreq: "monthly",
+    priority: "0.9",
   },
   esquadrias: {
+    path: "/esquadrias",
     title: "Esquadrias de Alumínio em Novo Hamburgo | Braz Vidros",
     description:
       "Janelas, portas, portões e fechamentos de alumínio fabricados sob medida para sua obra em Novo Hamburgo e região.",
+    image: "/og-esquadrias.jpg",
+    imageAlt: "Fachada de alumínio com vidro executada pela Braz Vidros",
+    lastmod: "2026-09-16",
+    changefreq: "monthly",
+    priority: "0.9",
   },
   sobre: {
+    path: "/sobre",
     title: "Sobre a Braz Vidros | Vidraçaria em Novo Hamburgo",
     description:
       "A história da Braz Vidros: vidraçaria e esquadrias de alumínio em Novo Hamburgo/RS, com medição e instalação próprias, garantia de no mínimo 1 ano e pós-venda de verdade.",
+    image: "/og-sobre.jpg",
+    imageAlt: "Fachada da loja da Braz Vidros em Novo Hamburgo",
+    lastmod: "2026-09-16",
+    changefreq: "yearly",
+    priority: "0.6",
   },
   contato: {
+    path: "/contato",
     title: "Contato | Braz Vidros",
     description:
       "Peça seu orçamento presencial ou pelo WhatsApp: vidraçaria e esquadrias de alumínio em Novo Hamburgo e região.",
+    lastmod: "2026-09-16",
+    changefreq: "yearly",
+    priority: "0.8",
   },
   privacidade: {
+    path: "/privacidade",
     title: "Política de Privacidade | Braz Vidros",
     description:
       "Como a Braz Vidros trata os dados pessoais de quem visita o site e pede orçamento, conforme a LGPD (Lei 13.709/2018).",
+    lastmod: "2026-09-02",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   cookies: {
+    path: "/cookies",
     title: "Política de Cookies | Braz Vidros",
     description:
       "Quais cookies o site da Braz Vidros usa, para que servem e como mudar suas preferências a qualquer momento.",
+    lastmod: "2026-09-02",
+    changefreq: "yearly",
+    priority: "0.3",
+  },
+  /* A página de endereço errado. `noindex` tira ela do sitemap e manda o robô
+     não guardar: página de erro indexada rouba o lugar da página certa */
+  naoEncontrada: {
+    path: "/404",
+    title: "Página não encontrada | Braz Vidros",
+    description:
+      "O endereço que você tentou abrir não existe no site da Braz Vidros. Veja aqui as páginas de vidraçaria, esquadrias, sobre e contato.",
+    noindex: true,
   },
 };
+
+/* As rotas que entram no sitemap: as mesmas do PAGE_META, menos as marcadas
+   com noindex. A rota coringa (*) cai na home e não é listada em lugar
+   nenhum, senão o sitemap apontaria para uma página que não existe */
+export const SITEMAP_ROUTES = Object.values(PAGE_META).filter(
+  (page) => !page.noindex,
+);
 
 /*
   Faixa de números no rodapé do hero.
@@ -327,11 +400,14 @@ export const PORTFOLIO = [
 export const PORTFOLIO_DESTAQUE = PORTFOLIO.filter((p) => p.destaque);
 
 /* Os três botões do filtro da home. O id casa com o campo `spec`;
-   "tudo" é o estado inicial e não filtra nada */
+   "tudo" é o estado inicial e não filtra nada.
+   `curto` é o que aparece no celular: as três opções dividem a largura da
+   tela em partes iguais, e "Esquadrias de alumínio" não cabe num terço de
+   320px sem quebrar em duas linhas */
 export const PORTFOLIO_FILTROS = [
-  { id: "tudo", label: "Tudo" },
-  { id: "vidro", label: "Vidro temperado" },
-  { id: "aluminio", label: "Esquadrias de alumínio" },
+  { id: "tudo", label: "Tudo", curto: "Tudo" },
+  { id: "vidro", label: "Vidro temperado", curto: "Vidro" },
+  { id: "aluminio", label: "Esquadrias de alumínio", curto: "Alumínio" },
 ];
 
 /* Endereço da empresa: alimenta o mapa do Contato, o rodapé e o schema.org */
@@ -354,11 +430,10 @@ export const mapEmbed = (zoom = 17) =>
 export const mapLink = () =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLine)}`;
 
-/* Os canais da página de contato, na ordem em que aparecem. `icon` casa com
-   as chaves do mapa em Contato.jsx, e o canal sem `href` é só informação */
+/* Os canais da página de contato, na ordem em que aparecem. O canal sem
+   `href` é só informação */
 export const CONTACT_CHANNELS = [
   {
-    icon: "whatsapp",
     label: "WhatsApp",
     value: PHONE,
     text: "Manda foto do ambiente e as medidas aproximadas. Respondemos no mesmo dia útil.",
@@ -366,7 +441,6 @@ export const CONTACT_CHANNELS = [
     external: true,
   },
   {
-    icon: "local",
     label: "Onde estamos",
     value: ADDRESS.street,
     text: `${ADDRESS.district}, ${ADDRESS.city}, ${ADDRESS.state}, ${ADDRESS.cep}`,
@@ -374,7 +448,6 @@ export const CONTACT_CHANNELS = [
     external: true,
   },
   {
-    icon: "instagram",
     label: "Instagram",
     value: "@braz_vidross",
     text: "As obras recentes aparecem lá antes de virarem foto no site.",
@@ -382,7 +455,6 @@ export const CONTACT_CHANNELS = [
     external: true,
   },
   {
-    icon: "relogio",
     label: "Atendimento",
     value: "Segunda a sábado",
     text: "Orçamento presencial ou pelo WhatsApp, sem compromisso.",
@@ -399,7 +471,8 @@ export const ABOUT = {
     `Começamos com uma estrutura pequena, atendendo os primeiros clientes, e crescemos obra por obra. Hoje são ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações em Novo Hamburgo e região, do box de banheiro à fachada comercial.`,
     "Do orçamento à instalação, quem mede é quem instala, com vidro temperado de procedência e perfis de alumínio de qualidade. E o serviço não acaba na entrega: todo trabalho tem garantia de no mínimo 1 ano e seguimos à disposição depois que a obra fica pronta.",
   ],
-  image: "/sobre/equipe.jpg",
+  image: "/sobre/sobre-nos.jpg",
+  imageAlt: "Fachada da loja da Braz Vidros em Novo Hamburgo",
 };
 
 /* Resumo do Sobre que vai na home, entre a galeria e a chamada final.
@@ -409,7 +482,10 @@ export const ABOUT_HOME = {
   eyebrow: ABOUT.eyebrow,
   title: ABOUT.title,
   text: "Começamos com uma estrutura pequena e crescemos obra por obra, com o mesmo compromisso de sempre: qualidade na instalação, confiança no atendimento e presença também no pós-venda.",
-  image: ABOUT.image,
+  /* Foto própria, e não a ABOUT.image: a da página Sobre é vertical e na
+     faixa da home ela entra deitada, cortando justo a placa da loja */
+  image: "/sobre/equipe.jpg",
+  imageAlt: "Equipe da Braz Vidros em instalação",
   link: "/sobre",
   linkText: "Conheça a Braz Vidros",
 };
@@ -417,7 +493,7 @@ export const ABOUT_HOME = {
 /* Nossa história, do jeito que o cliente conta */
 export const ABOUT_STORY = {
   eyebrow: "Nossa história",
-  title: "De uma estrutura pequena a uma empresa de confiança",
+  title: "Nossa história",
   lede: "Crescemos, ampliamos os serviços e melhoramos os processos, mas os princípios que nos trouxeram até aqui continuam os mesmos.",
   closing:
     "Braz Vidros: qualidade na instalação, confiança no atendimento e compromisso também no pós-venda.",

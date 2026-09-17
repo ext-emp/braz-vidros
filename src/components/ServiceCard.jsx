@@ -104,8 +104,10 @@ export default function ServiceCard({ title, text, icon }) {
   // transição CSS de hover do card não briga com ele
   return (
     <div data-reveal>
-      <div className="glass sheen group h-full rounded-3xl p-7 transition-transform duration-500 ease-out hover:-translate-y-1.5">
-        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-accent/15 text-accent ring-1 ring-accent/30 transition-colors duration-300 group-hover:bg-accent/25">
+      {/* Em coluna única (celular) o cartão é centrado, ícone incluído; a
+          partir de sm ele divide a linha com outro e volta para a esquerda */}
+      <div className="glass sheen group h-full rounded-3xl p-7 text-center transition-transform duration-500 ease-out hover:-translate-y-1.5 sm:text-left">
+        <div className="mx-auto mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-accent/15 text-accent ring-1 ring-accent/30 transition-colors duration-300 group-hover:bg-accent/25 sm:mx-0">
           <svg
             viewBox="0 0 24 24"
             className="h-6 w-6"

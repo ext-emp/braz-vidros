@@ -17,6 +17,7 @@ import Sobre from "./pages/Sobre.jsx";
 import Contato from "./pages/Contato.jsx";
 import Privacidade from "./pages/Privacidade.jsx";
 import Cookies from "./pages/Cookies.jsx";
+import NaoEncontrada from "./pages/NaoEncontrada.jsx";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -115,7 +116,10 @@ export default function App() {
               <Route path="/contato" element={<Contato />} />
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="/cookies" element={<Cookies />} />
-              <Route path="*" element={<Home />} />
+              {/* Endereço que não existe cai na página de erro, não na home:
+                  home no lugar de 404 devolve 200 com conteúdo certo para um
+                  endereço errado, e o buscador trata isso como duplicata */}
+              <Route path="*" element={<NaoEncontrada />} />
             </Routes>
           </main>
           <Footer />

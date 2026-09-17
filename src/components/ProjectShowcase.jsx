@@ -16,6 +16,13 @@ import {
 export default function ProjectShowcase() {
   const [filtro, setFiltro] = useState("tudo");
 
+  // Posição do marcador na chave. Nunca -1: "tudo" é o estado inicial e o
+  // primeiro item da lista
+  const indice = Math.max(
+    PORTFOLIO_FILTROS.findIndex((f) => f.id === filtro),
+    0
+  );
+
   const projects =
     filtro === "tudo"
       ? PORTFOLIO_DESTAQUE
@@ -36,12 +43,27 @@ export default function ProjectShowcase() {
 
   return (
     <>
+      {/*
+        Chave de três posições, e não três pílulas soltas: as opções são
+        exclusivas, então elas dividem uma só caixa em partes iguais e o
+        marcador desliza de uma para a outra. Assim as três ficam sempre lado
+        a lado, sem a terceira cair para a linha de baixo no celular.
+
+        O marcador é um elemento só, posicionado por translateX: a largura é
+        um terço da área interna (o padding de 0.25rem de cada lado sai da
+        conta), e cada passo é exatamente a própria largura dele.
+      */}
       <div
         data-reveal
         role="group"
         aria-label="Filtrar projetos por especialidade"
-        className="mt-7 flex flex-wrap items-center justify-center gap-2.5"
+        className="glass relative mx-auto mt-7 grid w-full max-w-md grid-cols-3 rounded-full p-1 sm:max-w-lg"
       >
+        <span
+          aria-hidden="true"
+          style={{ transform: `translateX(${indice * 100}%)` }}
+          className="pointer-events-none absolute inset-y-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-full bg-accent shadow-[0_8px_18px_-10px_rgb(50_53_96/0.9)] transition-transform duration-400 ease-out motion-reduce:transition-none"
+        />
         {PORTFOLIO_FILTROS.map((f) => {
           const ativo = filtro === f.id;
           return (
@@ -50,13 +72,15 @@ export default function ProjectShowcase() {
               type="button"
               onClick={() => setFiltro(f.id)}
               aria-pressed={ativo}
-              className={`sheen min-h-11 rounded-full px-5 text-[13px] font-bold transition-colors duration-300 ${
-                ativo
-                  ? "border border-accent bg-accent text-white"
-                  : "glass text-steel hover:text-ink"
+              aria-label={f.label}
+              className={`relative z-10 min-h-11 rounded-full px-2 text-[12px] font-bold transition-colors duration-300 sm:text-[13px] ${
+                ativo ? "text-white" : "text-steel hover:text-ink"
               }`}
             >
-              {f.label}
+              {/* Rótulo curto no celular, inteiro a partir de sm. O aria-label
+                  fica com o inteiro nos dois casos */}
+              <span className="sm:hidden">{f.curto}</span>
+              <span className="hidden sm:inline">{f.label}</span>
             </button>
           );
         })}

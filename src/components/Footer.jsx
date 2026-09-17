@@ -12,15 +12,6 @@ import { openCookiePreferences } from "../lib/consent.js";
 
 const phonePretty = `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, 9)}-${WHATSAPP.slice(9)}`;
 
-const FOOTER_SERVICES = [
-  { label: "Box de banheiro", to: "/vidracaria" },
-  { label: "Espelhos sob medida", to: "/vidracaria" },
-  { label: "Sacadas de vidro", to: "/vidracaria" },
-  { label: "Guarda-corpo", to: "/vidracaria" },
-  { label: "Janelas de alumínio", to: "/esquadrias" },
-  { label: "Portas e fechamentos", to: "/esquadrias" },
-];
-
 const iconProps = {
   viewBox: "0 0 24 24",
   fill: "none",
@@ -76,11 +67,11 @@ export default function Footer() {
       <div className="container-site relative py-14 md:py-20">
         {/*
           Uma marcação, duas leituras. No celular empilha na ordem pedida:
-          marca, contato, as duas listas lado a lado e a chamada por último.
-          No lg vira as quatro colunas do modelo, com `order` recolocando o
-          contato no fim da linha e o alinhamento voltando para a esquerda.
+          marca, contato, navegação e a chamada por último. No lg vira as três
+          colunas do modelo, com `order` recolocando o contato no fim da linha
+          e o alinhamento voltando para a esquerda.
         */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 text-center lg:grid-cols-[1.5fr_1fr_1fr_1.4fr] lg:gap-x-10 lg:text-left">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 text-center lg:grid-cols-[1.5fr_1fr_1.4fr] lg:gap-x-10 lg:text-left">
           {/* Marca */}
           <div className="order-1 col-span-2 lg:col-span-1">
             <img
@@ -98,7 +89,7 @@ export default function Footer() {
           </div>
 
           {/* Contato: logo abaixo da marca no celular, última coluna no desktop */}
-          <div className="order-2 col-span-2 lg:order-4 lg:col-span-1">
+          <div className="order-2 col-span-2 lg:order-3 lg:col-span-1">
             <p className="hidden text-xs font-bold tracking-widest text-white/50 uppercase lg:block">
               Contato
             </p>
@@ -158,51 +149,27 @@ export default function Footer() {
             </a>
           </div>
 
-          {/*
-            No celular as duas listas vivem dentro deste par de largura fixa e
-            centralizado, então o bloco fica no meio da tela de verdade. No lg
-            o `contents` dissolve o invólucro e cada nav volta a ser coluna da
-            grade externa, na ordem do modelo.
-          */}
-          <div className="order-3 col-span-2 mx-auto grid w-full max-w-sm grid-cols-[repeat(2,minmax(0,auto))] gap-x-6 lg:contents">
-            {/* Navegação */}
-            <nav aria-label="Mapa do site" className="lg:order-2">
-              <p className="text-xs font-bold tracking-widest text-white/50 uppercase">
-                Navegação
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {NAV_LINKS.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      to={l.href}
-                      className="text-sm text-white/75 transition-colors duration-300 hover:text-accent-soft"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            {/* Serviços */}
-            <nav aria-label="Serviços" className="lg:order-3">
-              <p className="text-xs font-bold tracking-widest text-white/50 uppercase">
-                Serviços
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {FOOTER_SERVICES.map((s) => (
-                  <li key={s.label}>
-                    <Link
-                      to={s.to}
-                      className="text-sm text-white/75 transition-colors duration-300 hover:text-accent-soft"
-                    >
-                      {s.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
+          {/* Navegação */}
+          <nav
+            aria-label="Mapa do site"
+            className="order-3 col-span-2 lg:order-2 lg:col-span-1"
+          >
+            <p className="text-xs font-bold tracking-widest text-white/50 uppercase">
+              Navegação
+            </p>
+            <ul className="mt-4 space-y-2.5">
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    to={l.href}
+                    className="text-sm text-white/75 transition-colors duration-300 hover:text-accent-soft"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           {/* Chamada final, só no celular: no desktop ela vira a linha de
               WhatsApp da coluna de contato */}

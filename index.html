@@ -10,8 +10,14 @@
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href="https://brazvidros.com.br/" />
+    <!-- O site inteiro é público. O hook usePageMeta reescreve esta tag por
+         rota, e é onde entraria um noindex se algum dia houver área fechada -->
+    <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph: preview de link no WhatsApp/Instagram -->
+    <!-- Open Graph: preview de link no WhatsApp/Instagram.
+         Estas tags valem para quem não executa JavaScript, que é o caso dos
+         crawlers de rede social; nas rotas internas o usePageMeta troca o
+         conteúdo delas para quem executa -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:url" content="https://brazvidros.com.br/" />
@@ -21,10 +27,14 @@
       property="og:description"
       content="Vidro sob medida e esquadrias de alumínio em Novo Hamburgo e região. Box, espelhos, sacadas, guarda-corpo e policarbonato. Chama no WhatsApp."
     />
-    <!-- TODO: substituir pela foto real de capa (1200x630) quando o cliente enviar -->
     <meta property="og:image" content="https://brazvidros.com.br/og-cover.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Porta de correr de alumínio com vidro instalada pela Braz Vidros"
+    />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -34,6 +44,10 @@
       content="Vidro sob medida e esquadrias de alumínio em Novo Hamburgo e região. Orçamento presencial ou pelo WhatsApp."
     />
     <meta name="twitter:image" content="https://brazvidros.com.br/og-cover.jpg" />
+    <meta
+      name="twitter:image:alt"
+      content="Porta de correr de alumínio com vidro instalada pela Braz Vidros"
+    />
 
     <!-- Preload da primeira imagem do hero: protege o LCP -->
     <link rel="preload" as="image" href="/hero/vidracaria.png" fetchpriority="high" />
@@ -55,6 +69,7 @@
         "description": "Vidraçaria e esquadrias de alumínio sob medida: box de banheiro, espelhos, sacadas de vidro, guarda-corpo, coberturas de policarbonato, quiosques, janelas e portas de alumínio. Serviços com garantia de no mínimo 1 ano.",
         "url": "https://brazvidros.com.br/",
         "logo": "https://brazvidros.com.br/logo-braz-vidros-2.png",
+        "image": "https://brazvidros.com.br/og-cover.jpg",
         "telephone": "+55-51-99547-5761",
         "sameAs": ["https://www.instagram.com/braz_vidross"],
         "address": {
@@ -81,6 +96,25 @@
             { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Portas e portões de alumínio" } },
             { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Fechamentos e fachadas" } }
           ]
+        }
+      }
+    </script>
+
+    <!-- Schema.org WebSite: diz ao buscador o nome do site e o idioma, e é o
+         que permite o rótulo do site aparecer no lugar da URL crua -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Braz Vidros",
+        "alternateName": "Braz Vidros Vidraçaria e Esquadrias",
+        "url": "https://brazvidros.com.br/",
+        "inLanguage": "pt-BR",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Braz Vidros",
+          "url": "https://brazvidros.com.br/",
+          "logo": "https://brazvidros.com.br/logo-braz-vidros-2.png"
         }
       }
     </script>

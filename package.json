@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "sitemap": "node scripts/gerar-sitemap.mjs",
+    "prebuild": "node scripts/gerar-sitemap.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

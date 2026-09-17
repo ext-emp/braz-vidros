@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import SectionHeading from "./SectionHeading.jsx";
 import { DIFFERENTIALS } from "../data/content.js";
 
 /*
   Faixa de diferenciais em azul do logo. Mesma lista na home e na página
   Sobre, só o par de títulos muda.
+
+  O título fica sempre em cima dos quatro pontos, em qualquer largura: na
+  coluna lateral ele quebrava em duas linhas e empurrava os pontos para a
+  metade direita do cartão.
 
   Celular: os quatro pontos viram um slider que passa sozinho, um cartão de
   cada vez. Quem encostar na fita manda: o rodízio para por um minuto para a
@@ -113,15 +118,17 @@ export default function DifferentialsBand({
     <section className="container-site py-16 md:py-24">
       <div
         data-reveal-group
-        className="grid gap-8 rounded-[1.75rem] bg-accent p-7 sm:p-9 md:gap-10 md:p-10 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-14"
+        className="grid gap-8 rounded-[1.75rem] bg-accent p-7 sm:p-9 md:gap-10 md:p-10"
       >
-        <div data-reveal>
-          <p className="eyebrow mb-3 text-accent-soft">{eyebrow}</p>
-          {/* Corpo pelo vw no celular: o título da home cabe em uma linha */}
-          <h2 className="font-display text-[clamp(1.35rem,5.4vw,2.25rem)] leading-tight font-semibold text-white">
-            {title}
-          </h2>
-        </div>
+        {/* Item da animação do cartão: entra inteiro, junto dos diferenciais */}
+        <SectionHeading
+          eyebrow={eyebrow}
+          title={title}
+          tone="dark"
+          size="card"
+          align="center"
+          reveal="item"
+        />
 
         {/* min-w-0: item de grid nasce com min-width auto, e aí a largura
             mínima da fita (a soma dos quatro cartões) esticaria a faixa para
@@ -135,7 +142,7 @@ export default function DifferentialsBand({
               <li
                 key={d.title}
                 data-reveal
-                className={`w-full shrink-0 snap-start sm:w-auto sm:shrink ${FILETES[i]}`}
+                className={`w-full shrink-0 snap-start text-center sm:w-auto sm:shrink sm:text-left ${FILETES[i]}`}
               >
                 <h3 className="font-display mb-2 text-base font-semibold text-white md:text-lg">
                   {d.title}

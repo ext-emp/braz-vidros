@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import SectionHeading from "./SectionHeading.jsx";
 import { PROCESS } from "../data/content.js";
 
 /*
@@ -61,12 +62,12 @@ export default function ProcessSteps() {
   return (
     <section ref={rootRef} className="bg-mist/60 py-16 md:py-24">
       <div className="container-site">
-        <div data-reveal className="mb-12 text-center md:mb-16">
-          <p className="eyebrow mb-3">Como funciona</p>
-          <h2 className="font-display text-3xl font-semibold md:text-4xl">
-            Do primeiro contato à entrega
-          </h2>
-        </div>
+        <SectionHeading
+          eyebrow="Como funciona"
+          title="Do primeiro contato à entrega"
+          align="center"
+          className="mb-12 md:mb-16"
+        />
 
         <ol className="grid sm:grid-cols-2 sm:gap-y-9 lg:grid-cols-4 lg:gap-y-0">
           {PROCESS.map((p, i) => (

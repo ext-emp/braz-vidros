@@ -1,3 +1,6 @@
+# Site institucional, inteiro público: não há área administrativa nem rota de
+# autenticação para bloquear. Rota privada que venha a existir entra aqui como
+# Disallow, e também com noindex no PAGE_META, que é quem manda no robô.
 User-agent: *
 Allow: /
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 import CTABand from "../components/CTABand.jsx";
-import WhatsAppIcon from "../components/WhatsAppIcon.jsx";
+import SectionHeading from "../components/SectionHeading.jsx";
 import {
   CONTACT_CHANNELS,
   PAGE_META,
@@ -12,71 +12,25 @@ import {
 import { useConsent, saveConsent } from "../lib/consent.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 
-/* Ícones dos canais, mesmo traço dos serviços. A chave vem do campo `icon`
-   de cada canal em content.js. O do WhatsApp é o único preenchido, porque
-   é a marca dele e vem do componente compartilhado */
-const ICONS = {
-  local: (
-    <>
-      <path d="M12 21.5s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" />
-      <circle cx="12" cy="10.2" r="2.6" />
-    </>
-  ),
-  instagram: (
-    <>
-      <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
-      <circle cx="12" cy="12" r="4" />
-      <path d="M16.9 7.1h.01" />
-    </>
-  ),
-  relogio: (
-    <>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M12 7.2V12l3.2 2" />
-    </>
-  ),
-};
-
-function CanalIcone({ icon }) {
-  if (icon === "whatsapp") return <WhatsAppIcon className="h-6 w-6 fill-current" />;
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-6 w-6"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {ICONS[icon] ?? ICONS.local}
-    </svg>
-  );
-}
-
 /* Um canal. Vira link quando tem `href`, e continua sendo uma caixa comum
    quando é só informação, como o horário de atendimento */
-function Canal({ icon, label, value, text, href, external }) {
+function Canal({ label, value, text, href, external }) {
   const conteudo = (
     <>
-      <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-accent/15 text-accent ring-1 ring-accent/30 transition-colors duration-300 group-hover:bg-accent/25 sm:mb-0 sm:shrink-0">
-        <CanalIcone icon={icon} />
+      <span className="block text-xs font-bold tracking-widest text-steel uppercase">
+        {label}
       </span>
-      <span className="block">
-        <span className="block text-xs font-bold tracking-widest text-steel uppercase">
-          {label}
-        </span>
-        <span className="font-display mt-1.5 block text-xl font-semibold text-ink">
-          {value}
-        </span>
-        <span className="mt-1.5 block text-sm leading-relaxed text-steel">{text}</span>
+      <span className="font-display mt-1.5 block text-xl font-semibold text-ink">
+        {value}
       </span>
+      <span className="mt-1.5 block text-sm leading-relaxed text-steel">{text}</span>
     </>
   );
 
+  /* Centrado no celular, onde o cartão ocupa a linha inteira; da grade de
+     duas colunas em diante volta a ser alinhado à esquerda */
   const classe =
-    "glass sheen group block h-full rounded-3xl p-6 transition-transform duration-500 ease-out sm:flex sm:gap-5";
+    "glass sheen group block h-full rounded-3xl p-6 text-center transition-transform duration-500 ease-out sm:text-left";
 
   if (!href) return <div className={classe}>{conteudo}</div>;
 
@@ -115,16 +69,11 @@ export default function Contato() {
       <section className="container-site py-16 md:py-24">
         <div className="grid items-stretch gap-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-16">
           <div>
-            <div data-reveal>
-              <p className="eyebrow mb-3">Fale com a gente</p>
-              <h2 className="font-display text-3xl leading-tight font-semibold md:text-4xl">
-                Todos os caminhos até a gente
-              </h2>
-              <p className="mt-4 max-w-md leading-relaxed text-steel">
-                O WhatsApp é o mais rápido, mas se preferir passar na loja ou
-                acompanhar as obras pelo Instagram, está tudo aqui.
-              </p>
-            </div>
+            <SectionHeading
+              eyebrow="Fale com a gente"
+              title="Todos os caminhos até a gente"
+              text="O WhatsApp é o mais rápido, mas se preferir passar na loja ou acompanhar as obras pelo Instagram, está tudo aqui."
+            />
 
             <div data-reveal-group className="mt-10 grid gap-4 sm:grid-cols-2">
               {CONTACT_CHANNELS.map((c) => (
@@ -191,7 +140,7 @@ export default function Contato() {
           )}
         </div>
 
-        <div className="container-site mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="container-site mt-4 flex flex-wrap items-center justify-center gap-3 text-center md:justify-between md:text-left">
           <address className="text-sm text-steel not-italic">{addressLine}</address>
           <a
             href={mapLink()}

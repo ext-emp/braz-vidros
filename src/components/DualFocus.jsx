@@ -9,9 +9,12 @@ const SERVICES_BY_FOCUS = {
 };
 
 /* Azul do logo em bloco: a fita de serviços é o que puxa o olho para os
-   trabalhos, então ela não desaparece no branco da seção */
+   trabalhos, então ela não desaparece no branco da seção.
+   Largura fixa de 205px com o texto centralizado: as pílulas ficam do mesmo
+   tamanho, alinhadas em coluna quando a lista quebra em linhas. O padding
+   lateral é curto só para o rótulo mais longo caber dentro dos 205px */
 const chipClass =
-  "shrink-0 whitespace-nowrap rounded-full border border-accent bg-accent px-4 py-2.5 text-[13px] font-medium text-white shadow-[0_4px_12px_-6px_rgb(50_53_96/0.55)]";
+  "flex w-[205px] shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-accent bg-accent px-2 py-2.5 text-center text-[13px] font-medium text-white shadow-[0_4px_12px_-6px_rgb(50_53_96/0.55)]";
 
 /* Quanto a fita anda por segundo, em px. Igual nas duas para não parecer
    que uma especialidade corre mais que a outra */
@@ -27,7 +30,7 @@ const VELOCIDADE = 26;
   vez de animação CSS porque o arraste precisa somar à posição corrente, e o
   transform de uma animação CSS em curso não dá para ler nem continuar.
 */
-function ServiceTrack({ items, direction }) {
+function ServiceTrack({ items, direction, alinharDireita = false }) {
   const tapeRef = useRef(null);
 
   useEffect(() => {
@@ -147,7 +150,12 @@ function ServiceTrack({ items, direction }) {
 
   return (
     <div className="focus-track">
-      <div ref={tapeRef} className="focus-tape">
+      {/* Só de md para cima: no celular a fita corre por transform e o
+          alinhamento do flex não teria efeito nenhum */}
+      <div
+        ref={tapeRef}
+        className={`focus-tape${alinharDireita ? " md:justify-end" : ""}`}
+      >
         <div className="focus-group">
           {items.map((s) => (
             <span key={s.title} className={chipClass}>
@@ -171,31 +179,51 @@ function ServiceTrack({ items, direction }) {
 export default function DualFocus() {
   return (
     <section className="container-site pt-20 pb-16 md:pt-28 md:pb-24">
-      <div className="mb-10 border-b border-ink/12 pb-6 md:mb-16 md:flex md:items-end md:justify-between md:gap-12 md:pb-7">
-        <div data-reveal className="md:max-w-xl">
+      {/* Título em cima, apoio logo abaixo: lado a lado a frase de apoio não
+          se lia como subtítulo, parecia outro bloco de texto */}
+      <div
+        data-reveal-group
+        className="mb-10 border-b border-ink/12 pb-6 text-center md:mb-16 md:pb-7 md:text-left"
+      >
+        <div data-reveal>
           <p className="eyebrow mb-3">O que fazemos</p>
-          <h2 className="font-display text-[34px] leading-tight font-semibold md:text-5xl">
+          {/* Mesmo degrau de abertura do SectionHeading (tamanho "md") */}
+          <h2 className="font-display text-[28px] leading-tight font-semibold md:text-5xl">
             Duas especialidades, <br className="hidden md:block" />
             um só padrão de acabamento
           </h2>
         </div>
-        <p data-reveal className="mt-4 text-steel md:mt-0 md:max-w-xs">
-          Vidro e alumínio andam juntos em quase toda obra. Aqui você resolve os
-          dois com a mesma equipe.
+        <p
+          data-reveal
+          className="mx-auto mt-4 max-w-md leading-relaxed text-steel md:mx-0 md:mt-5"
+        >
+          Vidro e alumínio andam juntos em quase toda obra.
+          <br /> Aqui você resolve os dois com a mesma equipe.
         </p>
       </div>
 
       <div className="flex flex-col gap-14 md:gap-20">
         {FOCUS.map((f, i) => {
           const fotoPrimeiro = i % 2 === 0;
+          /*
+            De lg para cima a coluna de texto tem a largura exata da fita de
+            serviços, 418px, que são duas pílulas de 205 mais os 8 do vão.
+            Assim o texto começa e termina junto com as pílulas e a foto fica
+            com todo o resto, sem sobra em nenhuma das duas pontas. Mudou a
+            largura da pílula, muda este número.
+
+            Entre md e lg a divisão volta a ser meio a meio: com 418px fixos
+            numa tela de 768 sobrariam 230px para a foto, que tem 420 de
+            altura e viraria uma tira em pé.
+          */
           return (
             <div
               key={f.id}
               data-reveal-group
-              className={`md:grid md:items-center md:gap-14 ${
+              className={`md:grid md:grid-cols-2 md:items-center md:gap-14 ${
                 fotoPrimeiro
-                  ? "md:grid-cols-[520px_minmax(0,1fr)]"
-                  : "md:grid-cols-[minmax(0,1fr)_520px]"
+                  ? "lg:grid-cols-[minmax(0,1fr)_418px]"
+                  : "lg:grid-cols-[418px_minmax(0,1fr)]"
               }`}
             >
               <div
@@ -212,18 +240,26 @@ export default function DualFocus() {
                 />
               </div>
 
-              <div data-reveal>
-                <h3 className="font-display mb-3 text-3xl leading-tight font-semibold md:text-[38px]">
+              {/* Com a foto à direita, o texto encosta nela: alinhado à
+                  esquerda sobrava um vão entre a fita de serviços e a foto */}
+              <div
+                data-reveal
+                className={`text-center ${fotoPrimeiro ? "md:text-left" : "md:text-right"}`}
+              >
+                {/* 34px e não 38: em 38 "Esquadrias de Alumínio" não cabe nos
+                    418px da coluna e quebra em duas linhas */}
+                <h3 className="font-display mb-3 text-[26px] leading-tight font-semibold md:text-[34px]">
                   {f.title}
                 </h3>
 
-                <p className="mb-6 max-w-[480px] text-[15px] leading-relaxed text-steel">
+                <p className="mx-auto mb-6 max-w-[480px] text-[15px] leading-relaxed text-steel md:mx-0">
                   {f.text}
                 </p>
 
                 <ServiceTrack
                   items={SERVICES_BY_FOCUS[f.id]}
                   direction={fotoPrimeiro ? "left" : "right"}
+                  alinharDireita={!fotoPrimeiro}
                 />
 
                 <Link

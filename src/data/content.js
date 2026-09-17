@@ -2,9 +2,9 @@
   Todo o conteúdo editável do site num lugar só.
   TODO (aguardando cliente):
    - Fotos reais dos projetos: as de /public/projetos, /public/focus e
-     /public/sobre/equipe.jpg são banco de imagens (Unsplash License, uso
+     /public/sobre/equipe.webp são banco de imagens (Unsplash License, uso
      comercial liberado) e devem sair assim que o cliente mandar as dele
-     (/public/sobre/sobre-nos.jpg já é foto real da loja)
+     (/public/sobre/sobre-nos.webp já é foto real da loja)
    - Logo, se existir
 */
 
@@ -35,7 +35,7 @@ export const SITE_URL = "https://brazvidros.com.br";
    logo: o preview costuma ser o primeiro contato com a marca */
 export const OG_IMAGE = "/og-cover.jpg";
 export const OG_IMAGE_ALT =
-  "Porta de correr de alumínio com vidro instalada pela Braz Vidros";
+  "Logo da Braz Vidros, vidraçaria e esquadrias de alumínio em Novo Hamburgo";
 
 /*
   Meta de cada página. É a fonte única do SEO e do sitemap, então rota nova
@@ -56,7 +56,7 @@ export const PAGE_META = {
       "Vidraçaria em Novo Hamburgo/RS: box, espelhos, sacadas, guarda-corpo, policarbonato e esquadrias de alumínio sob medida, com garantia de no mínimo 1 ano. Orçamento presencial ou pelo WhatsApp.",
     image: "/og-cover.jpg",
     imageAlt:
-      "Porta de correr de alumínio com vidro instalada pela Braz Vidros",
+      "Logo da Braz Vidros, vidraçaria e esquadrias de alumínio em Novo Hamburgo",
     lastmod: "2026-09-17",
     changefreq: "monthly",
     priority: "1.0",
@@ -203,7 +203,7 @@ export const DIFFERENTIALS = [
    Substituir por fotos reais de projetos quando o cliente enviar. */
 export const HERO_SLIDES = [
   {
-    image: "/hero/vidracaria.png",
+    image: "/hero/vidracaria.webp",
     label: "Vidraçaria em Novo Hamburgo",
     title: ["Vidro sob medida,", "do box à fachada"],
     lede: "Medição, fabricação e instalação com prazo fechado, sem intermediário no meio do caminho.",
@@ -213,7 +213,7 @@ export const HERO_SLIDES = [
     },
   },
   {
-    image: "/hero/hero-esquadrias.jpg",
+    image: "/hero/hero-esquadrias.webp",
     label: "Esquadrias de Alumínio",
     title: ["Alumínio com", "precisão de milímetro"],
     lede: "Janelas, portas e fechamentos fabricados na medida exata da obra, com vedação correta.",
@@ -223,7 +223,7 @@ export const HERO_SLIDES = [
     },
   },
   {
-    image: "/hero/hero-sacadas.jpg",
+    image: "/hero/hero-sacadas.webp",
     label: "Sacadas & Coberturas",
     title: ["Sua vista,", "sem nada no caminho"],
     lede: "Sacadas de vidro e coberturas que abrem o ambiente sem abrir mão da segurança.",
@@ -239,7 +239,7 @@ export const FOCUS = [
     id: "vidracaria",
     title: "Vidraçaria",
     text: "Box de banheiro, espelhos, sacadas e guarda-corpo instalados com vidro temperado de procedência. Medição no local, corte sob medida e instalação limpa.",
-    image: "/focus/focus-vidracaria.jpg",
+    image: "/focus/focus-vidracaria.webp",
     link: "/vidracaria",
     linkText: "Ver tudo em vidraçaria",
   },
@@ -247,7 +247,7 @@ export const FOCUS = [
     id: "esquadrias",
     title: "Esquadrias de Alumínio",
     text: "Janelas, portas e fechamentos de alumínio fabricados na medida exata da sua obra. Perfis de qualidade, vedação correta e acabamento que dura.",
-    image: "/focus/focus-esquadrias.jpg",
+    image: "/focus/focus-esquadrias.webp",
     link: "/esquadrias",
     linkText: "Ver tudo em esquadrias",
   },
@@ -318,68 +318,68 @@ export const SERVICES_ALUMINUM = [
 */
 export const PORTFOLIO = [
   {
-    image: "/projetos/box.jpg",
+    image: "/projetos/box.webp",
     title: "Box incolor em apartamento",
     category: "Box",
     spec: "vidro",
     destaque: true,
   },
   {
-    image: "/projetos/espelho.jpg",
+    image: "/projetos/espelho.webp",
     title: "Espelho bisotado na sala",
     category: "Espelhos",
     spec: "vidro",
     destaque: true,
   },
   {
-    image: "/projetos/sacada.jpg",
+    image: "/projetos/sacada.webp",
     title: "Cortina de vidro na sacada",
     category: "Sacadas",
     spec: "vidro",
     destaque: true,
   },
   {
-    image: "/projetos/guarda-corpo.jpg",
+    image: "/projetos/guarda-corpo.webp",
     title: "Guarda-corpo de escada",
     category: "Guarda-corpo",
     spec: "vidro",
     destaque: true,
   },
   {
-    image: "/projetos/pergolado.jpg",
+    image: "/projetos/pergolado.webp",
     title: "Pergolado em área externa",
     category: "Policarbonato",
     spec: "vidro",
   },
   {
-    image: "/projetos/quiosque.jpg",
+    image: "/projetos/quiosque.webp",
     title: "Quiosque envidraçado",
     category: "Sacadas",
     spec: "vidro",
   },
   {
-    image: "/projetos/janelas.jpg",
+    image: "/projetos/janelas.webp",
     title: "Janelas de correr em casa nova",
     category: "Janelas",
     spec: "aluminio",
     destaque: true,
   },
   {
-    image: "/projetos/porta.jpg",
+    image: "/projetos/porta.webp",
     title: "Porta pivotante na entrada",
     category: "Portas",
     spec: "aluminio",
     destaque: true,
   },
   {
-    image: "/projetos/fachada.jpg",
+    image: "/projetos/fachada.webp",
     title: "Fachada de alumínio com vidro",
     category: "Fachadas",
     spec: "aluminio",
     destaque: true,
   },
   {
-    image: "/projetos/porta-correr.jpg",
+    image: "/projetos/porta-correr.webp",
     title: "Porta de correr entre sala e pátio",
     category: "Portas de correr",
     spec: "aluminio",
@@ -465,7 +465,7 @@ export const ABOUT = {
     `Começamos com uma estrutura pequena, atendendo os primeiros clientes, e crescemos obra por obra. Hoje são ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações em Novo Hamburgo e região, do box de banheiro à fachada comercial.`,
     "Do orçamento à instalação, quem mede é quem instala, com vidro temperado de procedência e perfis de alumínio de qualidade. E o serviço não acaba na entrega: todo trabalho tem garantia de no mínimo 1 ano e seguimos à disposição depois que a obra fica pronta.",
   ],
-  image: "/sobre/sobre-nos.jpg",
+  image: "/sobre/sobre-nos.webp",
   imageAlt: "Fachada da loja da Braz Vidros em Novo Hamburgo",
 };
 
@@ -478,7 +478,7 @@ export const ABOUT_HOME = {
   text: "Começamos com uma estrutura pequena e crescemos obra por obra, com o mesmo compromisso de sempre: qualidade na instalação, confiança no atendimento e presença também no pós-venda.",
   /* Foto própria, e não a ABOUT.image: a da página Sobre é vertical e na
      faixa da home ela entra deitada, cortando justo a placa da loja */
-  image: "/sobre/equipe.jpg",
+  image: "/sobre/equipe.webp",
   imageAlt: "Equipe da Braz Vidros em instalação",
   link: "/sobre",
   linkText: "Conheça a Braz Vidros",

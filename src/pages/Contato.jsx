@@ -83,7 +83,7 @@ export default function Contato() {
             className="hidden overflow-hidden rounded-[1.75rem] md:block"
           >
             <img
-              src="/focus/focus-vidracaria.jpg"
+              src="/focus/focus-vidracaria.webp"
               alt="Box de vidro temperado instalado pela Braz Vidros"
               loading="lazy"
               className="h-72 w-full object-cover lg:h-full"

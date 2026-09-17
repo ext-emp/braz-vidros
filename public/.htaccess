@@ -1,0 +1,74 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # HTTPS sempre. A segunda condição cobre hospedagem que termina o TLS num
+  # proxy na frente do Apache: lá o %{HTTPS} chega como "off" mesmo em conexão
+  # segura, e sem ela o redirecionamento entraria em laço
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Um endereço só para cada página: www vai para o domínio sem www, que é o
+  # que está declarado no canonical e no sitemap
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # Arquivo ou pasta que existe de verdade (assets com hash, imagens,
+  # robots.txt, sitemap.xml, favicon) é servido direto, sem passar pelo resto
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # As rotas do site entregam o index.html com status 200, que é o que o
+  # buscador precisa ver numa página que existe. A raiz não entra aqui porque
+  # quem serve ela é o DirectoryIndex
+  RewriteRule ^(vidracaria|esquadrias|sobre|contato|privacidade)/?$ index.html [L]
+</IfModule>
+
+# Endereço que não existe cai aqui: o Apache devolve o mesmo index.html, mas
+# com status 404 de verdade, e o React Router desenha a página de erro. É por
+# isso que as rotas boas estão listadas uma a uma acima: um fallback que manda
+# tudo para o index.html responderia 200 a qualquer endereço errado, e o
+# buscador trataria a página de erro como conteúdo duplicado da home
+ErrorDocument 404 /index.html
+
+# Compressão do que é texto. Imagem e fonte já vêm comprimidas, comprimir de
+# novo só gasta processamento
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Os arquivos de /assets levam hash no nome: mudou o conteúdo, mudou o nome.
+  # Então podem ficar um ano no navegador sem nunca precisar ser conferidos
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # O index.html, o sitemap e o robots mantêm o mesmo nome a cada publicação.
+  # Precisam ser conferidos toda vez, senão a pessoa continua vendo a versão
+  # anterior do site depois do deploy
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  # Fotos e favicon não têm hash, mas também quase não mudam: um mês de cache
+  # com revalidação depois disso
+  <FilesMatch "\.(jpe?g|png|webp|avif|svg|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  # O navegador respeita o Content-Type declarado em vez de adivinhar pelo
+  # conteúdo, e o referenciador só sai daqui em navegação para outro site
+  # seguro, sem o caminho da página
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Listar o conteúdo de uma pasta sem index nunca é intencional num site assim
+<IfModule mod_autoindex.c>
+  Options -Indexes
+</IfModule>

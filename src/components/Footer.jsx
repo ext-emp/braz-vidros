@@ -74,7 +74,7 @@ export default function Footer() {
           {/* Marca */}
           <div className="order-1 col-span-2 lg:col-span-1">
             <img
-              src="/logo-braz-vidros-2.png"
+              src="/logo-braz-vidros-2.webp"
               alt="Braz Vidros"
               width={647}
               height={141}

@@ -8,8 +8,12 @@ Novo Hamburgo/RS).
 **Páginas**: `/` (home com hero slider), `/vidracaria`, `/esquadrias`,
 `/sobre`, `/contato`
 
-> **Deploy**: por ser SPA com rotas, o servidor precisa de fallback para `index.html`
-> (Vercel/Netlify/Cloudflare Pages fazem isso automático para projetos Vite).
+> **Deploy**: por ser SPA com rotas, o servidor precisa de fallback para `index.html`.
+> Em Apache (hospedagem compartilhada, cPanel), quem faz isso é o `public/.htaccess`,
+> que o build copia para a raiz do `dist/`. Vercel/Netlify/Cloudflare Pages fazem o
+> fallback sozinhos e ignoram esse arquivo.
+> Rota nova entra em três lugares: `App.jsx`, `PAGE_META` (SEO e sitemap) e a lista
+> de rotas do `.htaccess`.
 
 ## Rodar
 

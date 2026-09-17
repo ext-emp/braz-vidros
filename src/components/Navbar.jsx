@@ -26,7 +26,7 @@ function Logo({ className = "h-6", tabIndex }) {
       className="shrink-0"
     >
       <img
-        src="/logo-braz-vidros-2.png"
+        src="/logo-braz-vidros-2.webp"
         alt="Braz Vidros"
         width={647}
         height={141}

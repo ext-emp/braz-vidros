@@ -456,8 +456,8 @@ export const CONTACT_CHANNELS = [
   },
   {
     label: "Atendimento",
-    value: "Segunda a sábado",
-    text: "Orçamento presencial ou pelo WhatsApp, sem compromisso.",
+    value: "Segunda a sexta",
+    text: "Das 8h às 11h30 e das 13h às 18h. Orçamento presencial ou pelo WhatsApp, sem compromisso.",
   },
 ];
 

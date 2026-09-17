@@ -12,13 +12,18 @@ const SERVICES_BY_FOCUS = {
    trabalhos, então ela não desaparece no branco da seção.
    Largura fixa de 205px com o texto centralizado: as pílulas ficam do mesmo
    tamanho, alinhadas em coluna quando a lista quebra em linhas. O padding
-   lateral é curto só para o rótulo mais longo caber dentro dos 205px */
+   lateral é curto só para o rótulo mais longo caber dentro dos 205px.
+   min-h-11 garante os 44px de alvo de toque agora que a pílula é link */
 const chipClass =
-  "flex w-[205px] shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-accent bg-accent px-2 py-2.5 text-center text-[13px] font-medium text-white shadow-[0_4px_12px_-6px_rgb(50_53_96/0.55)]";
+  "flex min-h-11 w-[205px] shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-accent bg-accent px-2 py-2.5 text-center text-[13px] font-medium text-white shadow-[0_4px_12px_-6px_rgb(50_53_96/0.55)] transition-colors duration-300 hover:border-ink hover:bg-ink";
 
 /* Quanto a fita anda por segundo, em px. Igual nas duas para não parecer
    que uma especialidade corre mais que a outra */
 const VELOCIDADE = 26;
+
+/* A partir de quantos px o gesto deixa de ser toque e vira arraste. Abaixo
+   disso o clique passa e a pílula leva para a página da especialidade */
+const LIMIAR_ARRASTE = 6;
 
 /*
   Faixa de serviços. No celular os dois grupos idênticos correm em loop e o
@@ -26,11 +31,15 @@ const VELOCIDADE = 26;
   parou. A partir de md o loop é desligado, o grupo repetido some e a lista
   vira estática, quebrando em linhas.
 
+  Cada pílula é um link para a página da própria especialidade: quem se
+  interessa por um serviço que passou na fita chega na página onde ele está
+  detalhado, em vez de ter que achar o link de texto abaixo.
+
   A rolagem é feita no braço (requestAnimationFrame mexendo no transform) em
   vez de animação CSS porque o arraste precisa somar à posição corrente, e o
   transform de uma animação CSS em curso não dá para ler nem continuar.
 */
-function ServiceTrack({ items, direction, alinharDireita = false }) {
+function ServiceTrack({ items, to, destino, direction, alinharDireita = false }) {
   const tapeRef = useRef(null);
 
   useEffect(() => {
@@ -49,6 +58,10 @@ function ServiceTrack({ items, direction, alinharDireita = false }) {
     let arrastando = false;
     let inicioX = 0;
     let inicioOffset = 0;
+    // O gesto passou do limiar: era arraste, não toque numa pílula
+    let moveu = false;
+    // Alguma pílula está com o foco do teclado
+    let focado = false;
 
     const aplicar = () => {
       tape.style.transform = `translate3d(${offset}px, 0, 0)`;
@@ -71,27 +84,36 @@ function ServiceTrack({ items, direction, alinharDireita = false }) {
     const passo = (agora) => {
       const dt = ultimo ? Math.min((agora - ultimo) / 1000, 0.05) : 0;
       ultimo = agora;
-      if (!arrastando && !semMovimento.matches) {
+      if (!arrastando && !focado && !semMovimento.matches) {
         offset = normalizar(offset + velocidade * dt);
         aplicar();
       }
       raf = requestAnimationFrame(passo);
     };
 
+    /* A captura do ponteiro só é pedida quando o gesto vira arraste, e não
+       aqui: capturado desde o pointerdown, o clique de um toque parado passa
+       a ser entregue à fita em vez da pílula, e o link nunca navega */
     const aoPegar = (e) => {
       arrastando = true;
+      moveu = false;
       inicioX = e.clientX;
       inicioOffset = offset;
-      try {
-        tape.setPointerCapture(e.pointerId);
-      } catch {
-        /* navegador sem pointer capture: o arraste ainda funciona */
-      }
     };
 
     const aoMover = (e) => {
       if (!arrastando) return;
-      offset = normalizar(inicioOffset + (e.clientX - inicioX));
+      const dx = e.clientX - inicioX;
+      if (!moveu && Math.abs(dx) > LIMIAR_ARRASTE) {
+        moveu = true;
+        // Daqui em diante o gesto é da fita, mesmo que o dedo saia dela
+        try {
+          tape.setPointerCapture(e.pointerId);
+        } catch {
+          /* navegador sem pointer capture: o arraste ainda funciona */
+        }
+      }
+      offset = normalizar(inicioOffset + dx);
       aplicar();
     };
 
@@ -99,10 +121,30 @@ function ServiceTrack({ items, direction, alinharDireita = false }) {
       if (!arrastando) return;
       arrastando = false;
       try {
-        tape.releasePointerCapture(e.pointerId);
+        if (tape.hasPointerCapture(e.pointerId)) tape.releasePointerCapture(e.pointerId);
       } catch {
         /* idem */
       }
+    };
+
+    /* Arrastar a fita não pode navegar. Na captura, antes do link ver o
+       evento, e só quando o gesto passou do limiar: um toque parado em cima
+       da pílula segue valendo como clique */
+    const aoClicar = (e) => {
+      // detail 0 é o clique disparado pelo Enter no teclado, que nunca é
+      // arraste: sem esta guarda um arraste anterior bloquearia a navegação
+      if (!moveu || e.detail === 0) return;
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    /* Fita andando com uma pílula em foco levaria o alvo do teclado para
+       fora da janela do trilho */
+    const aoFocar = () => {
+      focado = true;
+    };
+    const aoDesfocar = () => {
+      focado = false;
     };
 
     const ligar = () => {
@@ -115,18 +157,26 @@ function ServiceTrack({ items, direction, alinharDireita = false }) {
       tape.addEventListener("pointermove", aoMover);
       tape.addEventListener("pointerup", aoSoltar);
       tape.addEventListener("pointercancel", aoSoltar);
+      tape.addEventListener("click", aoClicar, true);
+      tape.addEventListener("focusin", aoFocar);
+      tape.addEventListener("focusout", aoDesfocar);
     };
 
     const desligar = () => {
       if (!ativo) return;
       ativo = false;
       arrastando = false;
+      moveu = false;
+      focado = false;
       cancelAnimationFrame(raf);
       tape.style.transform = "";
       tape.removeEventListener("pointerdown", aoPegar);
       tape.removeEventListener("pointermove", aoMover);
       tape.removeEventListener("pointerup", aoSoltar);
       tape.removeEventListener("pointercancel", aoSoltar);
+      tape.removeEventListener("click", aoClicar, true);
+      tape.removeEventListener("focusin", aoFocar);
+      tape.removeEventListener("focusout", aoDesfocar);
     };
 
     const sincronizar = () => (desktop.matches ? desligar() : ligar());
@@ -158,16 +208,32 @@ function ServiceTrack({ items, direction, alinharDireita = false }) {
       >
         <div className="focus-group">
           {items.map((s) => (
-            <span key={s.title} className={chipClass}>
+            <Link
+              key={s.title}
+              to={to}
+              /* Sem isto o navegador entende o arraste da fita com o mouse
+                 como arrastar o link e abre o fantasma da URL */
+              draggable={false}
+              aria-label={`${s.title}, ver em ${destino}`}
+              className={chipClass}
+            >
               {s.title}
-            </span>
+            </Link>
           ))}
         </div>
+        {/* Cópia só para o loop: fora da leitura e fora da ordem de tabulação,
+            senão a mesma lista de serviços aparece duas vezes */}
         <div className="focus-group focus-group-dup" aria-hidden="true">
           {items.map((s) => (
-            <span key={s.title} className={chipClass}>
+            <Link
+              key={s.title}
+              to={to}
+              draggable={false}
+              tabIndex={-1}
+              className={chipClass}
+            >
               {s.title}
-            </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -256,8 +322,11 @@ export default function DualFocus() {
                   {f.text}
                 </p>
 
+                {/* Cada fita leva para a página do seu próprio card */}
                 <ServiceTrack
                   items={SERVICES_BY_FOCUS[f.id]}
+                  to={f.link}
+                  destino={f.title}
                   direction={fotoPrimeiro ? "left" : "right"}
                   alinharDireita={!fotoPrimeiro}
                 />

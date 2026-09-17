@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -23,7 +23,9 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function App() {
   const rootRef = useRef(null);
-  const { pathname } = useLocation();
+  // `key` muda a cada navegação, `pathname` só quando o destino é outro: o
+  // topo vale para as duas coisas, inclusive clicar na logo já estando na home
+  const { pathname, key } = useLocation();
 
   /*
     Scroll suave do GSAP: a rolagem nativa continua sendo a fonte da posição,
@@ -45,14 +47,41 @@ export default function App() {
     });
   }, []);
 
-  // Cada troca de rota volta ao topo. Com o smoother ativo quem manda na
-  // posição é ele; e o refresh remede a página nova antes dos reveals
-  useEffect(() => {
-    const smoother = ScrollSmoother.get();
-    if (smoother) smoother.scrollTo(0, false);
-    else window.scrollTo(0, 0);
+  /*
+    Cada troca de rota abre a página nova no topo.
+
+    Um `scrollTo(0)` sozinho não segurava no celular: para remedir, o
+    ScrollTrigger guarda a posição do scroller, zera, mede e devolve o que
+    guardou, e essa devolução chegava depois do nosso salto, jogando a rota
+    nova de volta para a altura em que a anterior tinha ficado. No desktop o
+    problema não aparecia porque quem escreve a posição a cada frame é o
+    ScrollSmoother, e o alvo dele já era o topo.
+
+    Daí a ordem: esquecer a posição guardada (clearScrollMemory), remedir e
+    reafirmar o topo, inclusive no frame seguinte, que é quando cai uma
+    remedição adiada.
+
+    Em layout effect, antes da pintura: assim a página nova nunca chega a
+    aparecer na altura da anterior, e os reveals da rota, que são registrados
+    logo depois, já medem com a tela no topo.
+  */
+  useLayoutEffect(() => {
+    const irAoTopo = () => {
+      const smoother = ScrollSmoother.get();
+      if (smoother) smoother.scrollTo(0, false);
+      else window.scrollTo(0, 0);
+    };
+
+    irAoTopo();
+    // "manual" também tira do navegador a restauração no voltar/avançar, que
+    // chega fora de hora e desfaz o salto
+    ScrollTrigger.clearScrollMemory("manual");
     ScrollTrigger.refresh();
-  }, [pathname]);
+    irAoTopo();
+
+    const id = requestAnimationFrame(irAoTopo);
+    return () => cancelAnimationFrame(id);
+  }, [key]);
 
   // Motion pass: reveals de scroll, assinatura única (subida curta + fade, power3.out).
   // Depende de pathname: re-registra os triggers a cada página.

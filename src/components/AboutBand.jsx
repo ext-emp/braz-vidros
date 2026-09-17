@@ -35,7 +35,10 @@ export default function AboutBand() {
         </div>
 
         {/* text-center leva junto o link do fim, que é inline-flex */}
-        <div className="relative p-8 text-center sm:p-10 md:order-1 md:p-14 md:text-left">
+        {/* 24px de recuo lateral no celular, não 32: são 16px a mais de
+            largura útil, que é o que falta para os três números caberem
+            lado a lado com a legenda numa linha só */}
+        <div className="relative px-6 py-8 text-center sm:p-10 md:order-1 md:p-14 md:text-left">
           {/* O cartão inteiro já entra de uma vez: aqui o cabeçalho não anima
               por conta própria */}
           <SectionHeading
@@ -46,21 +49,26 @@ export default function AboutBand() {
             reveal={false}
           />
 
-          {/* Três colunas no celular: com flex-wrap, o terceiro número caía
-              sozinho numa segunda linha e abria um buraco no meio do cartão.
-              O valor encolhe junto, senão "4.000+" não cabe na coluna que
-              sobra depois do padding. A partir de sm volta a ser fita.
+          {/* Os três numa linha só, de borda a borda do cartão. Cada coluna
+              com a largura do próprio rótulo, e não um terço fixo: "1 ano" é
+              curto e devolve para os vizinhos o que não usa.
+
+              Os rótulos somam 25,7em, que nos 12px de projeto passam da
+              largura de qualquer celular. Por isso o corpo acompanha a tela
+              até o teto de 12px, e o nowrap garante a linha única.
 
               Número centrado sobre a legenda, como na faixa do hero: o valor
               é mais curto que o rótulo, e pela esquerda cada par ficava com
               um encaixe diferente */}
-          <ul className="mt-8 grid grid-cols-3 gap-x-3 gap-y-5 border-t border-white/15 pt-7 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-10 md:justify-start">
+          <ul className="mt-8 flex justify-between gap-x-2 border-t border-white/15 pt-7 sm:flex-wrap sm:justify-center sm:gap-x-10 sm:gap-y-5 md:justify-start">
             {HERO_STATS.map((s) => (
               <li key={s.label} className="text-center">
                 <p className="font-display text-xl leading-none font-semibold text-white sm:text-3xl">
                   {s.value}
                 </p>
-                <p className="mt-1.5 text-xs leading-snug text-white/65">{s.label}</p>
+                <p className="mt-1.5 text-[min(0.75rem,2.5vw)] leading-snug whitespace-nowrap text-white/65 sm:text-xs">
+                  {s.label}
+                </p>
               </li>
             ))}
           </ul>

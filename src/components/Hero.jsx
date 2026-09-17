@@ -438,13 +438,20 @@ export default function Hero() {
         {/* Fora do painel animado: os números não mudam de slide */}
         <div className="absolute inset-x-0 bottom-28 z-[4] lg:bottom-22">
           <div className="container-hero flex justify-center md:justify-start lg:justify-end">
-            <ul ref={statsRef} className="flex items-end gap-8 sm:gap-12 lg:gap-14">
+            <ul ref={statsRef} className="flex items-end gap-4 sm:gap-12 lg:gap-14">
               {HERO_STATS.map((s) => (
                 <li key={s.label} data-stat className="text-center">
                   <p className="font-display text-3xl leading-none font-semibold text-white lg:text-4xl">
                     {s.value}
                   </p>
-                  <p className="mt-2 text-xs text-white/60">{s.label}</p>
+                  {/* Os três rótulos numa linha só. Somados eles pedem cerca de
+                      27em, e nos 12px fixos não cabiam na largura de um celular:
+                      daí o corpo acompanhar a tela até o teto de 12px, que é
+                      onde ele volta a ser o tamanho de projeto (a partir de
+                      ~430px). O nowrap é a garantia de que nunca quebra */}
+                  <p className="mt-2 text-[min(0.75rem,2.8vw)] whitespace-nowrap text-white/60 sm:text-xs">
+                    {s.label}
+                  </p>
                 </li>
               ))}
             </ul>

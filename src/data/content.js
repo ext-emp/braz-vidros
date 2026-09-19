@@ -416,8 +416,9 @@ export const addressLine = `${ADDRESS.street} - ${ADDRESS.district}, ${ADDRESS.c
 /* Versão curta, sem CEP, para onde o espaço é apertado (rodapé) */
 export const addressShort = `${ADDRESS.street} - ${ADDRESS.district}, ${ADDRESS.city} - ${ADDRESS.state}`;
 
-/* O mapa embutido é um iframe do Google e grava cookie de terceiro, por isso
-   na página de Contato ele só é montado depois que a pessoa clica para ver */
+/* O mapa embutido é um iframe do Google e grava cookie de terceiro. Ele entra
+   junto com a página de Contato, sem depender de clique, e é por isso que a
+   política de privacidade descreve esse carregamento em separado */
 export const mapEmbed = (zoom = 17) =>
   `https://www.google.com/maps?q=${encodeURIComponent(addressLine)}&z=${zoom}&output=embed`;
 

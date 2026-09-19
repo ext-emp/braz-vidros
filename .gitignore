@@ -3,3 +3,9 @@ dist
 *.log
 .DS_Store
 .claude/
+
+# IDs de medição: ficam na máquina de quem publica, não no repositório.
+# O .env.example vai junto para dizer quais variáveis existem
+.env
+.env.*
+!.env.example

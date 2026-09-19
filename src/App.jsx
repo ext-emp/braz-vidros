@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,6 +8,9 @@ import { useGSAP } from "@gsap/react";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import WhatsAppFloat from "./components/WhatsAppFloat.jsx";
+import BannerCookies from "./components/BannerCookies.jsx";
+
+import { pageView } from "./lib/analytics.js";
 
 import Home from "./pages/Home.jsx";
 import Vidracaria from "./pages/Vidracaria.jsx";
@@ -23,7 +26,7 @@ export default function App() {
   const rootRef = useRef(null);
   // `key` muda a cada navegação, `pathname` só quando o destino é outro: o
   // topo vale para as duas coisas, inclusive clicar na logo já estando na home
-  const { pathname, key } = useLocation();
+  const { pathname, search, key } = useLocation();
 
   /*
     Scroll suave do GSAP: a rolagem nativa continua sendo a fonte da posição,
@@ -80,6 +83,23 @@ export default function App() {
     const id = requestAnimationFrame(irAoTopo);
     return () => cancelAnimationFrame(id);
   }, [key]);
+
+  /*
+    Uma visualização de página por rota. Numa SPA o gtag só veria a primeira
+    carga, então o disparo é manual e o `send_page_view` fica desligado lá no
+    analytics.js.
+
+    Em `useEffect`, não em layout effect, e de propósito: o React roda os
+    efeitos de baixo para cima, então o usePageMeta da página já trocou o
+    document.title quando este aqui executa, e o relatório recebe o título
+    certo em vez do título da rota anterior.
+
+    Depende de pathname e search, não de `key`: clicar de novo no link da
+    página em que já se está não é visita nova.
+  */
+  useEffect(() => {
+    pageView(pathname + search);
+  }, [pathname, search]);
 
   // Motion pass: reveals de scroll, assinatura única (subida curta + fade, power3.out).
   // Depende de pathname: re-registra os triggers a cada página.
@@ -152,6 +172,7 @@ export default function App() {
         </div>
       </div>
       <WhatsAppFloat />
+      <BannerCookies />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   addressShort,
   mapLink,
 } from "../data/content.js";
+import { MEDICAO_ATIVA, EVENTO_REVER } from "../lib/analytics.js";
 
 const phonePretty = `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, 9)}-${WHATSAPP.slice(9)}`;
 
@@ -193,17 +194,29 @@ export default function Footer() {
             reservados.
           </p>
 
-          {/* O dever de informação da LGPD, que é o que sobra de obrigação
-              legal aqui: o site não usa cookie próprio nem medição de
-              audiência. O que carrega de terceiro é o mapa do Contato, e a
-              política diz o que isso significa */}
-          <nav aria-label="Privacidade" className="text-xs text-white/50">
+          {/* O dever de informação da LGPD. O link de cookies só aparece em
+              build com medição ligada, e é a porta permanente para rever o
+              consentimento: sem ele, quem recusou uma vez não teria como
+              voltar atrás */}
+          <nav
+            aria-label="Privacidade"
+            className="flex items-center gap-4 text-xs text-white/50"
+          >
             <Link
               to="/privacidade"
               className="transition-colors duration-300 hover:text-accent-soft"
             >
               Política de Privacidade
             </Link>
+            {MEDICAO_ATIVA && (
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new Event(EVENTO_REVER))}
+                className="transition-colors duration-300 hover:text-accent-soft"
+              >
+                Cookies
+              </button>
+            )}
           </nav>
 
           <a

@@ -76,6 +76,12 @@ ErrorDocument 404 /index.html
   Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
+# O Apache estava mandando `Content-Type: text/html` sem charset, e aí quem
+# decide a codificação é o navegador. O <meta charset> do HTML resolve na
+# prática, mas o cabeçalho tem precedência sobre ele quando declara algo, e
+# rastreador que lê o HTML sem renderizar costuma parar no cabeçalho
+AddDefaultCharset utf-8
+
 # Listar o conteúdo de uma pasta sem index nunca é intencional num site assim
 <IfModule mod_autoindex.c>
   Options -Indexes

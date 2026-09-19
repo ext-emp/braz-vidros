@@ -134,7 +134,59 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!--
+      O conteúdo dentro do #root é substituído inteiro pelo createRoot().render()
+      do main.jsx, então o visitante não chega a ler isto. Quem lê é o rastreador
+      que não executa JavaScript, caso do AdsBot-Google na aprovação de recursos
+      de anúncio, que procura nome, telefone e endereço no HTML entregue pelo
+      servidor e reprova o recurso quando recebe só a casca vazia.
+
+      Os dados aqui precisam continuar iguais aos de src/data/content.js. Nome,
+      telefone ou endereço divergindo entre site e anúncio é justamente o que
+      reprova recurso no Ads, então divergir aqui seria pior que não ter nada.
+
+      Vale enquanto a montagem for createRoot. Se um dia o projeto passar a
+      pré-renderizar as rotas e montar com hydrateRoot, isto tem que sair: o
+      HTML do prerender já traz o conteúdo real e dois markups diferentes no
+      mesmo nó dão erro de hidratação.
+
+      Estilo em atributo, sem classe: o Tailwind não conhece este bloco, e o
+      pouco que aparece entre a pintura e a montagem do React fica com a cara
+      do site em vez de texto solto no canto da tela.
+    -->
+    <div id="root">
+      <div
+        style="
+          max-width: 46rem;
+          margin: 0 auto;
+          padding: 4rem 1.25rem;
+          font-family: 'Manrope', system-ui, sans-serif;
+          color: #0c1622;
+        "
+      >
+        <h1 style="font-family: 'Fraunces', Georgia, serif; font-size: 1.75rem; margin: 0">
+          Braz Vidros
+        </h1>
+        <p style="margin: 0.75rem 0 1.5rem; color: #5a6b7c">
+          Vidraçaria e esquadrias de alumínio sob medida em Novo Hamburgo e região:
+          box de banheiro, espelhos, sacadas de vidro, guarda-corpo, coberturas de
+          policarbonato, janelas e portas de alumínio.
+        </p>
+        <p style="margin: 0 0 0.5rem">
+          Telefone e WhatsApp:
+          <a href="tel:+5551995475761" style="color: #323560">(51) 99547-5761</a>
+        </p>
+        <address style="font-style: normal; margin: 0 0 1.5rem; color: #5a6b7c">
+          R. Oswaldo Artur Hartz, 776 - Canudos, Novo Hamburgo - RS, 93546-650
+        </address>
+        <nav>
+          <a href="/vidracaria" style="color: #323560; margin-right: 1rem">Vidraçaria</a>
+          <a href="/esquadrias" style="color: #323560; margin-right: 1rem">Esquadrias de alumínio</a>
+          <a href="/sobre" style="color: #323560; margin-right: 1rem">Sobre</a>
+          <a href="/contato" style="color: #323560">Contato</a>
+        </nav>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

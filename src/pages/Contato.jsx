@@ -83,8 +83,8 @@ export default function Contato() {
             className="hidden overflow-hidden rounded-[1.75rem] md:block"
           >
             <img
-              src="/projetos/Box-ate-o-teto-1.webp"
-              alt="Box de banheiro até o teto com perfis pretos, instalado pela Braz Vidros"
+              src="/projetos/Fechamento-em-vidro-piscina-2.webp"
+              alt="Fechamento em vidro ao lado da piscina, visto de lado, instalado pela Braz Vidros"
               loading="lazy"
               className="h-72 w-full object-cover lg:h-full"
             />

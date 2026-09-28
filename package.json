@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "vite --host",
     "sitemap": "node scripts/gerar-sitemap.mjs",
-    "webp": "node scripts/gerar-webp.mjs",
-    "capa": "node scripts/gerar-capa-og.mjs",
     "prebuild": "node scripts/gerar-sitemap.mjs",
     "build": "vite build",
     "preview": "vite preview"

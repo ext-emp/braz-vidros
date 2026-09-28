@@ -155,7 +155,7 @@ export default function Lightbox({ items, index, onClose, onIndexChange }) {
       >
         <img
           src={item.image}
-          alt={item.title}
+          alt={item.alt ?? item.title}
           draggable={false}
           className="max-h-[56vh] w-auto rounded-2xl object-contain shadow-2xl sm:max-h-[72vh]"
         />

@@ -14,16 +14,24 @@
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
+  # As rotas do site entregam o index.html com status 200, que é o que o
+  # buscador precisa ver numa página que existe. A raiz não entra aqui porque
+  # quem serve ela é o DirectoryIndex
+  #
+  # Vem antes da passagem de arquivo real de propósito. O conteúdo de /public é
+  # copiado para a raiz do site, então uma pasta de imagem com nome de rota
+  # ali vira um diretório /sobre de verdade. Na ordem inversa o Apache entregava
+  # esse diretório, não achava index dentro, e a página respondia 403 com a
+  # listagem desligada, sem nunca chegar nesta regra. O padrão casa o caminho
+  # inteiro, então /sobre/foto.webp não entra aqui e continua sendo servido
+  # como arquivo pela regra de baixo
+  RewriteRule ^(vidracaria|esquadrias|sobre|contato|privacidade)/?$ index.html [L]
+
   # Arquivo ou pasta que existe de verdade (assets com hash, imagens,
   # robots.txt, sitemap.xml, favicon) é servido direto, sem passar pelo resto
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
-
-  # As rotas do site entregam o index.html com status 200, que é o que o
-  # buscador precisa ver numa página que existe. A raiz não entra aqui porque
-  # quem serve ela é o DirectoryIndex
-  RewriteRule ^(vidracaria|esquadrias|sobre|contato|privacidade)/?$ index.html [L]
 </IfModule>
 
 # Endereço que não existe cai aqui: o Apache devolve o mesmo index.html, mas

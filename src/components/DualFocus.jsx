@@ -303,7 +303,7 @@ export default function DualFocus() {
               >
                 <img
                   src={f.image}
-                  alt={f.title}
+                  alt={f.imageAlt ?? f.title}
                   loading="lazy"
                   className="h-[280px] w-full object-cover md:h-[420px]"
                 />

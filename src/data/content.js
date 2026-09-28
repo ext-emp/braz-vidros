@@ -1,12 +1,20 @@
 /*
   Todo o conteúdo editável do site num lugar só.
   TODO (aguardando cliente):
-   - Fotos reais dos projetos: as de /public/projetos, /public/focus e
-     /public/sobre/equipe.webp são banco de imagens (Unsplash License, uso
-     comercial liberado) e devem sair assim que o cliente mandar as dele
-     (/public/sobre/sobre-nos.webp já é foto real da loja)
+   - Fotos reais: as de /public/hero e /public/empresa/equipe.webp ainda são
+     banco de imagens (Unsplash License, uso comercial liberado) e devem sair
+     assim que o cliente mandar as dele. As obras de /public/projetos já são
+     fotos reais (lista em galeria.js), e /public/empresa/sobre-nos.webp é a
+     foto real da loja
+
+  Pasta de imagem nunca pode ter nome de rota: o conteúdo de /public vai para
+  a raiz do site, e uma pasta /sobre ali é um diretório de verdade, que o
+  servidor entrega antes de chegar na regra que manda a rota para o index.html.
+  Era o que devolvia 403 em /sobre. Daí /public/empresa em vez de /public/sobre.
    - Logo, se existir
 */
+
+import { GALERIA } from "./galeria.js";
 
 export const WHATSAPP = "5551995475761";
 export const INSTAGRAM = "https://www.instagram.com/braz_vidross";
@@ -239,7 +247,8 @@ export const FOCUS = [
     id: "vidracaria",
     title: "Vidraçaria",
     text: "Box de banheiro, espelhos, sacadas e guarda-corpo instalados com vidro temperado de procedência. Medição no local, corte sob medida e instalação limpa.",
-    image: "/focus/focus-vidracaria.webp",
+    image: "/projetos/Guarda-corpo-de-piscina.webp",
+    imageAlt: "Guarda-corpo de vidro em volta da piscina, instalado pela Braz Vidros",
     link: "/vidracaria",
     linkText: "Ver tudo em vidraçaria",
   },
@@ -247,7 +256,9 @@ export const FOCUS = [
     id: "esquadrias",
     title: "Esquadrias de Alumínio",
     text: "Janelas, portas e fechamentos de alumínio fabricados na medida exata da sua obra. Perfis de qualidade, vedação correta e acabamento que dura.",
-    image: "/focus/focus-esquadrias.webp",
+    image: "/projetos/Porta-em-esquadria-de-aluminio-2.webp",
+    imageAlt:
+      "Porta de correr em esquadria de alumínio branco vista de lado, instalada pela Braz Vidros",
     link: "/esquadrias",
     linkText: "Ver tudo em esquadrias",
   },
@@ -311,81 +322,13 @@ export const SERVICES_ALUMINUM = [
 ];
 
 /*
-  Portfólio completo. `spec` é a especialidade e é o que separa as galerias:
-  "vidro" alimenta a página da vidraçaria, "aluminio" a de esquadrias.
-  `destaque: true` marca as oito obras que aparecem na home, quatro de cada
-  especialidade, na ordem em que entram na grade.
+  Portfólio completo: as fotos reais de obra, cadastradas em galeria.js.
+  `spec` é a especialidade e é o que separa as galerias: "vidro" alimenta a
+  página da vidraçaria, "aluminio" a de esquadrias. `destaque: true` marca
+  as oito obras que aparecem na home, quatro de cada especialidade, na ordem
+  em que entram na grade.
 */
-export const PORTFOLIO = [
-  {
-    image: "/projetos/box.webp",
-    title: "Box incolor em apartamento",
-    category: "Box",
-    spec: "vidro",
-    destaque: true,
-  },
-  {
-    image: "/projetos/espelho.webp",
-    title: "Espelho bisotado na sala",
-    category: "Espelhos",
-    spec: "vidro",
-    destaque: true,
-  },
-  {
-    image: "/projetos/sacada.webp",
-    title: "Cortina de vidro na sacada",
-    category: "Sacadas",
-    spec: "vidro",
-    destaque: true,
-  },
-  {
-    image: "/projetos/guarda-corpo.webp",
-    title: "Guarda-corpo de escada",
-    category: "Guarda-corpo",
-    spec: "vidro",
-    destaque: true,
-  },
-  {
-    image: "/projetos/pergolado.webp",
-    title: "Pergolado em área externa",
-    category: "Policarbonato",
-    spec: "vidro",
-  },
-  {
-    image: "/projetos/quiosque.webp",
-    title: "Quiosque envidraçado",
-    category: "Sacadas",
-    spec: "vidro",
-  },
-  {
-    image: "/projetos/janelas.webp",
-    title: "Janelas de correr em casa nova",
-    category: "Janelas",
-    spec: "aluminio",
-    destaque: true,
-  },
-  {
-    image: "/projetos/porta.webp",
-    title: "Porta pivotante na entrada",
-    category: "Portas",
-    spec: "aluminio",
-    destaque: true,
-  },
-  {
-    image: "/projetos/fachada.webp",
-    title: "Fachada de alumínio com vidro",
-    category: "Fachadas",
-    spec: "aluminio",
-    destaque: true,
-  },
-  {
-    image: "/projetos/porta-correr.webp",
-    title: "Porta de correr entre sala e pátio",
-    category: "Portas de correr",
-    spec: "aluminio",
-    destaque: true,
-  },
-];
+export const PORTFOLIO = GALERIA;
 
 /* As oito obras da galeria da home, já na ordem: vidro primeiro, alumínio
    depois, para que o filtro "Tudo" mostre uma linha de cada especialidade */
@@ -466,7 +409,7 @@ export const ABOUT = {
     `Começamos com uma estrutura pequena, atendendo os primeiros clientes, e crescemos obra por obra. Hoje são ${ANOS_DE_ESTRADA} anos de experiência e mais de ${PROJETOS_ENTREGUES.toLocaleString("pt-BR")} instalações em Novo Hamburgo e região, do box de banheiro à fachada comercial.`,
     "Do orçamento à instalação, quem mede é quem instala, com vidro temperado de procedência e perfis de alumínio de qualidade. E o serviço não acaba na entrega: todo trabalho tem garantia de no mínimo 1 ano e seguimos à disposição depois que a obra fica pronta.",
   ],
-  image: "/sobre/sobre-nos.webp",
+  image: "/empresa/sobre-nos.webp",
   imageAlt: "Fachada da loja da Braz Vidros em Novo Hamburgo",
 };
 
@@ -479,7 +422,7 @@ export const ABOUT_HOME = {
   text: "Começamos com uma estrutura pequena e crescemos obra por obra, com o mesmo compromisso de sempre: qualidade na instalação, confiança no atendimento e presença também no pós-venda.",
   /* Foto própria, e não a ABOUT.image: a da página Sobre é vertical e na
      faixa da home ela entra deitada, cortando justo a placa da loja */
-  image: "/sobre/equipe.webp",
+  image: "/empresa/equipe.webp",
   imageAlt: "Equipe da Braz Vidros em instalação",
   link: "/sobre",
   linkText: "Conheça a Braz Vidros",

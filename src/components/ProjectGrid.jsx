@@ -29,15 +29,17 @@ export default function ProjectGrid({
       >
         {items.map((p, i) => (
           <button
-            key={p.title}
+            // A foto é a chave: o título se repete entre obras do mesmo tipo
+            key={p.image}
             type="button"
             onClick={() => setOpen(i)}
             aria-label={`Ampliar foto: ${p.title}`}
             className="group relative block cursor-zoom-in overflow-hidden rounded-3xl text-left"
           >
+            {/* Miniatura na grade; a foto grande só desce quando o lightbox abre */}
             <img
-              src={p.image}
-              alt={p.title}
+              src={p.thumb ?? p.image}
+              alt={p.alt ?? p.title}
               loading="lazy"
               className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
             />

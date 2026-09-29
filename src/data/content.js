@@ -116,7 +116,7 @@ export const PAGE_META = {
     title: "Política de Privacidade | Braz Vidros",
     description:
       "Como a Braz Vidros trata os dados pessoais de quem visita o site e pede orçamento, conforme a LGPD (Lei 13.709/2018).",
-    lastmod: "2026-09-17",
+    lastmod: "2026-09-28",
     changefreq: "yearly",
     priority: "0.3",
   },
@@ -207,11 +207,28 @@ export const DIFFERENTIALS = [
   },
 ];
 
+/*
+  Celular em pé baixa o recorte vertical de cada foto do hero, em
+  /hero/celular. O hero ocupa a tela com background-size: cover, então num
+  celular em pé só o miolo da foto aparece: o recorte é esse mesmo miolo,
+  sem o resto que o aparelho baixava para nunca mostrar. No primeiro slide,
+  que é o LCP da home, foram 316 kB para 58 kB.
+
+  A media query é a mesma do preload no index.html: mudou aqui, muda lá,
+  senão o navegador baixa uma versão no preload e o hero pede a outra.
+  Lida uma vez, na carga: fora do navegador (o script do sitemap importa
+  este arquivo) vale a foto inteira.
+*/
+const HERO_CELULAR = "(max-width: 767px) and (orientation: portrait)";
+const heroNoCelular =
+  typeof window !== "undefined" && window.matchMedia(HERO_CELULAR).matches;
+const fotoDoHero = (nome) => (heroNoCelular ? `/hero/celular/${nome}` : `/hero/${nome}`);
+
 /* Fotos do hero: Unsplash License (uso comercial liberado, sem atribuição).
    Substituir por fotos reais de projetos quando o cliente enviar. */
 export const HERO_SLIDES = [
   {
-    image: "/hero/vidracaria.webp",
+    image: fotoDoHero("vidracaria.webp"),
     label: "Vidraçaria em Novo Hamburgo",
     title: ["Vidro sob medida,", "do box à fachada"],
     lede: "Medição, fabricação e instalação com prazo fechado, sem intermediário no meio do caminho.",
@@ -221,7 +238,7 @@ export const HERO_SLIDES = [
     },
   },
   {
-    image: "/hero/hero-esquadrias.webp",
+    image: fotoDoHero("hero-esquadrias.webp"),
     label: "Esquadrias de Alumínio",
     title: ["Alumínio com", "precisão de milímetro"],
     lede: "Janelas, portas e fechamentos fabricados na medida exata da obra, com vedação correta.",
@@ -231,7 +248,7 @@ export const HERO_SLIDES = [
     },
   },
   {
-    image: "/hero/hero-sacadas.webp",
+    image: fotoDoHero("hero-sacadas.webp"),
     label: "Sacadas & Coberturas",
     title: ["Sua vista,", "sem nada no caminho"],
     lede: "Sacadas de vidro e coberturas que abrem o ambiente sem abrir mão da segurança.",
@@ -256,9 +273,12 @@ export const FOCUS = [
     id: "esquadrias",
     title: "Esquadrias de Alumínio",
     text: "Janelas, portas e fechamentos de alumínio fabricados na medida exata da sua obra. Perfis de qualidade, vedação correta e acabamento que dura.",
-    image: "/projetos/Porta-em-esquadria-de-aluminio-2.webp",
+    image: "/projetos/Porta-em-esquadria-de-aluminio-1.webp",
     imageAlt:
-      "Porta de correr em esquadria de alumínio branco vista de lado, instalada pela Braz Vidros",
+      "Porta de correr em esquadria de alumínio branco com quatro folhas, instalada pela Braz Vidros",
+    /* A foto é vertical e o bloco é deitado: centralizada, sobrava parede
+       sem reboco em cima. Descendo o recorte a porta fica inteira no quadro */
+    imagePosition: "center 70%",
     link: "/esquadrias",
     linkText: "Ver tudo em esquadrias",
   },

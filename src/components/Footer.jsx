@@ -75,10 +75,11 @@ export default function Footer() {
           {/* Marca */}
           <div className="order-1 col-span-2 lg:col-span-1">
             <img
-              src="/logo-braz-vidros-2.webp"
+              src="/logo-braz-vidros-64.webp"
+              srcSet="/logo-braz-vidros-64.webp 2x, /logo-braz-vidros-96.webp 3x"
               alt="Braz Vidros"
-              width={647}
-              height={141}
+              width={294}
+              height={64}
               loading="lazy"
               className="mx-auto h-7 w-auto brightness-0 invert lg:mx-0 lg:h-8"
             />

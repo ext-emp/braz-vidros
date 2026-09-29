@@ -2,6 +2,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import CTABand from "../components/CTABand.jsx";
 import SectionHeading from "../components/SectionHeading.jsx";
 import {
+  ABOUT,
   CONTACT_CHANNELS,
   PAGE_META,
   addressLine,
@@ -10,8 +11,6 @@ import {
 } from "../data/content.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 
-/* Um canal. Vira link quando tem `href`, e continua sendo uma caixa comum
-   quando é só informação, como o horário de atendimento */
 function Canal({ label, value, text, href, external }) {
   const conteudo = (
     <>
@@ -21,7 +20,9 @@ function Canal({ label, value, text, href, external }) {
       <span className="font-display mt-1.5 block text-xl font-semibold text-ink">
         {value}
       </span>
-      <span className="mt-1.5 block text-sm leading-relaxed text-steel">{text}</span>
+      <span className="mt-1.5 block text-sm leading-relaxed text-steel">
+        {text}
+      </span>
     </>
   );
 
@@ -83,8 +84,8 @@ export default function Contato() {
             className="hidden overflow-hidden rounded-[1.75rem] md:block"
           >
             <img
-              src="/projetos/Fechamento-em-vidro-piscina-2.webp"
-              alt="Fechamento em vidro ao lado da piscina, visto de lado, instalado pela Braz Vidros"
+              src={ABOUT.image}
+              alt={ABOUT.imageAlt}
               loading="lazy"
               className="h-72 w-full object-cover lg:h-full"
             />
@@ -112,7 +113,9 @@ export default function Contato() {
         </div>
 
         <div className="container-site mt-4 flex flex-wrap items-center justify-center gap-3 text-center md:justify-between md:text-left">
-          <address className="text-sm text-steel not-italic">{addressLine}</address>
+          <address className="text-sm text-steel not-italic">
+            {addressLine}
+          </address>
           <a
             href={mapLink()}
             target="_blank"

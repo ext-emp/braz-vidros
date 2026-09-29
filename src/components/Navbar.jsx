@@ -25,11 +25,15 @@ function Logo({ className = "h-6", tabIndex }) {
       aria-label="Braz Vidros, página inicial"
       className="shrink-0"
     >
+      {/* A logo aparece com 24 a 32px de altura: a de 64px cobre as telas
+          até 2x e a de 96px as de 3x. O original de 647px fica só para o
+          schema */}
       <img
-        src="/logo-braz-vidros-2.webp"
+        src="/logo-braz-vidros-64.webp"
+        srcSet="/logo-braz-vidros-64.webp 2x, /logo-braz-vidros-96.webp 3x"
         alt="Braz Vidros"
-        width={647}
-        height={141}
+        width={294}
+        height={64}
         className={`${className} w-auto brightness-0 invert`}
       />
     </Link>

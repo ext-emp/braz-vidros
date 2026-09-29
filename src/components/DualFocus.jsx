@@ -1,6 +1,14 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FOCUS, SERVICES_GLASS, SERVICES_ALUMINUM } from "../data/content.js";
+import { srcsetDaGaleria } from "../data/galeria.js";
+
+/* Largura da foto na tela, para o navegador escolher a versão pelo srcset:
+   no celular a coluna inteira menos o padding do container; de md a lg
+   metade da linha; de lg para cima o que sobra ao lado da coluna de 418px,
+   que no container cheio dá 678px */
+const FOTO_SIZES =
+  "(min-width: 1024px) 678px, (min-width: 768px) calc(50vw - 3.75rem), calc(100vw - 2.5rem)";
 
 /* Os serviços de cada especialidade, na ordem em que entram no trilho */
 const SERVICES_BY_FOCUS = {
@@ -52,6 +60,7 @@ function ServiceTrack({ items, to, destino, direction, alinharDireita = false })
 
     let ativo = false;
     let raf = 0;
+    let observador = null;
     let ultimo = 0;
     let offset = 0;
     let meiaFita = 0;
@@ -147,11 +156,25 @@ function ServiceTrack({ items, to, destino, direction, alinharDireita = false })
       focado = false;
     };
 
+    const aoRedimensionar = () => {
+      if (ativo) medir();
+    };
+
     const ligar = () => {
       if (ativo) return;
       ativo = true;
       ultimo = 0;
-      medir();
+      /*
+        A medida vem do ResizeObserver, e não de um medir() aqui: na montagem
+        o layout ainda está sujo, e ler o scrollWidth nessa hora obrigava o
+        navegador a calcular a página inteira na hora (o "reflow forçado" do
+        PageSpeed). O observador entrega o tamanho logo depois do layout que
+        o navegador já ia fazer, antes da pintura, e avisa de novo quando a
+        fita muda de tamanho: tela girando ou a fonte chegando
+      */
+      observador = new ResizeObserver(aoRedimensionar);
+      observador.observe(tape);
+      if (tape.firstElementChild) observador.observe(tape.firstElementChild);
       raf = requestAnimationFrame(passo);
       tape.addEventListener("pointerdown", aoPegar);
       tape.addEventListener("pointermove", aoMover);
@@ -169,6 +192,8 @@ function ServiceTrack({ items, to, destino, direction, alinharDireita = false })
       moveu = false;
       focado = false;
       cancelAnimationFrame(raf);
+      observador?.disconnect();
+      observador = null;
       tape.style.transform = "";
       tape.removeEventListener("pointerdown", aoPegar);
       tape.removeEventListener("pointermove", aoMover);
@@ -180,21 +205,13 @@ function ServiceTrack({ items, to, destino, direction, alinharDireita = false })
     };
 
     const sincronizar = () => (desktop.matches ? desligar() : ligar());
-    const aoRedimensionar = () => {
-      if (ativo) medir();
-    };
 
     sincronizar();
     desktop.addEventListener("change", sincronizar);
-    window.addEventListener("resize", aoRedimensionar);
-    /* As pílulas mudam de largura quando a Manrope entra no lugar da fonte
-       de sistema, e aí a metade da fita já não é a mesma */
-    if (document.fonts) document.fonts.ready.then(aoRedimensionar);
 
     return () => {
       desligar();
       desktop.removeEventListener("change", sincronizar);
-      window.removeEventListener("resize", aoRedimensionar);
     };
   }, [direction]);
 
@@ -303,8 +320,12 @@ export default function DualFocus() {
               >
                 <img
                   src={f.image}
+                  srcSet={srcsetDaGaleria(f.image)}
+                  sizes={FOTO_SIZES}
                   alt={f.imageAlt ?? f.title}
                   loading="lazy"
+                  // Ponto do recorte do object-cover; sem ele, centro
+                  style={{ objectPosition: f.imagePosition }}
                   className="h-[280px] w-full object-cover md:h-[420px]"
                 />
               </div>

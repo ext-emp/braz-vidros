@@ -1,12 +1,29 @@
 @import "tailwindcss";
 
-/*
-  Design tokens da Braz Vidros
-  Conceito: "clean BloomFi + material vidro".
-  Base fria (gelo/aço, viés azulado de vidro e alumínio).
-  Acento vindo do logo: marinho #323560 (fundo) e azul claro #8cceee (letras).
-  Marinho sobre superfícies claras, azul claro sobre escuras.
-*/
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("/fonts/fraunces-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/manrope-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
 @theme {
   --color-ice: #f2f5f9;
   --color-mist: #e4eaf1;
@@ -21,8 +38,6 @@
   --font-sans: "Manrope", system-ui, sans-serif;
 }
 
-/* Sem `scroll-behavior: smooth`: a rolagem suave é do ScrollSmoother, e a
-   nativa brigaria com ele e com o ScrollTrigger */
 body {
   background: var(--color-ice);
   color: var(--color-ink);
@@ -37,339 +52,309 @@ h3 {
   text-wrap: balance;
 }
 
-/* ---------- Material vidro (liquid glass) ----------
-   Dentro de @layer components para que utilitários do Tailwind
-   (ex: `fixed`) vençam estas classes quando aplicados juntos */
-
 @layer components {
-.glass {
-  background: linear-gradient(135deg, rgb(255 255 255 / 0.62), rgb(255 255 255 / 0.26));
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  backdrop-filter: blur(18px) saturate(160%);
-  border: 1px solid rgb(255 255 255 / 0.65);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.8),
-    0 16px 40px -16px rgb(12 22 34 / 0.22);
-}
-
-/* Painel de vidro sobre fotos e fundos escuros */
-.glass-dark {
-  background: linear-gradient(135deg, rgb(12 22 34 / 0.46), rgb(12 22 34 / 0.2));
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid rgb(255 255 255 / 0.28);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.25),
-    0 20px 50px -20px rgb(0 0 0 / 0.5);
-}
-
-/* Fallback sólido para navegadores sem backdrop-filter */
-@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
   .glass {
-    background: rgb(242 245 249 / 0.96);
+    background: linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.62),
+      rgb(255 255 255 / 0.26)
+    );
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.65);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.8),
+      0 16px 40px -16px rgb(12 22 34 / 0.22);
   }
+
   .glass-dark {
-    background: rgb(12 22 34 / 0.9);
+    background: linear-gradient(
+      135deg,
+      rgb(12 22 34 / 0.46),
+      rgb(12 22 34 / 0.2)
+    );
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgb(255 255 255 / 0.28);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.25),
+      0 20px 50px -20px rgb(0 0 0 / 0.5);
   }
-}
 
-/* Brilho que atravessa o vidro no hover (refração) */
-.sheen {
-  position: relative;
-  overflow: hidden;
-}
-.sheen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 35%,
-    rgb(255 255 255 / 0.38) 48%,
-    rgb(255 255 255 / 0.12) 54%,
-    transparent 65%
-  );
-  transform: translateX(-120%);
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
-}
-.sheen:hover::after {
-  transform: translateX(120%);
-}
+  /* Fallback sólido para navegadores sem backdrop-filter */
+  @supports not (
+    (backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))
+  ) {
+    .glass {
+      background: rgb(242 245 249 / 0.96);
+    }
+    .glass-dark {
+      background: rgb(12 22 34 / 0.9);
+    }
+  }
 
-/* ---------- Utilidades ---------- */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgb(255 255 255 / 0.38) 48%,
+      rgb(255 255 255 / 0.12) 54%,
+      transparent 65%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  .sheen:hover::after {
+    transform: translateX(120%);
+  }
 
-.eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
+  /* ---------- Utilidades ---------- */
 
-/* Scrim do hero: degradê que dá contraste ao texto.
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /* Scrim do hero: degradê que dá contraste ao texto.
    No celular vira vertical, porque lá o texto ocupa a largura toda */
-.hero-scrim {
-  background:
+  .hero-scrim {
+    background:
     /* Faixa do header: a barra do topo é transparente e nossas fotos têm
        céu claro, então sem isto os links perdem contraste */
-    linear-gradient(180deg, rgb(12 22 34 / 0.78) 0%, rgb(12 22 34 / 0) 30%),
-    /* Canto superior direito: é onde ficam os links, e é justamente a parte
+      linear-gradient(180deg, rgb(12 22 34 / 0.78) 0%, rgb(12 22 34 / 0) 30%),
+      /* Canto superior direito: é onde ficam os links, e é justamente a parte
        mais clara das fotos de fachada */
-      radial-gradient(
-        120% 90% at 100% 0%,
-        rgb(12 22 34 / 0.6) 0%,
-        rgb(12 22 34 / 0) 55%
-      ),
-    linear-gradient(
-      100deg,
-      rgb(12 22 34 / 0.92) 0%,
-      rgb(12 22 34 / 0.78) 34%,
-      rgb(12 22 34 / 0.35) 62%,
-      rgb(12 22 34 / 0.6) 100%
-    );
-}
-/*
+        radial-gradient(
+          120% 90% at 100% 0%,
+          rgb(12 22 34 / 0.6) 0%,
+          rgb(12 22 34 / 0) 55%
+        ),
+      linear-gradient(
+        100deg,
+        rgb(12 22 34 / 0.92) 0%,
+        rgb(12 22 34 / 0.78) 34%,
+        rgb(12 22 34 / 0.35) 62%,
+        rgb(12 22 34 / 0.6) 100%
+      );
+  }
+  /*
   No celular não existe a coluna escura da esquerda: o texto fica sobre o
   miolo da foto. O degradê antigo tinha seu ponto mais claro (0.35) justo aos
   40%, que é onde cai o título, e em foto de fachada clara o branco sumia.
   Agora a faixa do miolo, dos 16% aos 78%, não desce de 0.52 e fica em 0.62+
   na altura do título, do texto e dos botões.
 */
-@media (max-width: 1023px) {
-  .hero-scrim {
-    background: linear-gradient(
-      180deg,
-      rgb(12 22 34 / 0.82) 0%,
-      rgb(12 22 34 / 0.52) 16%,
-      rgb(12 22 34 / 0.62) 34%,
-      rgb(12 22 34 / 0.7) 55%,
-      rgb(12 22 34 / 0.86) 78%,
-      rgb(12 22 34 / 0.95) 100%
-    );
+  @media (max-width: 1023px) {
+    .hero-scrim {
+      background: linear-gradient(
+        180deg,
+        rgb(12 22 34 / 0.82) 0%,
+        rgb(12 22 34 / 0.52) 16%,
+        rgb(12 22 34 / 0.62) 34%,
+        rgb(12 22 34 / 0.7) 55%,
+        rgb(12 22 34 / 0.86) 78%,
+        rgb(12 22 34 / 0.95) 100%
+      );
+    }
   }
-}
 
-/*
+  /*
   Scrim do bloco Sobre da home: costura a foto ao cartão escuro para não
   ficar um corte seco entre a imagem e a tinta. No celular a foto fica em
   cima do texto, então o degradê sobe do rodapé dela; a partir de md a foto
   vai para a coluna da direita e ele passa a vir da esquerda.
 */
-.about-scrim {
-  background: linear-gradient(0deg, rgb(12 22 34) 0%, rgb(12 22 34 / 0) 65%);
-}
-@media (min-width: 768px) {
   .about-scrim {
-    background: linear-gradient(90deg, rgb(12 22 34) 0%, rgb(12 22 34 / 0) 45%);
+    background: linear-gradient(0deg, rgb(12 22 34) 0%, rgb(12 22 34 / 0) 65%);
   }
-}
+  @media (min-width: 768px) {
+    .about-scrim {
+      background: linear-gradient(
+        90deg,
+        rgb(12 22 34) 0%,
+        rgb(12 22 34 / 0) 45%
+      );
+    }
+  }
 
-/*
-  Faixa de serviços do DualFocus.
-  No celular são dois grupos idênticos lado a lado que o JS do componente
-  desloca em loop: quando o primeiro sai da tela o segundo já ocupou o lugar
-  dele, então não aparece emenda. A partir de md o grupo repetido some, o
-  loop é desligado e a lista quebra em linhas, que é o certo quando há
-  largura sobrando.
-*/
-.focus-track {
-  overflow: hidden;
-  /* Sangra o padding do .container-site para a faixa ir de borda a borda */
-  margin-inline: -1.25rem;
-  /* O padding abre espaço para a sombra das pílulas, que o overflow cortava;
-     a margem negativa em cima devolve a fita para a posição original e a de
-     baixo completa o respiro até o link */
-  padding-block: 0.75rem;
-  margin-block: -0.75rem 0.75rem;
-  /* Esmaecida nas bordas só o suficiente para a fita não terminar num corte
-     seco. Com as pílulas em azul o degradê antigo, de 28px, virava uma
-     sombra pesada nos dois cantos */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 12px,
-    #000 calc(100% - 12px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 12px,
-    #000 calc(100% - 12px),
-    transparent 100%
-  );
-}
-.focus-tape {
-  display: flex;
-  width: max-content;
-  will-change: transform;
-  /* pan-y deixa a página rolar na vertical e entrega o gesto horizontal
-     para o componente; sem isto o navegador engole o arraste */
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-  cursor: grab;
-}
-.focus-tape:active {
-  cursor: grabbing;
-}
-.focus-group {
-  display: flex;
-  gap: 0.5rem;
-  padding-right: 0.5rem;
-}
-@media (min-width: 768px) {
   .focus-track {
-    overflow: visible;
-    margin-inline: 0;
-    padding-block: 0;
-    margin-block: 0 1.75rem;
-    -webkit-mask-image: none;
-    mask-image: none;
+    overflow: hidden;
+    margin-inline: -1.25rem;
+    padding-block: 0.75rem;
+    margin-block: -0.75rem 0.75rem;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 12px,
+      #000 calc(100% - 12px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 12px,
+      #000 calc(100% - 12px),
+      transparent 100%
+    );
   }
   .focus-tape {
-    width: auto;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    touch-action: auto;
-    user-select: auto;
-    -webkit-user-select: auto;
-    cursor: auto;
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
   }
-  /* `contents` tira o grupo do caminho para as pílulas quebrarem em linhas */
+  .focus-tape:active {
+    cursor: grabbing;
+  }
   .focus-group {
-    display: contents;
+    display: flex;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
   }
-  .focus-group-dup {
-    display: none;
+  @media (min-width: 768px) {
+    .focus-track {
+      overflow: visible;
+      margin-inline: 0;
+      padding-block: 0;
+      margin-block: 0 1.75rem;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .focus-tape {
+      width: auto;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      touch-action: auto;
+      user-select: auto;
+      -webkit-user-select: auto;
+      cursor: auto;
+    }
+    .focus-group {
+      display: contents;
+    }
+    .focus-group-dup {
+      display: none;
+    }
   }
-}
 
-/*
-  Fita do compromisso, no fim da página Sobre.
-  No celular as três promessas não cabem lado a lado, então elas correm em
-  loop: dois grupos idênticos, e a corrida anda exatamente meia fita (-50%),
-  que é o ponto em que o segundo grupo ocupa o lugar do primeiro. Por isso a
-  volta não tem emenda e não precisa de marcador nenhum.
-  A partir de md a corrida para, o grupo repetido some e as promessas viram
-  uma fileira com filete entre elas.
-*/
-@keyframes commitment-run {
-  to {
-    transform: translateX(-50%);
+  @keyframes commitment-run {
+    to {
+      transform: translateX(-50%);
+    }
   }
-}
-.commitment-track {
-  overflow: hidden;
-  /* Esmaecida nas pontas para o texto não terminar em corte seco na borda */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 20px,
-    #000 calc(100% - 20px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 20px,
-    #000 calc(100% - 20px),
-    transparent 100%
-  );
-}
-.commitment-tape {
-  display: flex;
-  width: max-content;
-  animation: commitment-run 18s linear infinite;
-  will-change: transform;
-}
-.commitment-group {
-  display: flex;
-}
-.commitment-item {
-  padding-inline: 1.25rem;
-  border-inline-start: 1px solid rgb(255 255 255 / 0.15);
-  white-space: nowrap;
-}
-@media (prefers-reduced-motion: reduce) {
-  .commitment-tape {
-    animation: none;
-  }
-}
-@media (min-width: 768px) {
   .commitment-track {
-    overflow: visible;
-    -webkit-mask-image: none;
-    mask-image: none;
+    overflow: hidden;
+    /* Esmaecida nas pontas para o texto não terminar em corte seco na borda */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 20px,
+      #000 calc(100% - 20px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 20px,
+      #000 calc(100% - 20px),
+      transparent 100%
+    );
   }
   .commitment-tape {
-    width: auto;
-    justify-content: center;
-    animation: none;
+    display: flex;
+    width: max-content;
+    animation: commitment-run 18s linear infinite;
+    will-change: transform;
   }
-  /* `contents` tira o grupo do caminho para as promessas ficarem lado a lado
-     direto na fita */
   .commitment-group {
-    display: contents;
+    display: flex;
   }
-  .commitment-group-dup {
+  .commitment-item {
+    padding-inline: 1.25rem;
+    border-inline-start: 1px solid rgb(255 255 255 / 0.15);
+    white-space: nowrap;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .commitment-tape {
+      animation: none;
+    }
+  }
+  @media (min-width: 768px) {
+    .commitment-track {
+      overflow: visible;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .commitment-tape {
+      width: auto;
+      justify-content: center;
+      animation: none;
+    }
+
+    .commitment-group {
+      display: contents;
+    }
+    .commitment-group-dup {
+      display: none;
+    }
+    .commitment-item:first-child {
+      border-inline-start: 0;
+    }
+  }
+  @media (min-width: 1024px) {
+    .commitment-item {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  .commitment-item:first-child {
-    border-inline-start: 0;
-  }
-}
-@media (min-width: 1024px) {
-  .commitment-item {
-    padding-inline: 1.5rem;
-  }
-}
 
-/* Trilho que rola para o lado sem a barra de rolagem à mostra */
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.container-site {
-  width: 100%;
-  max-width: 76rem;
-  margin-inline: auto;
-  padding-inline: 1.25rem;
-}
-@media (min-width: 768px) {
   .container-site {
-    padding-inline: 2rem;
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
   }
-}
+  @media (min-width: 768px) {
+    .container-site {
+      padding-inline: 2rem;
+    }
+  }
 
-/*
-  Coluna do hero. Mesma caixa do .container-site, com duas diferenças:
-  recuo de 6rem e `margin: 0` em vez de `auto`. Sem o `auto` a coluna
-  encosta à esquerda, então o título nasce a 6rem da borda da tela e os
-  números terminam no fim da coluna, não no fim do monitor.
-  Vive separada porque no .container-site isto desalinharia todas as
-  demais seções do site em telas largas.
-*/
-.container-hero {
-  width: 100%;
-  max-width: 76rem;
-  margin: 0;
-  padding-inline: 1.25rem;
-}
-@media (min-width: 768px) {
   .container-hero {
-    padding-inline: 6rem;
+    width: 100%;
+    max-width: 76rem;
+    margin: 0;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-hero {
+      padding-inline: 6rem;
+    }
   }
 }
-}
 
-/* Estado inicial dos reveals de scroll (GSAP anima para o estado final) */
 [data-reveal] {
   opacity: 0;
 }
@@ -386,7 +371,6 @@ h3 {
   }
 }
 
-/* Foco visível para navegação por teclado */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-accent);

@@ -1,32 +1,3 @@
-/*
-  Fotos reais das obras da Braz Vidros. É daqui que sai o PORTFOLIO do
-  content.js: a galeria da home e as grades da vidraçaria e das esquadrias.
-
-  Para colocar uma foto nova:
-   1. Converta a foto para WebP, qualidade 80, em dois tamanhos, com o nome
-      sem acento e com hífen no lugar do espaço ("Box até o teto 4.jpeg"
-      vira "Box-ate-o-teto-4"):
-      - public/projetos/<nome>.webp: no máximo 1600px no maior lado, é a
-        foto que abre no lightbox
-      - public/projetos/mini/<nome>.webp: 600px de largura, é a miniatura
-        da grade
-      O .jpeg original fica fora de /public, senão vai junto para o site
-   2. Acrescente uma linha em FOTOS com esse nome em `arquivo`, na
-      categoria certa. A posição na lista é a posição na grade
-
-  Campos de cada foto:
-  - `arquivo`: nome do .webp, sem a extensão
-  - `titulo`: o que aparece na legenda da grade e do lightbox
-  - `categoria`: um dos ids de CATEGORIAS
-  - `alt`: descrição da foto para quem não enxerga e para o Google
-  - `destaque`: entra na galeria da home. São oito, quatro de vidro e quatro
-    de alumínio, e as de vidro vêm antes na lista para ocupar a primeira
-    linha da grade
-  - `spec`: só quando a foto foge da especialidade da categoria. "vidro"
-    vai para a página da vidraçaria, "aluminio" para a de esquadrias
-*/
-
-/* `spec` é a especialidade padrão de cada categoria */
 export const CATEGORIAS = [
   { id: "box", label: "Box de banheiro", spec: "vidro" },
   { id: "sacadas", label: "Sacadas e fechamentos", spec: "vidro" },
@@ -280,13 +251,12 @@ const FOTOS = [
 
 const CATEGORIA_POR_ID = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c]));
 
-/* Lista pronta para a grade e o lightbox: `thumb` é a miniatura da grade,
-   `image` a foto grande que abre ao clicar */
 export const GALERIA = FOTOS.map((f) => {
   const categoria = CATEGORIA_POR_ID[f.categoria];
   return {
     arquivo: f.arquivo,
     image: `/projetos/${f.arquivo}.webp`,
+    media: `/projetos/media/${f.arquivo}.webp`,
     thumb: `/projetos/mini/${f.arquivo}.webp`,
     title: f.titulo,
     alt: f.alt,
@@ -295,3 +265,8 @@ export const GALERIA = FOTOS.map((f) => {
     destaque: Boolean(f.destaque),
   };
 });
+
+export const srcsetDaGaleria = (image) => {
+  const nome = /^\/projetos\/([^/]+)\.webp$/.exec(image ?? "")?.[1];
+  return nome ? `/projetos/media/${nome}.webp 720w, ${image} 1600w` : undefined;
+};

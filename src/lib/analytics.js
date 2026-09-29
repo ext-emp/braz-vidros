@@ -1,8 +1,8 @@
 const env = import.meta.env;
 
 /* ID de medição do GA4 (G-XXXXXXXXXX) e da conta do Google Ads (AW-000000000) */
-export const GA_ID = (env.VITE_GA_ID || "").trim();
-export const ADS_ID = (env.VITE_ADS_ID || "").trim();
+const GA_ID = (env.VITE_GA_ID || "").trim();
+const ADS_ID = (env.VITE_ADS_ID || "").trim();
 
 /* Rótulo de cada conversão dentro da conta do Ads. Sem o rótulo o clique ainda
    vira evento no GA4, mas não conta como conversão no Ads, que é quem precisa
@@ -157,7 +157,7 @@ const EVENTOS = {
   instagram: "contato_instagram",
 };
 
-export function registrarContato(canal, origem) {
+function registrarContato(canal, origem) {
   if (!MEDICAO_ATIVA || lerConsentimento() !== "aceito") return;
 
   const nome = EVENTOS[canal];

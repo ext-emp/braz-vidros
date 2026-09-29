@@ -1,4 +1,4 @@
-export const CATEGORIAS = [
+const CATEGORIAS = [
   { id: "box", label: "Box de banheiro", spec: "vidro" },
   { id: "sacadas", label: "Sacadas e fechamentos", spec: "vidro" },
   { id: "telhados", label: "Telhados e coberturas", spec: "vidro" },
@@ -254,9 +254,7 @@ const CATEGORIA_POR_ID = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c]));
 export const GALERIA = FOTOS.map((f) => {
   const categoria = CATEGORIA_POR_ID[f.categoria];
   return {
-    arquivo: f.arquivo,
     image: `/projetos/${f.arquivo}.webp`,
-    media: `/projetos/media/${f.arquivo}.webp`,
     thumb: `/projetos/mini/${f.arquivo}.webp`,
     title: f.titulo,
     alt: f.alt,

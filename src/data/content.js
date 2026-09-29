@@ -118,8 +118,8 @@ const PROJETOS_POR_ANO = 500;
 
 const anosDesdeBase = Math.max(0, new Date().getFullYear() - STATS_ANO_BASE);
 
-export const ANOS_DE_ESTRADA = ANOS_NO_ANO_BASE + anosDesdeBase;
-export const PROJETOS_ENTREGUES =
+const ANOS_DE_ESTRADA = ANOS_NO_ANO_BASE + anosDesdeBase;
+const PROJETOS_ENTREGUES =
   PROJETOS_NO_ANO_BASE + anosDesdeBase * PROJETOS_POR_ANO;
 
 export const HERO_STATS = [

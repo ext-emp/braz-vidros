@@ -28,13 +28,6 @@ export default function App() {
   // topo vale para as duas coisas, inclusive clicar na logo já estando na home
   const { pathname, search, key } = useLocation();
 
-  /*
-    Scroll suave do GSAP: a rolagem nativa continua sendo a fonte da posição,
-    o ScrollSmoother só interpola o transform do #smooth-content atrás dela.
-    Criado uma vez, fora do ciclo de rotas.
-    Só no desktop: aparelho de toque já tem inércia própria, e lá o scroll
-    nativo também é quem esconde a barra de endereço do navegador.
-  */
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (ScrollTrigger.isTouch === 1) return;
@@ -48,24 +41,6 @@ export default function App() {
     });
   }, []);
 
-  /*
-    Cada troca de rota abre a página nova no topo.
-
-    Um `scrollTo(0)` sozinho não segurava no celular: para remedir, o
-    ScrollTrigger guarda a posição do scroller, zera, mede e devolve o que
-    guardou, e essa devolução chegava depois do nosso salto, jogando a rota
-    nova de volta para a altura em que a anterior tinha ficado. No desktop o
-    problema não aparecia porque quem escreve a posição a cada frame é o
-    ScrollSmoother, e o alvo dele já era o topo.
-
-    Daí a ordem: esquecer a posição guardada (clearScrollMemory), remedir e
-    reafirmar o topo, inclusive no frame seguinte, que é quando cai uma
-    remedição adiada.
-
-    Em layout effect, antes da pintura: assim a página nova nunca chega a
-    aparecer na altura da anterior, e os reveals da rota, que são registrados
-    logo depois, já medem com a tela no topo.
-  */
   useLayoutEffect(() => {
     const irAoTopo = () => {
       const smoother = ScrollSmoother.get();
@@ -84,19 +59,6 @@ export default function App() {
     return () => cancelAnimationFrame(id);
   }, [key]);
 
-  /*
-    Uma visualização de página por rota. Numa SPA o gtag só veria a primeira
-    carga, então o disparo é manual e o `send_page_view` fica desligado lá no
-    analytics.js.
-
-    Em `useEffect`, não em layout effect, e de propósito: o React roda os
-    efeitos de baixo para cima, então o usePageMeta da página já trocou o
-    document.title quando este aqui executa, e o relatório recebe o título
-    certo em vez do título da rota anterior.
-
-    Depende de pathname e search, não de `key`: clicar de novo no link da
-    página em que já se está não é visita nova.
-  */
   useEffect(() => {
     pageView(pathname + search);
   }, [pathname, search]);

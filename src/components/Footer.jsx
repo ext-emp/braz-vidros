@@ -65,12 +65,6 @@ export default function Footer() {
       />
 
       <div className="container-site relative py-14 md:py-20">
-        {/*
-          Uma marcação, duas leituras. No celular empilha na ordem pedida:
-          marca, contato, navegação e a chamada por último. No lg vira as três
-          colunas do modelo, com `order` recolocando o contato no fim da linha
-          e o alinhamento voltando para a esquerda.
-        */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 text-center lg:grid-cols-[1.5fr_1fr_1.4fr] lg:gap-x-10 lg:text-left">
           {/* Marca */}
           <div className="order-1 col-span-2 lg:col-span-1">
@@ -195,10 +189,6 @@ export default function Footer() {
             reservados.
           </p>
 
-          {/* O dever de informação da LGPD. O link de cookies só aparece em
-              build com medição ligada, e é a porta permanente para rever o
-              consentimento: sem ele, quem recusou uma vez não teria como
-              voltar atrás */}
           <nav
             aria-label="Privacidade"
             className="flex items-center gap-4 text-xs text-white/50"

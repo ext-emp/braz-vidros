@@ -8,11 +8,6 @@ import {
   INSTAGRAM,
 } from "../data/content.js";
 
-/*
-  Galeria da home: as oito obras em destaque com um filtro por especialidade.
-  O filtro mora aqui, e não na página, porque a grade precisa de estado e a
-  Home segue sendo só a montagem das seções.
-*/
 export default function ProjectShowcase() {
   const [filtro, setFiltro] = useState("tudo");
 
@@ -43,16 +38,6 @@ export default function ProjectShowcase() {
 
   return (
     <>
-      {/*
-        Chave de três posições, e não três pílulas soltas: as opções são
-        exclusivas, então elas dividem uma só caixa em partes iguais e o
-        marcador desliza de uma para a outra. Assim as três ficam sempre lado
-        a lado, sem a terceira cair para a linha de baixo no celular.
-
-        O marcador é um elemento só, posicionado por translateX: a largura é
-        um terço da área interna (o padding de 0.25rem de cada lado sai da
-        conta), e cada passo é exatamente a própria largura dele.
-      */}
       <div
         data-reveal
         role="group"

@@ -149,13 +149,6 @@ h3 {
         rgb(12 22 34 / 0.6) 100%
       );
   }
-  /*
-  No celular não existe a coluna escura da esquerda: o texto fica sobre o
-  miolo da foto. O degradê antigo tinha seu ponto mais claro (0.35) justo aos
-  40%, que é onde cai o título, e em foto de fachada clara o branco sumia.
-  Agora a faixa do miolo, dos 16% aos 78%, não desce de 0.52 e fica em 0.62+
-  na altura do título, do texto e dos botões.
-*/
   @media (max-width: 1023px) {
     .hero-scrim {
       background: linear-gradient(
@@ -170,12 +163,6 @@ h3 {
     }
   }
 
-  /*
-  Scrim do bloco Sobre da home: costura a foto ao cartão escuro para não
-  ficar um corte seco entre a imagem e a tinta. No celular a foto fica em
-  cima do texto, então o degradê sobe do rodapé dela; a partir de md a foto
-  vai para a coluna da direita e ele passa a vir da esquerda.
-*/
   .about-scrim {
     background: linear-gradient(0deg, rgb(12 22 34) 0%, rgb(12 22 34 / 0) 65%);
   }

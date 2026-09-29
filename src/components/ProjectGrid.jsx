@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import Lightbox from "./Lightbox.jsx";
 
-/*
-  `reveal` desliga o data-reveal da grade. Serve para quem troca a lista em
-  tempo de execução (o filtro da home): o GSAP anima cada [data-reveal] uma
-  vez só e deixa a opacidade cravada no elemento, então uma grade que muda
-  de conteúdo precisa revelar pelo wrapper, não por ela mesma.
-*/
 export default function ProjectGrid({
   items,
   columns = "sm:grid-cols-2 lg:grid-cols-4",

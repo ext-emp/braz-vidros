@@ -3,13 +3,6 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { NAV_LINKS, PHONE, PHONE_HREF, waLink } from "../data/content.js";
 import { lockScroll } from "../lib/scrollLock.js";
 
-/*
-  Header em dois estados:
-  - Topo: barra transparente sobre o hero, sem caixa nem fundo.
-  - Depois do scroll: a barra do topo some e uma cápsula escura entra
-    deslizando de cima, com telefone e botão de orçamento.
-*/
-
 // Ponto da troca de estado
 const SCROLL_THRESHOLD = 90;
 
@@ -105,11 +98,6 @@ export default function Navbar() {
     }`;
 
   return (
-    // Com o painel aberto o header sobe de camada para cobrir o botão
-    // flutuante do WhatsApp, que também vive em z-50
-    // A faixa do header é transparente e cobre o topo de todas as páginas;
-    // sem pointer-events-none ela engoliria cliques do conteúdo por baixo.
-    // Cada barra reativa o clique só onde de fato desenha algo
     <header
       className={`pointer-events-none fixed inset-x-0 top-0 ${open ? "z-70" : "z-50"}`}
       aria-label="Navegação principal"
@@ -206,10 +194,6 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* Menu em tela cheia: logo e fechar em cima, os destinos em serifada
-          grande separados por filete, e a chamada presa embaixo. Sem painel
-          lateral e sem véu: a tela toda é o menu, então nada do fundo disputa
-          atenção. Fica sempre montado para a saída também ser animada */}
       <aside
         aria-label="Menu"
         aria-hidden={!open}

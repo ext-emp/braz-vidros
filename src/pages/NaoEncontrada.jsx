@@ -2,19 +2,6 @@ import { Link } from "react-router-dom";
 import { NAV_LINKS, PAGE_META, waLink } from "../data/content.js";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 
-/*
-  Endereço que não existe. Em vez de devolver a home calada, que é o que
-  acontecia antes, a página assume o erro e entrega as saídas: voltar ao
-  início, ver os trabalhos e a lista das outras rotas.
-
-  Faixa escura, e não clara como o resto do conteúdo do site, porque a barra
-  do topo é transparente com texto branco enquanto ninguém rolou a página.
-  Numa abertura clara os links dela sumiriam, que é a mesma razão de o
-  PageHeader das outras páginas internas ser escuro.
-
-  O `noindex` vem do PAGE_META, que também mantém esta rota fora do sitemap.
-*/
-
 /* Os destinos do rodapé da página: as rotas do menu, menos a home, que já é
    o botão principal */
 const ATALHOS = NAV_LINKS.filter((l) => l.href !== "/");

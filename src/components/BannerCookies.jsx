@@ -8,20 +8,6 @@ import {
   recusar,
 } from "../lib/analytics.js";
 
-/*
-  Aviso de consentimento da LGPD.
-
-  Só existe em build com ID de medição preenchido: sem tag para carregar não há
-  o que consentir, e um banner pedindo autorização para nada seria só ruído.
-
-  Três regras que a tela precisa cumprir, e que também estão na política:
-  aceitar e recusar têm o mesmo peso visual, fechar no X vale como recusa, e o
-  rodapé tem link permanente para rever a escolha, que chega aqui pelo evento
-  de janela EVENTO_REVER.
-
-  Fica acima do botão flutuante do WhatsApp no celular (bottom-24) para não
-  cobrir a principal chamada do site enquanto a pessoa decide.
-*/
 export default function BannerCookies() {
   const [aberto, setAberto] = useState(false);
   const [visivel, setVisivel] = useState(false);

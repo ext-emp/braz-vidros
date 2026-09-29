@@ -2,14 +2,6 @@ import { Link } from "react-router-dom";
 import SectionHeading from "./SectionHeading.jsx";
 import { ABOUT_HOME, HERO_STATS } from "../data/content.js";
 
-/*
-  Quem é a empresa, em faixa escura, no fim da home. Mesma família visual do
-  CTABand: cartão em tinta, cantos de 1.75rem e o halo em azul claro no canto.
-
-  A foto entra por cima no celular e vira a coluna da direita a partir de md.
-  O degradê acompanha: sobe do rodapé da foto no celular, onde o texto vem
-  logo abaixo, e vem da esquerda no desktop, onde ele vem ao lado.
-*/
 export default function AboutBand() {
   return (
     <section className="container-site py-16 md:py-24">
@@ -49,17 +41,6 @@ export default function AboutBand() {
             reveal={false}
           />
 
-          {/* Os três numa linha só, de borda a borda do cartão. Cada coluna
-              com a largura do próprio rótulo, e não um terço fixo: "1 ano" é
-              curto e devolve para os vizinhos o que não usa.
-
-              Os rótulos somam 25,7em, que nos 12px de projeto passam da
-              largura de qualquer celular. Por isso o corpo acompanha a tela
-              até o teto de 12px, e o nowrap garante a linha única.
-
-              Número centrado sobre a legenda, como na faixa do hero: o valor
-              é mais curto que o rótulo, e pela esquerda cada par ficava com
-              um encaixe diferente */}
           <ul className="mt-8 flex justify-between gap-x-2 border-t border-white/15 pt-7 sm:flex-wrap sm:justify-center sm:gap-x-10 sm:gap-y-5 md:justify-start">
             {HERO_STATS.map((s) => (
               <li key={s.label} className="text-center">

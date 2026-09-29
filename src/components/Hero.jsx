@@ -23,15 +23,6 @@ const MOSAIC_SECONDS = 1.9;
 // Em que ponto do mosaico o texto do novo slide entra
 const TEXT_LEAD = 1;
 
-/*
-  Efeito do hero decodificado do tema Archipark (Slider Revolution 6.4.6):
-  - Transição em mosaico: a foto fatiada numa grade de peças que se montam
-    das bordas para o centro, cada uma com rotação/escala/offset próprios.
-  - Texto em 3 camadas mascaradas: etiqueta letra a letra, título deslizante e CTA.
-  - ~9s por slide, zoom lento ambiente (Ken Burns) na foto de fundo.
-  Recriado com GSAP puro (stagger grid + from:"edges").
-*/
-
 function buildMosaic(container, imageUrl, cols, rows) {
   const W = container.clientWidth;
   const H = container.clientHeight;
@@ -94,12 +85,6 @@ export default function Hero() {
 
   const slide = HERO_SLIDES[active];
 
-  /*
-    Zera os três trilhos e mata o que estiver animando neles.
-    O kill é obrigatório: useGSAP com `dependencies` só reverte no unmount,
-    não a cada troca, então sem ele o tween do slide que saiu continua
-    escrevendo scaleX e a barra antiga enche junto com a nova.
-  */
   const resetFills = () => {
     const fills = pagerRef.current?.querySelectorAll("[data-fill]");
     if (!fills?.length) return null;
@@ -117,12 +102,6 @@ export default function Hero() {
 
   const { contextSafe } = useGSAP({ scope: rootRef });
 
-  /*
-    Monta `imageUrl` em mosaico por cima do palco e devolve a timeline.
-    `onAssembled` roda com as peças já no lugar, antes do overlay dissolver:
-    é a hora de trocar o fundo por baixo, porque nesse instante os dois são
-    a mesma imagem e a troca não aparece.
-  */
   const playMosaic = (imageUrl, onAssembled) => {
     // 17×17 no desktop, 8×8 no mobile (performance)
     const small = window.innerWidth < 768;
@@ -223,12 +202,6 @@ export default function Hero() {
     });
   });
 
-  /*
-    Entrada do site: a primeira foto se monta pelo mesmo mosaico das trocas,
-    em vez de já aparecer pronta com só o texto animando.
-    O fundo começa vazio (o palco é escuro): se ficasse com a foto, ela
-    apareceria inteira atrás das peças e não sobraria efeito nenhum.
-  */
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (introRef.current.started) return;
@@ -263,12 +236,6 @@ export default function Hero() {
             if (!first) busyRef.current = false;
           },
         });
-        /*
-          Posições absolutas em vez de encadeadas: as camadas se sobrepõem
-          sem perder a ordem de leitura.
-          Stagger por "amount" (não "each"): tempo total fixo não importa o
-          tamanho do texto, então uma etiqueta longa não atrasa tudo.
-        */
         tl.from(panel, { y: 18, opacity: 0, duration: 0.35, ease: "power3.out" }, 0)
           // Etiqueta: letra a letra, girando de -90° por trás da máscara (sentido reverso)
           .from(
@@ -291,11 +258,6 @@ export default function Hero() {
           // CTA sobe suave por último
           .from(cta, { y: 20, opacity: 0, duration: 0.3, ease: "power3.out", stagger: 0.05 }, 0.34);
 
-        /*
-          Os números fecham a entrada, na mesma assinatura do CTA.
-          Só na primeira montagem: eles não mudam de slide, então animar a
-          cada troca faria a faixa piscar de nove em nove segundos.
-        */
         if (first && statsRef.current) {
           tl.from(
             statsRef.current.querySelectorAll("[data-stat]"),
@@ -386,10 +348,6 @@ export default function Hero() {
               </p>
               <h1
                 data-exit
-                /* Piso de 2rem (32px), o mesmo degrau do h1 das páginas
-                   internas: em 34px a linha mais longa dos slides,
-                   "precisão de milímetro", estourava os 335px úteis de uma
-                   tela de 375px e virava uma terceira linha */
                 className="font-display text-[clamp(2rem,6.2vw,4.6rem)] leading-[1.06] font-medium tracking-[-0.015em] text-white md:leading-[1.03]"
               >
                 {slide.title.map((line, i) => (
@@ -444,11 +402,6 @@ export default function Hero() {
                   <p className="font-display text-3xl leading-none font-semibold text-white lg:text-4xl">
                     {s.value}
                   </p>
-                  {/* Os três rótulos numa linha só. Somados eles pedem cerca de
-                      27em, e nos 12px fixos não cabiam na largura de um celular:
-                      daí o corpo acompanhar a tela até o teto de 12px, que é
-                      onde ele volta a ser o tamanho de projeto (a partir de
-                      ~430px). O nowrap é a garantia de que nunca quebra */}
                   <p className="mt-2 text-[min(0.75rem,2.8vw)] whitespace-nowrap text-white/60 sm:text-xs">
                     {s.label}
                   </p>

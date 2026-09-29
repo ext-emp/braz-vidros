@@ -8,22 +8,6 @@ import {
   mapLink,
 } from "../data/content.js";
 
-/*
-  Chamada final de orçamento, usada no fim de todas as páginas.
-
-  Nasce como cartão de vidro claro, e não de tinta: na home ela vem logo depois
-  do bloco Sobre, que já é um cartão escuro arredondado, e dois escuros seguidos
-  faziam a chamada parecer só mais um bloco em vez do lugar de converter.
-
-  `tone="accent"` pinta o cartão de marinho, para onde esse vizinho escuro não
-  existe: na página de contato, que fecha com o mapa, a chamada de tinta é o
-  único bloco cheio da página e puxa o olho sem disputar com nada.
-
-  A coluna da direita existe para quem não quer WhatsApp: telefone, endereço
-  e mapa na mesma altura, sem obrigar a pessoa a ir até a página de contato.
-  No celular ela vai para baixo e o filete que separa as duas vira uma linha
-  no topo.
-*/
 export default function CTABand({
   message = "Olá! Quero um orçamento com a Braz Vidros.",
   compact = false,
@@ -80,10 +64,6 @@ export default function CTABand({
           </a>
         </div>
 
-        {/* Some no celular: lá o botão do WhatsApp já resolve, e telefone e
-            endereço repetidos empurravam o rodapé para muito longe. `compact`
-            tira a coluna também no desktop, para a página de contato, onde
-            esses mesmos dados já são o conteúdo principal */}
         {!compact && (
         <div
           className={`hidden flex-col gap-6 md:flex md:border-l md:pl-12 ${

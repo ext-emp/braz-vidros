@@ -2,18 +2,6 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { SITE_URL, OG_IMAGE, OG_IMAGE_ALT } from "../data/content.js";
 
-/*
-  SEO por página na SPA: título da aba, description, canonical, robots, Open
-  Graph e Twitter Card sincronizados com a rota.
-
-  Isto vale para os robôs que executam JavaScript. Crawler de rede social
-  (WhatsApp, Facebook, Telegram) não executa, e lê as tags estáticas do
-  index.html, que descrevem a home. Por isso as duas fontes existem, e as do
-  index.html precisam ser mantidas junto com as daqui.
-
-  Os campos vêm do PAGE_META em content.js, que é a mesma fonte que alimenta
-  o sitemap.
-*/
 export function usePageMeta({ title, description, image, imageAlt, noindex }) {
   const { pathname } = useLocation();
 

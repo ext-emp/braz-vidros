@@ -1,20 +1,5 @@
 import { ABOUT_STORY } from "../data/content.js";
 
-/*
-  Fita de fechamento da página Sobre: o compromisso da casa em três promessas.
-
-  São três arranjos, porque o conteúdo é largo demais para caber numa linha só
-  antes de xl:
-  - Celular: a fita sangra de ponta a ponta da tela e as promessas correm em
-    loop, sozinhas e sem controle nenhum à vista. O loop é de CSS (ver
-    .commitment-* no index.css), então não há timer, nem marcador, nem estado.
-  - md a lg: título em cima e as três promessas numa fileira embaixo, cada uma
-    em uma linha só.
-  - xl: o formato cheio, título à esquerda, filete e promessas à direita.
-
-  O grupo repetido é aria-hidden: para quem lê por leitor de tela as promessas
-  aparecem uma vez só.
-*/
 export default function CommitmentBand() {
   const { title, titleItalic, items } = ABOUT_STORY.closing;
 

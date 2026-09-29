@@ -2,16 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-/*
-  Põe o CSS do build dentro do index.html, num <style>, em vez de um <link>.
-  O <link> era uma requisição a mais travando a primeira pintura: no 4G lento
-  do PageSpeed, 280 ms parados esperando 9 kB. Embutido, ele chega junto com
-  o HTML.
-
-  Só no build e só para o CSS que o HTML já apontava. CSS que um dia vier
-  de um pedaço carregado sob demanda continua como arquivo, do jeito que o
-  Vite injeta.
-*/
 function cssNoHtml() {
   return {
     name: "css-no-html",

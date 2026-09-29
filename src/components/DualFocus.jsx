@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import { FOCUS, SERVICES_GLASS, SERVICES_ALUMINUM } from "../data/content.js";
 import { srcsetDaGaleria } from "../data/galeria.js";
 
-/* Largura da foto na tela, para o navegador escolher a versão pelo srcset:
-   no celular a coluna inteira menos o padding do container; de md a lg
-   metade da linha; de lg para cima o que sobra ao lado da coluna de 418px,
-   que no container cheio dá 678px */
 const FOTO_SIZES =
   "(min-width: 1024px) 678px, (min-width: 768px) calc(50vw - 3.75rem), calc(100vw - 2.5rem)";
 
@@ -16,12 +12,6 @@ const SERVICES_BY_FOCUS = {
   esquadrias: SERVICES_ALUMINUM,
 };
 
-/* Azul do logo em bloco: a fita de serviços é o que puxa o olho para os
-   trabalhos, então ela não desaparece no branco da seção.
-   Largura fixa de 205px com o texto centralizado: as pílulas ficam do mesmo
-   tamanho, alinhadas em coluna quando a lista quebra em linhas. O padding
-   lateral é curto só para o rótulo mais longo caber dentro dos 205px.
-   min-h-11 garante os 44px de alvo de toque agora que a pílula é link */
 const chipClass =
   "flex min-h-11 w-[205px] shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-accent bg-accent px-2 py-2.5 text-center text-[13px] font-medium text-white shadow-[0_4px_12px_-6px_rgb(50_53_96/0.55)] transition-colors duration-300 hover:border-ink hover:bg-ink";
 
@@ -33,20 +23,6 @@ const VELOCIDADE = 26;
    disso o clique passa e a pílula leva para a página da especialidade */
 const LIMIAR_ARRASTE = 6;
 
-/*
-  Faixa de serviços. No celular os dois grupos idênticos correm em loop e o
-  dedo manda: segurar pausa, arrastar move, soltar volta a correr de onde
-  parou. A partir de md o loop é desligado, o grupo repetido some e a lista
-  vira estática, quebrando em linhas.
-
-  Cada pílula é um link para a página da própria especialidade: quem se
-  interessa por um serviço que passou na fita chega na página onde ele está
-  detalhado, em vez de ter que achar o link de texto abaixo.
-
-  A rolagem é feita no braço (requestAnimationFrame mexendo no transform) em
-  vez de animação CSS porque o arraste precisa somar à posição corrente, e o
-  transform de uma animação CSS em curso não dá para ler nem continuar.
-*/
 function ServiceTrack({ items, to, destino, direction, alinharDireita = false }) {
   const tapeRef = useRef(null);
 
@@ -164,14 +140,6 @@ function ServiceTrack({ items, to, destino, direction, alinharDireita = false })
       if (ativo) return;
       ativo = true;
       ultimo = 0;
-      /*
-        A medida vem do ResizeObserver, e não de um medir() aqui: na montagem
-        o layout ainda está sujo, e ler o scrollWidth nessa hora obrigava o
-        navegador a calcular a página inteira na hora (o "reflow forçado" do
-        PageSpeed). O observador entrega o tamanho logo depois do layout que
-        o navegador já ia fazer, antes da pintura, e avisa de novo quando a
-        fita muda de tamanho: tela girando ou a fonte chegando
-      */
       observador = new ResizeObserver(aoRedimensionar);
       observador.observe(tape);
       if (tape.firstElementChild) observador.observe(tape.firstElementChild);
@@ -291,17 +259,6 @@ export default function DualFocus() {
       <div className="flex flex-col gap-14 md:gap-20">
         {FOCUS.map((f, i) => {
           const fotoPrimeiro = i % 2 === 0;
-          /*
-            De lg para cima a coluna de texto tem a largura exata da fita de
-            serviços, 418px, que são duas pílulas de 205 mais os 8 do vão.
-            Assim o texto começa e termina junto com as pílulas e a foto fica
-            com todo o resto, sem sobra em nenhuma das duas pontas. Mudou a
-            largura da pílula, muda este número.
-
-            Entre md e lg a divisão volta a ser meio a meio: com 418px fixos
-            numa tela de 768 sobrariam 230px para a foto, que tem 420 de
-            altura e viraria uma tira em pé.
-          */
           return (
             <div
               key={f.id}

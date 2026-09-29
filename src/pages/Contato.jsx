@@ -127,10 +127,6 @@ export default function Contato() {
         </div>
       </section>
 
-      {/* Sem a coluna de telefone e endereço: aqui em cima isso já é o
-          conteúdo principal da página. O texto também é próprio: o das outras
-          páginas fala em mandar a medida, que é o que o cabeçalho daqui já
-          pede, então o fecho fica com o outro caminho, o da visita */}
       <CTABand
         compact
         tone="accent"

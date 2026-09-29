@@ -22,10 +22,6 @@ export default function Sobre() {
         text="Vidraçaria e esquadrias de alumínio em Novo Hamburgo e região, com garantia e suporte depois da entrega."
       />
 
-      {/* Nossa história em capítulos que abrem: os quatro títulos ficam à
-          vista e o texto só desce quando a pessoa pede. Aberta de uma vez, a
-          história era uma parede de oito parágrafos, e a foto do lado sumia
-          no primeiro deles */}
       <section className="bg-mist/60 py-16 md:py-24">
         <div className="container-site">
           <SectionHeading
@@ -118,10 +114,6 @@ export default function Sobre() {
                     >
                       <div className="overflow-hidden">
                         <div className="pb-7 md:pr-10">
-                          {/* Justificado com hifenização: sem quebrar palavra,
-                              a linha justificada abre buracos entre as palavras
-                              no celular, onde a coluna é estreita. O idioma sai
-                              do lang="pt-BR" do documento */}
                           {b.text.map((t, j) => (
                             <p
                               key={j}

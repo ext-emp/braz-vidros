@@ -1,9 +1,5 @@
 import SectionHeading from "./SectionHeading.jsx";
 
-/*
-  Faixa escura de abertura das páginas internas.
-  Também garante fundo escuro atrás da navbar transparente no topo.
-*/
 export default function PageHeader({ eyebrow, title, text }) {
   return (
     <header className="relative overflow-hidden bg-ink pt-36 pb-16 md:pt-44 md:pb-20">

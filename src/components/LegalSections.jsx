@@ -1,8 +1,3 @@
-/*
-  Corpo da Política de Privacidade.
-  Cada seção tem título, parágrafos, uma lista opcional e um fecho opcional
-  depois da lista, que é o formato dos textos em src/data/legal.js.
-*/
 export default function LegalSections({ sections }) {
   return (
     <div data-reveal-group className="space-y-10">

@@ -1,7 +1,3 @@
-/*
-  Ícones dos serviços: traço simples, herdam a cor do container (currentColor).
-  A chave vem do campo `icon` de cada serviço em content.js.
-*/
 const ICONS = {
   // Cabine com painel fixo, porta e a base do box embaixo
   box: (

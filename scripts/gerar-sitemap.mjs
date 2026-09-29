@@ -1,11 +1,3 @@
-/*
-  Gera o public/sitemap.xml a partir do PAGE_META de src/data/content.js, que
-  é a mesma fonte do SEO de cada página. Rota nova entra num lugar só e
-  aparece nos dois, e o sitemap nunca lista uma página que não existe.
-
-  Roda sozinho antes do build (o npm chama o `prebuild`) e pode ser chamado à
-  mão com `npm run sitemap`.
-*/
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";

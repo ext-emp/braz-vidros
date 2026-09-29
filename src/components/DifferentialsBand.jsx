@@ -2,23 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import SectionHeading from "./SectionHeading.jsx";
 import { DIFFERENTIALS } from "../data/content.js";
 
-/*
-  Faixa de diferenciais em azul do logo. Mesma lista na home e na página
-  Sobre, só o par de títulos muda.
-
-  O título fica sempre em cima dos quatro pontos, em qualquer largura: na
-  coluna lateral ele quebrava em duas linhas e empurrava os pontos para a
-  metade direita do cartão.
-
-  Celular: os quatro pontos viram um slider que passa sozinho, um cartão de
-  cada vez. Quem encostar na fita manda: o rodízio para por um minuto para a
-  pessoa ler com calma, e ela pode arrastar para o lado quando quiser. Passado
-  o minuto sem toque nenhum, ele volta a andar de onde estiver.
-
-  sm em diante: duas colunas, com filete só entre elas, ou seja nos itens 2 e
-  4. As classes saem por índice para não ter `border-l` e `border-l-0`
-  disputando o mesmo breakpoint.
-*/
 const FILETE = "border-white/20 sm:border-l sm:pl-6 md:pl-8";
 const FILETES = ["", FILETE, "", FILETE];
 

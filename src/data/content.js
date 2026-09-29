@@ -1,19 +1,3 @@
-/*
-  Todo o conteúdo editável do site num lugar só.
-  TODO (aguardando cliente):
-   - Fotos reais: as de /public/hero e /public/empresa/equipe.webp ainda são
-     banco de imagens (Unsplash License, uso comercial liberado) e devem sair
-     assim que o cliente mandar as dele. As obras de /public/projetos já são
-     fotos reais (lista em galeria.js), e /public/empresa/sobre-nos.webp é a
-     foto real da loja
-
-  Pasta de imagem nunca pode ter nome de rota: o conteúdo de /public vai para
-  a raiz do site, e uma pasta /sobre ali é um diretório de verdade, que o
-  servidor entrega antes de chegar na regra que manda a rota para o index.html.
-  Era o que devolvia 403 em /sobre. Daí /public/empresa em vez de /public/sobre.
-   - Logo, se existir
-*/
-
 import { GALERIA } from "./galeria.js";
 
 export const WHATSAPP = "5551995475761";
@@ -45,17 +29,6 @@ export const OG_IMAGE = "/og-cover.jpg";
 export const OG_IMAGE_ALT =
   "Logo da Braz Vidros, vidraçaria e esquadrias de alumínio em Novo Hamburgo";
 
-/*
-  Meta de cada página. É a fonte única do SEO e do sitemap, então rota nova
-  entra aqui e aparece nos dois lugares.
-
-  - `path`: a rota, de onde saem o canonical, a og:url e o <loc> do sitemap
-  - `image`: capa 1200x630 do preview de link; sem ela vale a OG_IMAGE
-  - `lastmod`: data da última mudança de conteúdo da página, escrita à mão.
-    É o que vai para o sitemap, então atualize junto com o texto
-  - `noindex`: tira a página do sitemap e manda `noindex, nofollow` para o
-    robô. Hoje nenhuma rota usa, porque o site inteiro é público
-*/
 export const PAGE_META = {
   home: {
     path: "/",
@@ -138,12 +111,6 @@ export const SITEMAP_ROUTES = Object.values(PAGE_META).filter(
   (page) => !page.noindex,
 );
 
-/*
-  Faixa de números no rodapé do hero.
-  Anos de experiência e projetos entregues crescem sozinhos na virada do ano:
-  a base é 2026 (9 anos, 4 mil projetos) e cada ano novo soma 1 ano e 500
-  projetos. Assim 2027 mostra 10 anos e 4.500+ sem ninguém tocar no código.
-*/
 const STATS_ANO_BASE = 2026;
 const ANOS_NO_ANO_BASE = 9;
 const PROJETOS_NO_ANO_BASE = 4000;
@@ -207,18 +174,6 @@ export const DIFFERENTIALS = [
   },
 ];
 
-/*
-  Celular em pé baixa o recorte vertical de cada foto do hero, em
-  /hero/celular. O hero ocupa a tela com background-size: cover, então num
-  celular em pé só o miolo da foto aparece: o recorte é esse mesmo miolo,
-  sem o resto que o aparelho baixava para nunca mostrar. No primeiro slide,
-  que é o LCP da home, foram 316 kB para 58 kB.
-
-  A media query é a mesma do preload no index.html: mudou aqui, muda lá,
-  senão o navegador baixa uma versão no preload e o hero pede a outra.
-  Lida uma vez, na carga: fora do navegador (o script do sitemap importa
-  este arquivo) vale a foto inteira.
-*/
 const HERO_CELULAR = "(max-width: 767px) and (orientation: portrait)";
 const heroNoCelular =
   typeof window !== "undefined" && window.matchMedia(HERO_CELULAR).matches;
@@ -341,24 +296,12 @@ export const SERVICES_ALUMINUM = [
   },
 ];
 
-/*
-  Portfólio completo: as fotos reais de obra, cadastradas em galeria.js.
-  `spec` é a especialidade e é o que separa as galerias: "vidro" alimenta a
-  página da vidraçaria, "aluminio" a de esquadrias. `destaque: true` marca
-  as oito obras que aparecem na home, quatro de cada especialidade, na ordem
-  em que entram na grade.
-*/
 export const PORTFOLIO = GALERIA;
 
 /* As oito obras da galeria da home, já na ordem: vidro primeiro, alumínio
    depois, para que o filtro "Tudo" mostre uma linha de cada especialidade */
 export const PORTFOLIO_DESTAQUE = PORTFOLIO.filter((p) => p.destaque);
 
-/* Os três botões do filtro da home. O id casa com o campo `spec`;
-   "tudo" é o estado inicial e não filtra nada.
-   `curto` é o que aparece no celular: as três opções dividem a largura da
-   tela em partes iguais, e "Esquadrias de alumínio" não cabe num terço de
-   320px sem quebrar em duas linhas */
 export const PORTFOLIO_FILTROS = [
   { id: "tudo", label: "Tudo", curto: "Tudo" },
   { id: "vidro", label: "Vidro temperado", curto: "Vidro" },
@@ -453,11 +396,6 @@ export const ABOUT_STORY = {
   eyebrow: "Nossa história",
   title: "Nossa história",
   lede: "Crescemos, ampliamos os serviços e melhoramos os processos, mas os princípios que nos trouxeram até aqui continuam os mesmos.",
-  /* O fechamento sempre foi uma lista de três dentro de um período só. Em
-     itens separados cada promessa ganha o próprio espaço na fita, e o título
-     vem partido em dois: a primeira metade em romano, a segunda em itálico.
-     "Presença" no último item, e não "compromisso", para não repetir a
-     palavra que já está no título */
   closing: {
     title: "O compromisso",
     titleItalic: "da Braz Vidros",

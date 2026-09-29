@@ -4,12 +4,6 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { lockScroll } from "../lib/scrollLock.js";
 
-/*
-  Galeria em tela cheia das fotos de projeto.
-  Navegação: setas na tela, teclado (← → Esc) e arrastar com o dedo/mouse.
-  A foto entra deslizando do lado de onde veio, então a direção do gesto
-  bate com a direção do movimento.
-*/
 export default function Lightbox({ items, index, onClose, onIndexChange }) {
   const rootRef = useRef(null);
   const frameRef = useRef(null);

@@ -4,20 +4,6 @@ import { useGSAP } from "@gsap/react";
 import SectionHeading from "./SectionHeading.jsx";
 import { PROCESS } from "../data/content.js";
 
-/*
-  Bloco "Como funciona", igual em Vidraçaria e Esquadrias.
-
-  Linha do tempo em dois formatos, mesma marcação:
-  - Celular: trilho de pé, uma linha contínua descendo pela esquerda com os
-    pontos alinhados nela. As linhas dos itens se encostam (sem gap na
-    vertical, o respiro é o padding de baixo), então o traço corre inteiro.
-  - sm em diante: o trilho deita, vira a borda de cima de cada coluna e o
-    ponto abre cada passo.
-
-  A animação é própria, não a do pass global de [data-reveal]: aqui a ordem
-  importa (trilho, ponto, texto) e os itens não podem entrar todos juntos.
-  Por isso o gsap.matchMedia: deitado o traço corre no eixo X, de pé no Y.
-*/
 export default function ProcessSteps() {
   const rootRef = useRef(null);
 
@@ -78,10 +64,6 @@ export default function ProcessSteps() {
                 key={p.title}
                 className="relative pb-8 pl-8 sm:pt-8 sm:pr-6 sm:pb-0 sm:pl-0 md:pr-8"
               >
-                {/* De pé no celular (left-1.25 = centro do ponto), deitado em sm.
-                    top-3.25 no trilho é o centro do ponto, de onde a linha desce.
-                    No último o trilho para junto com o texto (bottom-8 = o pb-8),
-                    senão sobraria um traço solto embaixo */}
                 <span
                   data-rail
                   aria-hidden="true"

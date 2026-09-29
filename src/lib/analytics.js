@@ -1,22 +1,3 @@
-/*
-  Medição do site: GA4 e conversões do Google Ads, os dois pelo mesmo gtag.js.
-
-  O que governa este arquivo é a ordem das coisas. Primeiro o Consent Mode v2
-  entra na fila do gtag negando tudo, e essa fila é só um array em memória, que
-  não faz pedido nenhum para fora. O script do Google só é baixado quando a
-  pessoa aceita. E recusar não apenas interrompe o envio: apaga os cookies de
-  medição que por acaso já existam no navegador.
-
-  Sem VITE_GA_ID e sem VITE_ADS_ID no build, tudo aqui fica inerte e o banner
-  nem chega a aparecer, porque site que não mede não tem o que consentir. Os
-  dois IDs são lidos na hora do build, então trocar o .env pede build novo.
-
-  As conversões não saem de formulário, que o site não tem: saem do clique no
-  WhatsApp e no telefone. Por isso o ouvinte de clique no fim do arquivo, que
-  pega esses links onde quer que estejam, em vez de espalhar chamada de evento
-  por oito componentes e esquecer de um na próxima tela que entrar.
-*/
-
 const env = import.meta.env;
 
 /* ID de medição do GA4 (G-XXXXXXXXXX) e da conta do Google Ads (AW-000000000) */
@@ -200,15 +181,6 @@ function classificar(href) {
   return null;
 }
 
-/*
-  Um ouvinte só, na fase de captura, para todos os links de contato do site.
-  Captura porque assim o evento é contado mesmo que algum componente venha a
-  interromper a propagação do clique.
-
-  Todos esses links abrem em aba nova ou entregam para o aparelho discar, então
-  a página não é descarregada e o envio tem tempo de sair sem precisar de
-  transport beacon nem de segurar a navegação.
-*/
 function ouvirCliquesDeContato() {
   document.addEventListener(
     "click",

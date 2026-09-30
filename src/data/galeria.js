@@ -195,13 +195,6 @@ const FOTOS = [
     alt: "Porta de correr em esquadria de alumínio branco com quatro folhas, instalada pela Braz Vidros",
   },
   {
-    arquivo: "Porta-em-esquadria-de-aluminio-2",
-    titulo: "Porta em esquadria de alumínio",
-    categoria: "portas",
-    alt: "Porta de correr em esquadria de alumínio branco vista de lado, instalada pela Braz Vidros",
-    destaque: true,
-  },
-  {
     arquivo: "Porta-de-aluminio",
     titulo: "Porta de alumínio",
     categoria: "portas",

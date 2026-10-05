@@ -68,6 +68,18 @@ const FOTOS = [
     alt: "Fechamento em vidro ao lado da piscina, visto de lado, instalado pela Braz Vidros",
   },
   {
+    arquivo: "fechamento-sacada-vidro",
+    titulo: "Fechamento de sacada em vidro",
+    categoria: "sacadas",
+    alt: "Sacada de apartamento fechada em vidro com perfis pretos, instalada pela Braz Vidros",
+  },
+  {
+    arquivo: "fechamento-vidro-area-gourmet",
+    titulo: "Fechamento em vidro de área gourmet",
+    categoria: "sacadas",
+    alt: "Área gourmet fechada em vidro com perfis pretos, vista de fora ao anoitecer, instalada pela Braz Vidros",
+  },
+  {
     arquivo: "Fachada-de-vidro",
     titulo: "Fachada de vidro",
     categoria: "sacadas",
@@ -142,6 +154,30 @@ const FOTOS = [
     destaque: true,
   },
   {
+    arquivo: "guarda-corpo-vidro-escada-01",
+    titulo: "Guarda-corpo de escada",
+    categoria: "guarda-corpo",
+    alt: "Guarda-corpo de vidro com torres de inox em escada de granito, instalado pela Braz Vidros",
+  },
+  {
+    arquivo: "guarda-corpo-vidro-escada-02",
+    titulo: "Guarda-corpo de escada",
+    categoria: "guarda-corpo",
+    alt: "Guarda-corpo de vidro com torres pretas em escada com degraus iluminados, instalado pela Braz Vidros",
+  },
+  {
+    arquivo: "guarda-corpo-vidro-escada-03",
+    titulo: "Guarda-corpo de escada",
+    categoria: "guarda-corpo",
+    alt: "Guarda-corpo de vidro em escada iluminada junto à parede de pedra, instalado pela Braz Vidros",
+  },
+  {
+    arquivo: "guarda-corpo-vidro-escada-04",
+    titulo: "Guarda-corpo de escada",
+    categoria: "guarda-corpo",
+    alt: "Guarda-corpo de vidro em escada com degraus iluminados, instalado pela Braz Vidros",
+  },
+  {
     arquivo: "Guarda-corpo-com-torre-inox",
     titulo: "Guarda-corpo com torre inox",
     categoria: "guarda-corpo",
@@ -164,6 +200,18 @@ const FOTOS = [
     titulo: "Guarda-corpo de piscina",
     categoria: "guarda-corpo",
     alt: "Guarda-corpo de vidro em volta da piscina, instalado pela Braz Vidros",
+  },
+  {
+    arquivo: "guarda-corpo-vidro-sacada-01",
+    titulo: "Guarda-corpo de sacada",
+    categoria: "guarda-corpo",
+    alt: "Guarda-corpo de vidro com torres pretas em sacada voltada para a rua, instalado pela Braz Vidros",
+  },
+  {
+    arquivo: "guarda-corpo-vidro-sacada-02",
+    titulo: "Guarda-corpo de sacada",
+    categoria: "guarda-corpo",
+    alt: "Guarda-corpo de vidro com torres pretas no canto da sacada, instalado pela Braz Vidros",
   },
 
   /* Portas e janelas */
@@ -206,6 +254,7 @@ const FOTOS = [
     titulo: "Porta de alumínio veneziana",
     categoria: "portas",
     alt: "Porta de alumínio veneziana branca com bandeira de vidro, instalada pela Braz Vidros",
+    destaque: true,
   },
   {
     arquivo: "Janela-de-vidro",

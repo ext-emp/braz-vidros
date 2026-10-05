@@ -219,8 +219,8 @@ export const FOCUS = [
     id: "vidracaria",
     title: "Vidraçaria",
     text: "Box de banheiro, espelhos, sacadas e guarda-corpo instalados com vidro temperado de procedência. Medição no local, corte sob medida e instalação limpa.",
-    image: "/projetos/Guarda-corpo-de-piscina.webp",
-    imageAlt: "Guarda-corpo de vidro em volta da piscina, instalado pela Braz Vidros",
+    image: "/projetos/guarda-corpo-vidro-escada-04.webp",
+    imageAlt: "Guarda-corpo de vidro em escada com degraus iluminados, instalado pela Braz Vidros",
     link: "/vidracaria",
     linkText: "Ver tudo em vidraçaria",
   },
@@ -231,8 +231,6 @@ export const FOCUS = [
     image: "/projetos/Porta-em-esquadria-de-aluminio-1.webp",
     imageAlt:
       "Porta de correr em esquadria de alumínio branco com quatro folhas, instalada pela Braz Vidros",
-    /* A foto é vertical e o bloco é deitado: centralizada, sobrava parede
-       sem reboco em cima. Descendo o recorte a porta fica inteira no quadro */
     imagePosition: "center 70%",
     link: "/esquadrias",
     linkText: "Ver tudo em esquadrias",

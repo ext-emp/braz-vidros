@@ -172,7 +172,7 @@ const FOTOS = [
     alt: "Guarda-corpo de vidro em escada iluminada junto à parede de pedra, instalado pela Braz Vidros",
   },
   {
-    arquivo: "guarda-corpo-vidro-escada-04",
+    arquivo: "guarda-corpo-vidro-escada-05",
     titulo: "Guarda-corpo de escada",
     categoria: "guarda-corpo",
     alt: "Guarda-corpo de vidro em escada com degraus iluminados, instalado pela Braz Vidros",

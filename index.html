@@ -218,22 +218,121 @@
       }
     </script>
     <style>
-      #fallback-sem-js {
-        opacity: 0;
-        animation: fallback-sem-js-aparece 0.2s linear 2s forwards;
+      #carregando {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.75rem;
+        background: #323560;
+        transition:
+          opacity 0.45s ease,
+          visibility 0s linear 0.45s;
       }
 
-      @keyframes fallback-sem-js-aparece {
+      #carregando.saindo {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      #carregando img {
+        height: 2.5rem;
+        width: auto;
+        filter: brightness(0) invert(1);
+        animation: carregando-respira 1.8s ease-in-out infinite;
+      }
+
+      .carregando-barra {
+        position: relative;
+        width: 7.5rem;
+        height: 2px;
+        overflow: hidden;
+        border-radius: 2px;
+        background: rgb(255 255 255 / 0.18);
+      }
+
+      .carregando-barra::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40%;
+        height: 100%;
+        border-radius: inherit;
+        background: #8cceee;
+        animation: carregando-desliza 1.2s cubic-bezier(0.65, 0, 0.35, 1)
+          infinite;
+      }
+
+      @keyframes carregando-desliza {
+        from {
+          transform: translateX(-100%);
+        }
         to {
-          opacity: 1;
+          transform: translateX(250%);
+        }
+      }
+
+      @keyframes carregando-respira {
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #carregando img {
+          animation: none;
+        }
+
+        .carregando-barra::after {
+          width: 100%;
+          animation: carregando-respira 1.6s ease-in-out infinite;
         }
       }
     </style>
+    <!-- Sem JavaScript o loader nunca sairia: fica o conteúdo estático -->
+    <noscript>
+      <style>
+        #carregando {
+          display: none;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
+    <div id="carregando" role="status" aria-label="Carregando o site">
+      <img
+        src="/logo-braz-vidros-64.webp"
+        srcset="/logo-braz-vidros-96.webp 2x"
+        alt=""
+        width="294"
+        height="64"
+      />
+      <span class="carregando-barra"></span>
+    </div>
+    <script>
+      // Navegador sem suporte a módulo ou JavaScript do site com erro: o loader
+      // sai e fica o conteúdo estático do #root, em vez de girar para sempre
+      (function () {
+        var loader = document.getElementById("carregando");
+        function sair() {
+          loader.style.display = "none";
+        }
+        if (!("noModule" in HTMLScriptElement.prototype)) sair();
+        addEventListener(
+          "error",
+          function (e) {
+            if (e.target === window || e.target.tagName === "SCRIPT") sair();
+          },
+          true
+        );
+      })();
+    </script>
     <div id="root">
       <div
-        id="fallback-sem-js"
         style="
           max-width: 46rem;
           margin: 0 auto;

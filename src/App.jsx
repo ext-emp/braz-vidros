@@ -28,6 +28,14 @@ export default function App() {
   // topo vale para as duas coisas, inclusive clicar na logo já estando na home
   const { pathname, search, key } = useLocation();
 
+  // O loader do index.html sai só depois que a página já está desenhada por baixo
+  useEffect(() => {
+    const loader = document.getElementById("carregando");
+    if (!loader) return;
+    loader.classList.add("saindo");
+    setTimeout(() => loader.remove(), 450);
+  }, []);
+
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (ScrollTrigger.isTouch === 1) return;

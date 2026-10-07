@@ -219,7 +219,7 @@ export const FOCUS = [
     id: "vidracaria",
     title: "Vidraçaria",
     text: "Box de banheiro, espelhos, sacadas e guarda-corpo instalados com vidro temperado de procedência. Medição no local, corte sob medida e instalação limpa.",
-    image: "/projetos/guarda-corpo-vidro-escada-04.webp",
+    image: "/projetos/guarda-corpo-vidro-escada-05.webp",
     imageAlt: "Guarda-corpo de vidro em escada com degraus iluminados, instalado pela Braz Vidros",
     link: "/vidracaria",
     linkText: "Ver tudo em vidraçaria",

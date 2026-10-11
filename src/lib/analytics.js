@@ -83,7 +83,14 @@ export function iniciarMedicao() {
   ouvirCliquesDeContato();
 
   /* Quem já aceitou numa visita anterior não vê o banner de novo */
-  if (lerConsentimento() === "aceito") carregarTag();
+  if (lerConsentimento() === "aceito") liberarMedicao();
+}
+
+/* O update vem antes do gtag.js e dos config: sem ele quem já aceitou
+   voltaria ao site como "denied" */
+function liberarMedicao() {
+  gtag("consent", "update", CONCEDIDO);
+  carregarTag();
 }
 
 function carregarTag() {
@@ -104,8 +111,7 @@ function carregarTag() {
 
 export function aceitar() {
   gravarConsentimento("aceito");
-  gtag("consent", "update", CONCEDIDO);
-  carregarTag();
+  liberarMedicao();
 
   /* A rota em que a pessoa aceitou é a página de entrada dela. Sem este
      disparo ela ficaria fora da contagem, porque na carga da página ainda não
